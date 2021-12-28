@@ -107,7 +107,7 @@ If you cloned from a repository, go ahead and update the origin link to the repo
 Otherwise run this command instead:
 `$ git remote add origin <YOUR-GITHUB-REPO-LINK>`
 
-Finally, push the code to the repoository:
+Finally, push the code to the repository:
 `$ git push origin master`
 
 ### 5. Create or sign in to your Fleek account

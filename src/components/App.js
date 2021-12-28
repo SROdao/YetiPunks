@@ -5,18 +5,18 @@ import Web3 from 'web3'
 
 // Import Images + CSS
 import logo from '../images/logo.png'
-import happyImage from '../images/happy.png'
-import excitedImage from '../images/excited.png'
-import sadImage from '../images/sad.png'
+import happyImage from '../images/blueSmoke.png'
+import excitedImage from '../images/yetipunklaser.png'
+import sadImage from '../images/3dglasses.png'
 import './App.css'
 
 // Import ABI + Config
-import OpenEmoji from '../abis/OpenEmoji.json';
+import YetiPunks from '../abis/YetiPunks.json';
 import CONFIG from '../config.json';
 
 function App() {
 	const [web3, setWeb3] = useState(null)
-	const [openEmoji, setOpenEmoji] = useState(null)
+	const [yeti, setYeti] = useState(null)
 
 	const [supplyAvailable, setSupplyAvailable] = useState(0)
 	const [balanceOf, setBalanceOf] = useState(0)
@@ -41,18 +41,18 @@ function App() {
 			setCurrentNetwork(networkId)
 
 			try {
-				const openEmoji = new web3.eth.Contract(OpenEmoji.abi, OpenEmoji.networks[networkId].address)
-				setOpenEmoji(openEmoji)
+				const yeti = new web3.eth.Contract(YetiPunks.abi, YetiPunks.networks[networkId].address)
+				setYeti(yeti)
 
-				const maxSupply = await openEmoji.methods.maxSupply().call()
-				const totalSupply = await openEmoji.methods.totalSupply().call()
+				const maxSupply = await yeti.methods.maxSupply().call()
+				const totalSupply = await yeti.methods.totalSupply().call()
 				setSupplyAvailable(maxSupply - totalSupply)
 
-				const balanceOf = await openEmoji.methods.balanceOf(account).call()
+				const balanceOf = await yeti.methods.balanceOf(account).call()
 				setBalanceOf(balanceOf)
 
-				const allowMintingAfter = await openEmoji.methods.allowMintingAfter().call()
-				const timeDeployed = await openEmoji.methods.timeDeployed().call()
+				const allowMintingAfter = await yeti.methods.allowMintingAfter().call()
+				const timeDeployed = await yeti.methods.timeDeployed().call()
 				setRevealTime((Number(timeDeployed) + Number(allowMintingAfter)).toString() + '000')
 
 				if (networkId !== 5777) {
@@ -62,7 +62,7 @@ function App() {
 
 			} catch (error) {
 				setIsError(true)
-				setMessage("Contract not deployed to current network, please change network in MetaMask")
+				setMessage("Contract not deployed to current network, please change network to Ethereum in MetaMask")
 			}
 
 		}
@@ -115,17 +115,17 @@ function App() {
 		}
 
 		// Mint NFT
-		if (openEmoji) {
+		if (yeti) {
+			debugger
 			setIsMinting(true)
 			setIsError(false)
 
-			await openEmoji.methods.mint(1).send({ from: account, value: 0 })
+			await yeti.methods.mint().send({ from: account, value: 30000000000000000 })
 				.on('confirmation', async () => {
-					const maxSupply = await openEmoji.methods.maxSupply().call()
-					const totalSupply = await openEmoji.methods.totalSupply().call()
-					setSupplyAvailable(maxSupply - totalSupply)
+					const supplyAvailable = await yeti.methods.remainingSupply().call()
+					setSupplyAvailable(supplyAvailable)
 
-					const balanceOf = await openEmoji.methods.balanceOf(account).call()
+					const balanceOf = await yeti.methods.balanceOf(account).call()
 					setBalanceOf(balanceOf)
 				})
 				.on('error', (error) => {
@@ -152,7 +152,7 @@ function App() {
 					rel="noopener noreferrer"
 				>
 					<img src={logo} className="App-logo" alt="logo" />
-					Dapp University
+					YetiPunks
 				</a>
 
 				{account ? (
@@ -170,11 +170,11 @@ function App() {
 			<main>
 				<Row className="my-3">
 					<Col className="text-center">
-						<h1 className="text-uppercase">Open Emojis</h1>
+						<h1 className="text-uppercase">Yeti Punks</h1>
 						<p className="countdown">
 							{revealTime !== 0 && <Countdown date={currentTime + (revealTime - currentTime)} />}
 						</p>
-						<p>Welcome! Mint your free emoji (not including gas fees) on 11/04/21</p>
+						<p>Y'all yeti got this?</p>
 					</Col>
 				</Row>
 				<Row className="my-4">
@@ -206,12 +206,12 @@ function App() {
 						<p>{message}</p>
 					) : (
 						<div>
-							{openEmoji &&
-								<a href={`${blockchainExplorerURL}address/${openEmoji._address}`}
+							{yeti &&
+								<a href={`${blockchainExplorerURL}address/${yeti._address}`}
 									target="_blank"
 									rel="noreferrer"
 									className="contract-link d-block my-3">
-									{openEmoji._address}
+									{yeti._address}
 								</a>
 							}
 
