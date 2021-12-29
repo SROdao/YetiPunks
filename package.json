@@ -1,8 +1,8 @@
 {
-  "name": "eth-marketplace",
+  "name": "YetiPunks",
   "version": "0.1.0",
-  "description": "An Ethereum Marketplace",
-  "author": "gregory@dappuniversity.com",
+  "description": "Yetis X Punks",
+  "author": "WangManDoo",
   "dependencies": {
     "@openzeppelin/contracts": "^4.3.2",
     "@testing-library/jest-dom": "^5.14.1",

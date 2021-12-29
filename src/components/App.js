@@ -13,6 +13,9 @@ import './App.css'
 // Import ABI + Config
 import YetiPunks from '../abis/YetiPunks.json';
 import CONFIG from '../config.json';
+import Banner from './Banner'
+import Main from './Main'
+import About from './About';
 
 function App() {
 	const [web3, setWeb3] = useState(null)
@@ -144,7 +147,12 @@ function App() {
 
 	return (
 		<div>
-			<nav className="navbar fixed-top mx-3">
+			<div className="">
+				<Banner/>
+				<Main/>
+				<About/>
+			</div>
+			{/* <nav className="navbar fixed-top mx-3">
 				<a
 					className="navbar-brand col-sm-3 col-md-2 mr-0 mx-4"
 					href="http://www.dappuniversity.com/bootcamp"
@@ -201,8 +209,8 @@ function App() {
 						<a href={`${blockchainExplorerURL}address/${account}`} target="_blank" rel="noreferrer" className="button">My Etherscan</a>
 					</Col>
 				</Row>
-				<Row className="my-2 text-center">
-					{message ? (
+				<Row className="my-2 text-center"> */}
+					{/* {message ? (
 						<p>{message}</p>
 					) : (
 						<div>
@@ -223,7 +231,7 @@ function App() {
 						</div>
 					)}
 				</Row>
-			</main>
+			</main> */}
 		</div>
 	)
 }
