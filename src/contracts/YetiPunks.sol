@@ -18,9 +18,6 @@ contract YetiPunks is ERC721, Ownable {
     constructor(
         string memory _name,
         string memory _symbol
-        // string memory _initBaseURI,
-        // string memory _initNotRevealedUri,
-        // uint256 _revealTime
     ) ERC721(_name, _symbol) { 
         //Set baseURI here?
         //set pre-reveal image here?
@@ -31,11 +28,12 @@ contract YetiPunks is ERC721, Ownable {
     function mint() public payable {
         require(saleIsActive, "Yetis are not for sale yet!");
 
+        // Would this revert if a mint fails?
         uint256 mintIndex = _tokenSupply.current() + 1; // Start IDs at 1
         require(mintIndex <= MAX_SUPPLY, "Yetis are sold out!");
 
-        uint256 mintPrice = 0.03 ether;
-        require(msg.value >= mintPrice, "Not enough ETH to buy a Yeti!");
+        // uint256 mintPrice = 30000000000000000 wei;
+        // require(msg.value >= mintPrice, "Not enough ETH to buy a Yeti!");
 
         _tokenSupply.increment();
         _safeMint(msg.sender, mintIndex);

@@ -1,11 +1,21 @@
 //rafce
 import React from 'react'
+import { useState } from 'react'
 import PropTypes from 'prop-types'
-import image from '../images/yetibanner.png'
-const Main = ({mintNFTHandler, supplyAvailable = 5000}) => {
+import banner from '../images/yetibanner.png'
+import banner2 from '../images/yetibanner-flipped.jpg'
+const Main = ({mintNftHandler}) => {
+    const [image, setImage] = useState(banner)
+    const bannerClickHandler = () => {
+        if (image === banner) {
+            setImage(banner2)
+        } else {
+            setImage(banner)
+        }
+    }
     return (
         <div className = "main">        
-            <img className = 'float-text' src={image}/>
+            <img className = 'float-text' src={image} onClick={bannerClickHandler}/>
             <div className='float-text font'>
                 <h1>NO UTILITY</h1>
                 <h1>NO ROADMAP</h1>
@@ -14,9 +24,10 @@ const Main = ({mintNFTHandler, supplyAvailable = 5000}) => {
             </div>
             <div className="d-flex justify-content-center">
                 <div className='d-flex flex-column m-5'>
-                    <h1>Mint a Yeti</h1>
-                    <h6>Remaining: {supplyAvailable}/5000 </h6>
-                    <button onClick={mintNFTHandler} className='btn'> Mint </button>
+                    <h1>Mint a Yeti Punk</h1>
+                    <h6>Remaining: 5000/5000 </h6>
+                    {}
+                    <button onClick={mintNftHandler} className='btn'> Mint </button>
                 </div>
             </div>
         </div>

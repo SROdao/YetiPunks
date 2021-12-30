@@ -1,16 +1,6 @@
 import { useState, useEffect } from 'react'
-import { Row, Col } from 'react-bootstrap'
-import Countdown from 'react-countdown'
 import Web3 from 'web3'
-
-// Import Images + CSS
-import logo from '../images/logo.png'
-import happyImage from '../images/blueSmoke.png'
-import excitedImage from '../images/yetipunklaser.png'
-import sadImage from '../images/3dglasses.png'
 import './App.css'
-
-// Import ABI + Config
 import YetiPunks from '../abis/YetiPunks.json';
 import CONFIG from '../config.json';
 import Banner from './Banner'
@@ -47,7 +37,7 @@ function App() {
 				const yeti = new web3.eth.Contract(YetiPunks.abi, YetiPunks.networks[networkId].address)
 				setYeti(yeti)
 
-				const maxSupply = await yeti.methods.maxSupply().call()
+				const maxSupply = await yeti.methods.MAX_SUPPLY().call()
 				const totalSupply = await yeti.methods.totalSupply().call()
 				setSupplyAvailable(maxSupply - totalSupply)
 
@@ -107,29 +97,19 @@ function App() {
 	}
 
 	const mintNFTHandler = async () => {
-		if (revealTime > new Date().getTime()) {
-			window.alert('Minting is not live yet!')
-			return
-		}
-
-		if (balanceOf > 0) {
-			window.alert('You\'ve already minted!')
-			return
-		}
-
 		// Mint NFT
 		if (yeti) {
-			setIsMinting(true)
-			setIsError(false)
+			// setIsMinting(true)
+			// setIsError(false)
 
-			await yeti.methods.mint().send({ from: account, value: 30000000000000000 })
-				.on('confirmation', async () => {
-					const supplyAvailable = await yeti.methods.remainingSupply().call()
-					setSupplyAvailable(supplyAvailable)
+			await yeti.methods.mint().send({ from: account, value: web3.utils.toWei('0.03', 'ether') })
+				// .on('confirmation', async () => {
+				// 	// const supplyAvailable = await yeti.methods.remainingSupply().call()
+				// 	// setSupplyAvailable(supplyAvailable)
 
-					const balanceOf = await yeti.methods.balanceOf(account).call()
-					setBalanceOf(balanceOf)
-				})
+				// 	// const balanceOf = await yeti.methods.balanceOf(account).call()
+				// 	// setBalanceOf(balanceOf)
+				// })
 				.on('error', (error) => {
 					window.alert(error)
 					setIsError(true)
@@ -154,11 +134,16 @@ function App() {
 			<div className="">
 				<Banner />
 				{account ? (
-					<Main mintNftHandler={mintNFTHandler}/>
+					<>
+						<Main mintNftHandler={mintNFTHandler}/>
+						<About />
+					</>
 				) : (
-					<button onClick={web3Handler} className="button nav-button btn-sm mx-4">Connect Wallet</button>
+					<>
+						<button onClick={web3Handler} className="button nav-button btn-sm mx-4">Connect Wallet</button>
+					</>
 				)}
-				<About />
+				
 			</div>
 			{/* <nav className="navbar fixed-top mx-3">
 				<a
