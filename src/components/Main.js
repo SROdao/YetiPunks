@@ -2,21 +2,21 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import image from '../images/yetibanner.png'
-const Main = ({count}) => {
+const Main = ({mintNFTHandler, supplyAvailable}) => {
     return (
         <div className = "main">          
             <img className = 'float-text' src={image}/>
             <div className='float-text font'>
-                <h1>No Utility</h1>
-                <h1>No Roadmap</h1>
-                <h1>Just Yeti good vibes</h1>
+                <h1>NO UTILITY</h1>
+                <h1>NO ROADMAP</h1>
+                <h1>JUST YETI GOOD VIBES</h1>
                 
             </div>
             <div className="container">
                 <div className='header font'>
                     <h1>Mint a Yeti</h1>
-                    <h6>Remaining: {count} </h6>
-                    <button className='btn'> Mint </button>
+                    <h6>Remaining: {supplyAvailable} </h6>
+                    <button onClick={mintNFTHandler} className='btn'> Mint </button>
                 </div>
             </div>
         </div>
