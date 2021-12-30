@@ -17,7 +17,7 @@ const About = () => {
                 <div className='avatar'>
                     <img className='avatar' src={Tokimori00} />
                 </div>
-                <div>
+                <div className='d-flex flex-column align-items-center'>
                     <h6>Tenzing</h6>
                     <div>Sherpa</div>
                 </div>
@@ -26,7 +26,7 @@ const About = () => {
                 <div className='avatar'>
                     <img className='avatar' src={Tokimori00} />
                 </div>
-                <div>
+                <div className='d-flex flex-column align-items-center'>
                     <h6>WangMandu</h6>
                     <div>Dev</div>
                 </div>
