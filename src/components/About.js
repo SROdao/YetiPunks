@@ -3,7 +3,7 @@ import Tokimori00 from '../images/yetipunkv4white.png'
 
 const About = () => {
     return (
-        <div className="font d-flex flex-row justify-content-around">
+        <div className="font d-flex justify-content-around">
             <div className='d-flex flex-column align-items-center'>
                 <div className='avatar'>
                     <img className='avatar' src={Tokimori00} />
