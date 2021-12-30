@@ -49,7 +49,7 @@ contract YetiPunks is ERC721, Ownable {
         return _tokenSupply.current();
     }
 
-    function _baseURI() internal view virtual override returns (string memory) {
+    function _baseURI() internal view virtual override returns (string memory) { //onlyOwner
         return _baseTokenURI;
     }
 
@@ -57,18 +57,37 @@ contract YetiPunks is ERC721, Ownable {
         _baseTokenURI = baseURI;
     }
 
-    function toggleSale(bool _state) public onlyOwner {
+    function toggleSale(bool _state) public onlyOwner { //maybe don't need this
         saleIsActive = _state;
     }
 
     function withdrawBalance() public onlyOwner {
         //TODO: divide evenly between 3 wallets
-        payable(msg.sender).transfer(address(this).balance * 33/100); //
-        // payable(msg.sender).transfer(address(this).balance * 33/100); Wang Mandoo's wallet
-        // payable(msg.sender).transfer(address(this).balance * 33/100); Goku-sans' wallet
-
+        address payable tokimori = payable(msg.sender);
+        payable(msg.sender).transfer(address(this).balance * 33/100);
+        payable(tokimori).transfer(address(this).balance * 33/100);
+    
         //alt syntax: saves on gas?
-        // (bool hs, ) = payable(0x943590A42C27D08e3744202c4Ae5eD55c2dE240D).call{value: address(this).balance * 5 / 100}("");
-        // require(hs);
+        (bool hs, ) = payable(0x943590A42C27D08e3744202c4Ae5eD55c2dE240D).call{value: address(this).balance * 33 / 100}("");
+        require(hs);
+
+        // function sendViaTransfer(address payable _to) public payable {
+        //     // This function is no longer recommended for sending Ether.
+        //     _to.transfer(msg.value);
+        // }
+
+        // function sendViaSend(address payable _to) public payable {
+        //     // Send returns a boolean value indicating success or failure.
+        //     // This function is not recommended for sending Ether.
+        //     bool sent = _to.send(msg.value);
+        //     require(sent, "Failed to send Ether");
+        // }
+
+        // function sendViaCall(address payable _to) public payable {
+        //     // Call returns a boolean value indicating success or failure.
+        //     // This is the current recommended method to use.
+        //     (bool sent, bytes memory data) = _to.call{value: msg.value}("");
+        //     require(sent, "Failed to send Ether");
+        // }
     }
 }
