@@ -22,10 +22,10 @@ const Main = ({mintNftHandler}) => {
                 <h1>JUST YETI GOOD VIBES</h1>
                 
             </div>
-            <div className="d-flex justify-content-center">
-                <div className='d-flex flex-column m-5'>
+            <div className="d-flex justify-content-center font">
+                <div className='d-flex flex-column m-5 font'>
                     <h1>Mint a Yeti Punk</h1>
-                    <h6>Remaining: 5000/5000 </h6>
+                    <h6>Remaining: 5000/5000</h6>
                     {}
                     <button onClick={mintNftHandler} className='btn'> Mint </button>
                 </div>

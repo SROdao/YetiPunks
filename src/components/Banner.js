@@ -16,7 +16,7 @@ const Banner = ({title}) => {
 }
 
 Banner.defaultProps = {
-    title: "Yeti Punks"
+    title: "YETI PUNKS"
 };
 
 Banner.propTypes={
