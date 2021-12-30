@@ -23,7 +23,6 @@
 
 ### 2. Install Dependencies:
 ```
-$ cd open_emojis
 $ npm install 
 ```
 
