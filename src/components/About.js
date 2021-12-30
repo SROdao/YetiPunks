@@ -9,7 +9,7 @@ const About = () => {
                     <img className='avatar' src={Tokimori00} />
                 </div>
                 <div className='d-flex flex-column align-items-center'>
-                    <h6>Tokimori00</h6>
+                    <h6 className='mt-3'>Tokimori00</h6>
                     <div>Artist, NFT Chef</div>
                 </div>
             </div>
@@ -18,7 +18,7 @@ const About = () => {
                     <img className='avatar' src={Tokimori00} />
                 </div>
                 <div className='d-flex flex-column align-items-center'>
-                    <h6>Tenzing</h6>
+                    <h6 className='mt-3'>Tenzing</h6>
                     <div>Sherpa</div>
                 </div>
             </div>
@@ -27,7 +27,7 @@ const About = () => {
                     <img className='avatar' src={Tokimori00} />
                 </div>
                 <div className='d-flex flex-column align-items-center'>
-                    <h6>WangMandu</h6>
+                    <h6 className='mt-3'>WangMandu</h6>
                     <div>Dev</div>
                 </div>
             </div>
