@@ -119,7 +119,6 @@ function App() {
 
 		// Mint NFT
 		if (yeti) {
-			debugger
 			setIsMinting(true)
 			setIsError(false)
 
@@ -145,12 +144,21 @@ function App() {
 		loadBlockchainData()
 	}, [account]);
 
+	const props = {
+		mintNFTHandler,
+		supplyAvailable 
+	}
+
 	return (
 		<div>
 			<div className="">
-				<Banner/>
-				<Main/>
-				<About/>
+				<Banner />
+				{account ? (
+					<Main mintNftHandler={mintNFTHandler}/>
+				) : (
+					<button onClick={web3Handler} className="button nav-button btn-sm mx-4">Connect Wallet</button>
+				)}
+				<About />
 			</div>
 			{/* <nav className="navbar fixed-top mx-3">
 				<a
