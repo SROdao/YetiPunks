@@ -53,6 +53,10 @@ contract YetiPunks is ERC721, Ownable {
         return _baseTokenURI;
     }
 
+    function getBaseUri() external view onlyOwner returns (string memory) {
+        return _baseTokenURI;
+    }
+
     function setBaseURI(string memory baseURI) external onlyOwner {
         _baseTokenURI = baseURI;
     }
