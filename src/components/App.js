@@ -122,6 +122,7 @@ function App() {
 	useEffect(() => {
 		loadWeb3()
 		loadBlockchainData()
+		verifyUserOnEthereumNetwork()
 	}, [account]);
 
 	const mintButton = () => {
@@ -136,13 +137,22 @@ function App() {
 		)
 	}
 
+	const verifyUserOnEthereumNetwork = async () => {
+		if (currentNetwork !== 4 || currentNetwork !== 1) {
+			await window.ethereum.request({
+				method: 'wallet_switchEthereumChain',
+				params: [{ chainId: '0x1' }], // chainId must be in hexadecimal numbers
+			  });
+		}
+	}
+
 	return (
 		<div>
 			<div className="">
 				<Banner />
 				{account ? (
 					<>
-						<Main button={mintButton()} />
+						<Main button={mintButton()} currentNetwork={currentNetwork} />
 						<About />
 					</>
 				) : (
