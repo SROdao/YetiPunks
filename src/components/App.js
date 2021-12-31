@@ -32,7 +32,7 @@ function App() {
 		if (web3) {
 			const networkId = await web3.eth.net.getId()
 			setCurrentNetwork(networkId)
-
+			
 			try {
 				const yeti = new web3.eth.Contract(YetiPunks.abi, YetiPunks.networks[networkId].address)
 				setYeti(yeti)
@@ -124,9 +124,16 @@ function App() {
 		loadBlockchainData()
 	}, [account]);
 
-	const props = {
-		mintNFTHandler,
-		supplyAvailable 
+	const mintButton = () => {
+		return(
+			<button onClick={mintNFTHandler} className='btn font'> MINT </button>
+		)
+	}
+
+	const connectButton = () => {
+		return(
+			<button onClick={web3Handler} className="button font">Connect Wallet</button>
+		)
 	}
 
 	return (
@@ -135,12 +142,13 @@ function App() {
 				<Banner />
 				{account ? (
 					<>
-						<Main mintNftHandler={mintNFTHandler}/>
+						<Main button={mintButton()} />
 						<About />
 					</>
 				) : (
 					<>
-						<button onClick={web3Handler} className="button nav-button btn-sm mx-4">Connect Wallet</button>
+						<Main button={connectButton()} />
+						<About />
 					</>
 				)}
 				
