@@ -3,7 +3,6 @@ import openSea from '../images/Logomark-Transparent White.png'
 import twitter from '../images/twitter.png'
 const Banner = ({title}) => {
     return (
-        
         <div className="topnav font">
             <a>{title}</a>
             <div className="topnav-right">
@@ -11,7 +10,6 @@ const Banner = ({title}) => {
             <a href='https://twitter.com/'><img className='icon' src={twitter} /></a>
             </div>
       </div>
-       
     )
 }
 

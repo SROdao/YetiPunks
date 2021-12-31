@@ -9,7 +9,7 @@ contract YetiPunks is ERC721, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenSupply;
 
-    uint256 public constant MAX_SUPPLY = 5000;
+    uint256 public constant MAX_SUPPLY = 10000;
     uint256 public cost = 0.03 ether;
 
     bool public saleIsActive = false;
