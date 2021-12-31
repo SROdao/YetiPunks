@@ -7,9 +7,8 @@
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
   background-color: #d2effe;
-  color: #81bdbf;
+  color: #68b4b5;
 }
 
 .container {
@@ -49,6 +48,10 @@ body {
 
 .btn:active {
   transform: scale(0.98);
+}
+
+.btn:hover {
+  background-color: #68b4b5;
 }
 
 .btn-block {
@@ -118,7 +121,7 @@ footer {
 /* Style the links inside the navigation bar */
 .topnav a {
 float: left;
-color: #81bdbf;
+color: #68b4b5;
 text-align: center;
 padding: 14px 16px;
 text-decoration: none;
@@ -151,16 +154,15 @@ float: right;
 }
 
 @font-face {
-  font-family: OldSansBlack;
+  font-family: "OldSansBlack";
   src: url('../fonts/OldSansBlack.ttf');
 }
 
 .font{
-  font-family: OldSansBlack
+  font-family: "OldSansBlack"
 }
 
 .icon {
-
   height: 20px;
   width: 20px;
   display: inline-block;
