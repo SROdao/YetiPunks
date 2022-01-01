@@ -127,7 +127,11 @@ function App() {
 
 	const mintButton = () => {
 		return(
-			<button onClick={mintNFTHandler} className='btn font'> MINT </button>
+			<div className="">
+				<input type = 'number' mine='1' max='20' placeholder='MAX 20' id='mint-count'></input>
+				<button onClick={mintNFTHandler} className='btn font'> MINT </button>
+			</div>
+			//<button onClick={mintNFTHandler} className='btn font'> MINT </button>
 		)
 	}
 
