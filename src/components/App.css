@@ -142,11 +142,15 @@ float: right;
   height: auto;
 }
 
-.float-text{
+.float-text{ 
   text-align: center;
   padding-top: 100;
   margin-top: 100;
-  
+  width: 100%;
+}
+
+.yeti-banner {
+  width: 50vw;
 }
 
 .avatar{
