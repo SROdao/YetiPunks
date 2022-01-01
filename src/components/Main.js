@@ -4,6 +4,7 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 import banner from '../images/yetibanner.png'
 import banner2 from '../images/yetibanner-flipped.jpg'
+
 const Main = ({button}) => {
     const [image, setImage] = useState(banner)
     const bannerClickHandler = () => {
@@ -15,7 +16,7 @@ const Main = ({button}) => {
     }
     return (
         <div className = "main">
-            <img className = 'float-text' src={image} onClick={bannerClickHandler}/>
+            <img className = 'yeti-banner' src={image} onClick={bannerClickHandler}/>
             <div className='float-text font'>
                 <h1>NO ROADMAP</h1>
                 <h1>JUST YETI GOOD VIBES</h1>
