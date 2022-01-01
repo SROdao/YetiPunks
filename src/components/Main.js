@@ -23,7 +23,7 @@ const Main = ({button}) => {
                 
             </div>
             <div className="font">
-                10K randomly-generated digital collectibles chillin' on the Ethereum blockchain
+                10K randomly-generated ERC721 tokens chillin' on the Ethereum blockchain
             </div>
             <div className="d-flex justify-content-center font">
                 <div className='d-flex flex-column m-5 font'>
