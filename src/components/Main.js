@@ -28,8 +28,10 @@ const Main = ({button}) => {
             <div className="d-flex justify-content-center font">
                 <div className='d-flex flex-column m-5 font'>
                     <h1>MINT A YETI PUNK</h1>
-                    <h6>Remaining: 10000/10000</h6>
                     <h6>0.03 ETH</h6>
+                    <h6>Max 20 per txn</h6>
+                    <h6>Unlimited per wallet</h6>
+                    <h6>Remaining: 10000/10000</h6>
                     {button}
                 </div>
             </div>

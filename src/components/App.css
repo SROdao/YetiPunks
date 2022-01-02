@@ -59,27 +59,35 @@ body {
   width: 100%;
 }
 
-/* Add a black background color to the top navigation */
+.mint-input {
+  text-align: center;
+  width: 60px;
+  height: 40px;
+}
+
+.input-and-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .topnav {
-  background-color: d2effe;
   overflow: hidden;
 }
 
 /* Style the links inside the navigation bar */
 .topnav a {
 float: left;
-color: #68b4b5;
+color: #b56888;
 text-align: center;
 padding: 14px 16px;
 text-decoration: none;
 font-size: 17px;
 }
 
-
-
 /* Right-aligned section inside the top navigation */
 .topnav-right {
-float: right;
+  float: right;
 }
 
 .main{
@@ -97,11 +105,30 @@ float: right;
 }
 
 .yeti-banner {
-  width: 50vw;
+  width: 40%;
+}
+
+.bio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 10vh;
+}
+
+.bio-square {
+  display: flex;
+  align-items: center;
+  width: 25%;
+}
+
+.bio-section {
+  display: flex;
+  justify-content: space-around;
 }
 
 .avatar{
-  width: 150px;
+  width: 100px;
+  margin-right: 10px;
 }
 
 @font-face {
@@ -117,5 +144,38 @@ float: right;
   height: 20px;
   width: 20px;
   display: inline-block;
+}
+
+.icon:hover {
+  background-color: #c1dedf;
+}
+
+/* media query for mobile */
+
+@media screen and (max-width: 600px) {
+  .bio-square {
+    flex-direction: column;
+    width: 60%;
+  }
+
+  .bio-section {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .topnav a {
+    font-size: 20px;
+  }
+
+  .topnav-right {
+    font-size: 20px;
+  }
+
+  .yeti-banner {
+    width: 100%;
+  }
   
+  .avatar {
+    width: 80px;
+  }
 }
