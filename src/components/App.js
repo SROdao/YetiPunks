@@ -41,6 +41,7 @@ function App() {
 			setCurrentNetwork(networkId)
 			
 			try {
+				console.log('YetiPunks.networks[networkId].address', YetiPunks.networks)
 				const yeti = new web3.eth.Contract(YetiPunks.abi, YetiPunks.networks[networkId].address)
 				setYeti(yeti)
 
@@ -50,10 +51,6 @@ function App() {
 
 				const balanceOf = await yeti.methods.balanceOf(account).call()
 				setBalanceOf(balanceOf)
-
-				const allowMintingAfter = await yeti.methods.allowMintingAfter().call()
-				const timeDeployed = await yeti.methods.timeDeployed().call()
-				setRevealTime((Number(timeDeployed) + Number(allowMintingAfter)).toString() + '000')
 
 				if (networkId !== 5777) {
 					setBlockchainExplorerURL(CONFIG.NETWORKS[networkId].blockchainExplorerURL)
@@ -103,13 +100,12 @@ function App() {
 		}
 	}
 
-	const mintNFTHandler = async () => {
+	const mintNFTHandler = async (amountToMint) => {
 		// Mint NFT
+		console.log("yeti", yeti)
 		if (yeti) {
-			// setIsMinting(true)
-			// setIsError(false)
-
-			await yeti.methods.mint().send({ from: account, value: web3.utils.toWei('0.03', 'ether') })
+			const amountOfEtherToSend = 0.03 * 3
+			await yeti.methods.mint(1).send({ from: account, value: web3.utils.toWei(amountOfEtherToSend.toString(), 'ether') })
 				// .on('confirmation', async () => {
 				// 	// const supplyAvailable = await yeti.methods.remainingSupply().call()
 				// 	// setSupplyAvailable(supplyAvailable)
@@ -134,8 +130,8 @@ function App() {
 
 	const mintButton = () => {
 		return(
-			<div className="">
-				<input type = 'number' mine='1' max='20' placeholder='MAX 20' id='mint-count'></input>
+			<div className="input-and-button">
+				<input className="mint-input" type = 'number' min='1' max='20' placeholder='1' id='mint-count'></input>
 				<button onClick={mintNFTHandler} className='btn font'> MINT </button>
 			</div>
 			//<button onClick={mintNFTHandler} className='btn font'> MINT </button>
@@ -159,7 +155,7 @@ function App() {
 
 	return (
 		<div>
-			<div className="">
+			<div>
 				<Banner />
 				{account ? (
 					<>
