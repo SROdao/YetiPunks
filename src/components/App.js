@@ -28,10 +28,11 @@ function App() {
 	const [currentTime, setCurrentTime] = useState(new Date().getTime())
 	const [revealTime, setRevealTime] = useState(0)
 
-	yeti.events.yetiMinted()
-	.on('data', (event) =>{
-		yeticount - event.returnValues['amountMinted'];
-	});
+	//yeti.events.yetiMinted()
+	//.on('data', (event) =>{
+	//	if(event != null)
+	//		yetiCount =- event.returnValues['amountMinted'];
+	//});
 
 	const loadBlockchainData = async () => {
 		// Fetch Contract, Data, etc.
