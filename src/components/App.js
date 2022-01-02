@@ -90,12 +90,12 @@ function App() {
 		}
 	}
 
-	const mintNFTHandler = async (amountToMint) => {
+	const mintNFTHandler = async () => {
 		// Mint NFT
 		console.log("yeti", yeti)
 		if (yeti) {
-			const amountOfEtherToSend = 0.03 * 3
-			await yeti.methods.mint(1).send({ from: account, value: web3.utils.toWei(amountOfEtherToSend.toString(), 'ether') })
+			const amountOfEtherToSend = 0.03
+			await yeti.methods.mint().send({ from: account, value: web3.utils.toWei(amountOfEtherToSend.toString(), 'ether') })
 				// .on('confirmation', async () => {
 				// 	// const supplyAvailable = await yeti.methods.remainingSupply().call()
 				// 	// setSupplyAvailable(supplyAvailable)
