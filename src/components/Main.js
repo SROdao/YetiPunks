@@ -4,8 +4,7 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 import banner from '../images/yetibanner.png'
 import banner2 from '../images/yetibanner-flipped.jpg'
-
-const Main = ({button}) => {
+const Main = ({button, yetiCount}) => {
     const [image, setImage] = useState(banner)
     const bannerClickHandler = () => {
         if (image === banner) {
@@ -28,7 +27,7 @@ const Main = ({button}) => {
             <div className="d-flex justify-content-center font">
                 <div className='d-flex flex-column m-5 font'>
                     <h1>MINT A YETI PUNK</h1>
-                    <h6>Remaining: 10000/10000</h6>
+                    <h6>Remaining: {yetiCount}/10000</h6>
                     <h6>0.03 ETH</h6>
                     {button}
                 </div>
@@ -38,7 +37,7 @@ const Main = ({button}) => {
 }
 
 Main.defaultProps = {
-    count: "Fix this"
+    yetiCount: "10000"
 };
 
 Main.propTypes={
