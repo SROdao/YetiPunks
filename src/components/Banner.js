@@ -7,7 +7,7 @@ const Banner = ({ title }) => {
             <a>{title}</a>
             <div className="topnav-right">
                 <a href='https://opensea.io/'><img className='icon' src={openSea} /></a>
-                <a href='https://twitter.com/'><img className='icon' src={twitter} /></a>
+                <a href='https://twitter.com/YetiPunks'><img className='icon' src={twitter} /></a>
             </div>
         </div>
     )
