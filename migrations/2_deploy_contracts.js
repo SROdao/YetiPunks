@@ -7,8 +7,6 @@ module.exports = async function (deployer) {
     // const NFT_MINT_DATE = new Date(process.env.NFT_MINT_DATE).getTime().toString().slice(0, 10)
 
     await deployer.deploy(
-        YetiPunks,
-        "YetiPunks",
-        "YETI"
+        YetiPunks
     )
 };

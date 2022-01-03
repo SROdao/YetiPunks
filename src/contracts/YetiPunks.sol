@@ -15,13 +15,9 @@ contract YetiPunks is ERC721, Ownable {
     bool public saleIsActive = false;
     string private _baseTokenURI;
 
-    constructor(
-        string memory _name,
-        string memory _symbol
-    ) ERC721(_name, _symbol) { 
-        //Set baseURI here?
-        //set pre-reveal image here?
-        //set deploy time here?
+    constructor() ERC721("YetiPunks", "YETI") { 
+        _tokenSupply.increment(); // Start Token Ids at 1
+        saleIsActive = true;
     }
 
     // This is the new mint function leveraging the counter library
