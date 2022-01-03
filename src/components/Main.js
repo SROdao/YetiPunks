@@ -19,7 +19,7 @@ const Main = ({button}) => {
             <img className = 'yeti-banner' src={image} onClick={bannerClickHandler}/>
             <div className='float-text font'>
                 <h1>NO ROADMAP</h1>
-                <h1>JUST YETI GOOD VIBES</h1>
+                <h1>JUST VIBES</h1>
                 
             </div>
             <div className="font">
