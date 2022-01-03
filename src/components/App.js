@@ -8,6 +8,7 @@ import Main from './Main'
 import About from './About';
 
 function App() {
+	let yetiCount = 10000;
 	const [web3, setWeb3] = useState(null)
 	const [yeti, setYeti] = useState(null)
 
@@ -23,6 +24,25 @@ function App() {
 	const [isMinting, setIsMinting] = useState(false)
 	const [isError, setIsError] = useState(false)
 	const [message, setMessage] = useState(null)
+
+	const [currentTime, setCurrentTime] = useState(new Date().getTime())
+	const [revealTime, setRevealTime] = useState(0)
+	
+	/*let multiMintEvent = yeti.multiMint();
+	multiMint.watch(
+		function(error, result)
+		{
+			if(!error)
+				yetiCount =- result.args.amountMinted;
+		}
+	)
+	yeti.events.yetiMinted({}
+	.on('data', function(event){
+		console.log(event);
+		if(event != null)
+		yetiCount =- event.returnValues['amountMinted'];
+	}))*/
+
 
 	const loadBlockchainData = async () => {
 		// Fetch Contract, Data, etc.
@@ -143,13 +163,25 @@ function App() {
 		}
 	}
 
+	async function getTotalSupply()
+	{
+		try{
+			let data = await yeti.totalSupply();
+			yetiCount+= data.toNumber();
+
+		}
+		catch(err){
+			console.log(err);
+		}
+	}
+
 	return (
 		<div>
 			<div>
 				<Banner />
 				{account ? (
 					<>
-						<Main button={mintButton()} currentNetwork={currentNetwork} />
+						<Main mintedMount={yetiCount} button={mintButton()} currentNetwork={currentNetwork} />
 						<About />
 					</>
 				) : (

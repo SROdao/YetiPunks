@@ -4,8 +4,7 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 import banner from '../images/yetibanner.png'
 import banner2 from '../images/yetibanner-flipped.jpg'
-
-const Main = ({button}) => {
+const Main = ({button, yetiCount}) => {
     const [image, setImage] = useState(banner)
     const bannerClickHandler = () => {
         if (image === banner) {
@@ -40,7 +39,7 @@ const Main = ({button}) => {
 }
 
 Main.defaultProps = {
-    count: "Fix this"
+    yetiCount: "10000"
 };
 
 Main.propTypes={
