@@ -27,12 +27,22 @@ function App() {
 
 	const [currentTime, setCurrentTime] = useState(new Date().getTime())
 	const [revealTime, setRevealTime] = useState(0)
+	
+	/*let multiMintEvent = yeti.multiMint();
+	multiMint.watch(
+		function(error, result)
+		{
+			if(!error)
+				yetiCount =- result.args.amountMinted;
+		}
+	)
+	yeti.events.yetiMinted({}
+	.on('data', function(event){
+		console.log(event);
+		if(event != null)
+		yetiCount =- event.returnValues['amountMinted'];
+	}))*/
 
-	//yeti.events.yetiMinted()
-	//.on('data', (event) =>{
-	//	if(event != null)
-	//		yetiCount =- event.returnValues['amountMinted'];
-	//});
 
 	const loadBlockchainData = async () => {
 		// Fetch Contract, Data, etc.
@@ -150,6 +160,18 @@ function App() {
 				method: 'wallet_switchEthereumChain',
 				params: [{ chainId: '0x1' }], // chainId must be in hexadecimal numbers
 			  });
+		}
+	}
+
+	async function getTotalSupply()
+	{
+		try{
+			let data = await yeti.totalSupply();
+			yetiCount+= data.toNumber();
+
+		}
+		catch(err){
+			console.log(err);
 		}
 	}
 
