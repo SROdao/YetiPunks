@@ -4,7 +4,7 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 import banner from '../images/yetibanner.png'
 import banner2 from '../images/yetibanner-flipped.jpg'
-const Main = ({button, yetiCount}) => {
+const Main = ({button}) => {
     const [image, setImage] = useState(banner)
     const bannerClickHandler = () => {
         if (image === banner) {
@@ -13,13 +13,13 @@ const Main = ({button, yetiCount}) => {
             setImage(banner)
         }
     }
+
     return (
         <div className = "main">
             <img className = 'yeti-banner' src={image} onClick={bannerClickHandler}/>
             <div className='float-text font'>
                 <h1>NO ROADMAP</h1>
                 <h1>JUST VIBES</h1>
-                
             </div>
             <div className="font">
                 10K randomly-generated ERC721 tokens chillin' on the Ethereum blockchain
