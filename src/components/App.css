@@ -63,7 +63,7 @@ body {
   text-align: center;
   width: 60px;
   height: 40px;
-  border-radius: 5px;
+  border-radius: 5%;
 }
 
 .input-and-button {
@@ -83,7 +83,7 @@ color: #b56888;
 text-align: center;
 padding: 14px 16px;
 text-decoration: none;
-font-size: 17px;
+font-size: 30px;
 }
 
 /* Right-aligned section inside the top navigation */
@@ -106,7 +106,7 @@ font-size: 17px;
 }
 
 .yeti-banner {
-  width: 40%;
+  width: 35%;
 }
 
 .bio {
@@ -142,13 +142,13 @@ font-size: 17px;
 }
 
 .icon {
-  height: 20px;
-  width: 20px;
+  height: 30px;
+  width: 30px;
   display: inline-block;
 }
 
 .icon:hover {
-  background-color: #c1dedf;
+  color: #c1dedf;
 }
 
 /* media query for mobile */
@@ -168,6 +168,7 @@ font-size: 17px;
     font-size: 20px;
   }
 
+  /* change later */
   .topnav-right {
     font-size: 20px;
   }

@@ -21,18 +21,22 @@ contract YetiPunks is ERC721, Ownable {
     }
 
     // This is the new mint function leveraging the counter library
-    function mint() public payable {
+    function mint(uint16 numberOfTokens) public payable {
         require(saleIsActive, "Yetis are not for sale yet!");
 
         // Would this revert if a mint fails?
         uint256 mintIndex = _tokenSupply.current() + 1; // Start IDs at 1
         require(mintIndex <= MAX_SUPPLY, "Yetis are sold out!");
 
+        //TODO: multiply mintPrice by numberOfTokens and validate
         // uint256 mintPrice = 30000000000000000 wei;
         // require(msg.value >= mintPrice, "Not enough ETH to buy a Yeti!");
 
-        _tokenSupply.increment();
-        _safeMint(msg.sender, mintIndex);
+        //TODO: require that the numberOfTokens + _TokenSupply is not greater than MAX_SUPPLY
+        for (uint256 i = 0; i < numberOfTokens; i++) {
+            _tokenSupply.increment(); // Increment Id before minting
+            _safeMint(msg.sender, mintIndex);
+        }
     }
 
     function remainingSupply() public view returns (uint256) {
