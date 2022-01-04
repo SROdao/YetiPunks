@@ -18,6 +18,8 @@ function App() {
 	const [account, setAccount] = useState(null)
 	const [currentNetwork, setCurrentNetwork] = useState(null)
 
+	const [mintAmount, setMintAmount] = useState(1)
+
 	const [blockchainExplorerURL, setBlockchainExplorerURL] = useState('https://etherscan.io/')
 	const [openseaURL, setOpenseaURL] = useState('https://opensea.io/')
 
@@ -105,32 +107,72 @@ function App() {
 	// MetaMask Login/Connect
 	const web3Handler = async () => {
 		if (web3) {
-			const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+			const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
+				.catch(e => {
+					console.error(e.message)
+				})
 			setAccount(accounts[0])
 		}
 	}
 
-	const mintNFTHandler = async () => {
-		// Mint NFT
-		console.log("yeti", yeti)
-		if (yeti) {
-			const amountOfEtherToSend = 0.03
-			await yeti.methods.mint().send({ from: account, value: web3.utils.toWei(amountOfEtherToSend.toString(), 'ether') })
-				// .on('confirmation', async () => {
-				// 	// const supplyAvailable = await yeti.methods.remainingSupply().call()
-				// 	// setSupplyAvailable(supplyAvailable)
+	// const mintNFTHandler = async (numberOfTokens) => {
+	// 	console.log("numberOfTokens: ", numberOfTokens)
 
-				// 	// const balanceOf = await yeti.methods.balanceOf(account).call()
-				// 	// setBalanceOf(balanceOf)
-				// })
-				.on('error', (error) => {
-					window.alert(error)
-					setIsError(true)
-				})
+	// 	if (yeti) {
+	// 		const amountOfEtherToSend = 0.03 * numberOfTokens
+	// 		console.log("amountOfEtherToSend: ", amountOfEtherToSend)
+	// 		await yeti.methods.mint(numberOfTokens).send({ from: account, value: web3.utils.toWei(amountOfEtherToSend.toString(), 'ether') })
+	// 		.on('confirmation', async () => {
+	// 			const supplyAvailable = await yeti.methods.remainingSupply().call()
+	// 			setSupplyAvailable(supplyAvailable)
+
+	// 			const balanceOf = await yeti.methods.balanceOf(account).call()
+	// 			setBalanceOf(balanceOf)
+	// 		})
+	// 		.on('error', (error) => {
+	// 			console.log(error)
+	// 			window.alert(error)
+	// 			setIsError(true)
+	// 		})
+	// 	}
+
+	// 	setIsMinting(false)
+	// };
+
+	function mintNFTHandler(numberOfTokens){
+		let price = web3.utils.toWei("0.03", "ether") * numberOfTokens;
+		let encoded = yeti.methods.mint().encodeABI()
+	
+		let tx = {
+			from: account,
+			to : "0xcC8c35D9c9769A962fECF704Ca906675A13E0376",
+			data : encoded,
+			nonce: "0x00",
+			value: web3.utils.numberToHex(price)
 		}
+	
+		let txHash = window.ethereum.request({
+			method: 'eth_sendTransaction',
+			params: [tx],
+		}).then((hash) => {
+			console.log("You can now view your transaction with hash: " + hash)
+		}).catch((err) => console.log(err))
+		
+		return txHash
+	}
 
-		setIsMinting(false)
-	};
+	function handleMintAmountChange (e) {
+		console.log("e.target.value", e.target.value)
+		if (e.target.value <= 20 && e.target.value >= 0) {
+			setMintAmount(e.target.value)
+		} else if (e.target.value === 0) {
+			e.target.value = 1
+		} else {
+			e.target.value = 20
+		}
+	}
+
+	console.log("mint amount: ", mintAmount)
 
 	useEffect(() => {
 		loadWeb3()
@@ -141,10 +183,9 @@ function App() {
 	const mintButton = () => {
 		return(
 			<div className="input-and-button">
-				<input className="mint-input" type = 'number' min='1' max='20' placeholder='1' id='mint-count'></input>
-				<button onClick={mintNFTHandler} className='btn font'> MINT </button>
+				<input className="mint-input" type = 'number' min='1' max='20' placeholder='1' onChange={e => handleMintAmountChange(e)}></input>
+				<button onClick={() => mintNFTHandler(mintAmount)} className='btn font'> MINT </button>
 			</div>
-			//<button onClick={mintNFTHandler} className='btn font'> MINT </button>
 		)
 	}
 
@@ -163,10 +204,9 @@ function App() {
 		}
 	}
 
-	async function getTotalSupply()
-	{
+	async function getTotalSupply() {
 		try{
-			let data = await yeti.totalSupply();
+			let data = await yeti.remainingSupply();
 			yetiCount+= data.toNumber();
 
 		}
@@ -181,7 +221,7 @@ function App() {
 				<Banner />
 				{account ? (
 					<>
-						<Main mintedMount={yetiCount} button={mintButton()} currentNetwork={currentNetwork} />
+						<Main button={mintButton()} />
 						<About />
 					</>
 				) : (
@@ -192,86 +232,6 @@ function App() {
 				)}
 				
 			</div>
-			{/* <nav className="navbar fixed-top mx-3">
-				<a
-					className="navbar-brand col-sm-3 col-md-2 mr-0 mx-4"
-					href="http://www.dappuniversity.com/bootcamp"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					<img src={logo} className="App-logo" alt="logo" />
-					YetiPunks
-				</a>
-
-				{account ? (
-					<a
-						href={`https://etherscan.io/address/${account}`}
-						target="_blank"
-						rel="noopener noreferrer"
-						className="button nav-button btn-sm mx-4">
-						{account.slice(0, 5) + '...' + account.slice(38, 42)}
-					</a>
-				) : (
-					<button onClick={web3Handler} className="button nav-button btn-sm mx-4">Connect Wallet</button>
-				)}
-			</nav>
-			<main>
-				<Row className="my-3">
-					<Col className="text-center">
-						<h1 className="text-uppercase">Yeti Punks</h1>
-						<p className="countdown">
-							{revealTime !== 0 && <Countdown date={currentTime + (revealTime - currentTime)} />}
-						</p>
-						<p>Y'all yeti got this?</p>
-					</Col>
-				</Row>
-				<Row className="my-4">
-					<Col className="panel grid" sm={12} md={6}>
-						<button onClick={mintNFTHandler} className="button mint-button"><span>Mint</span></button>
-					</Col>
-					<Col className="panel grid image-showcase mx-4">
-						<img
-							src={isError ? (
-								sadImage
-							) : !isError && isMinting ? (
-								excitedImage
-							) : (
-								happyImage
-							)}
-							alt="emoji-smile"
-							className="image-showcase-example-1"
-						/>
-					</Col>
-				</Row>
-				<Row className="my-3">
-					<Col className="flex">
-						<a href={openseaURL + account} target="_blank" rel="noreferrer" className="button">View My Opensea</a>
-						<a href={`${blockchainExplorerURL}address/${account}`} target="_blank" rel="noreferrer" className="button">My Etherscan</a>
-					</Col>
-				</Row>
-				<Row className="my-2 text-center"> */}
-					{/* {message ? (
-						<p>{message}</p>
-					) : (
-						<div>
-							{yeti &&
-								<a href={`${blockchainExplorerURL}address/${yeti._address}`}
-									target="_blank"
-									rel="noreferrer"
-									className="contract-link d-block my-3">
-									{yeti._address}
-								</a>
-							}
-
-							{CONFIG.NETWORKS[currentNetwork] && (
-								<p>Current Network: {CONFIG.NETWORKS[currentNetwork].name}</p>
-							)}
-
-							<p>{`NFT's Left: ${supplyAvailable}, You've minted: ${balanceOf}`}</p>
-						</div>
-					)}
-				</Row>
-			</main> */}
 		</div>
 	)
 }
