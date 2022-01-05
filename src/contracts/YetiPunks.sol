@@ -15,7 +15,7 @@ contract YetiPunks is ERC721, Ownable {
     bool public saleIsActive = false;
     string private _baseTokenURI;
 
-    constructor() ERC721("YetiPunks", "YETI") { 
+    constructor() ERC721("YetiPunks", "YP") { 
         _tokenSupply.increment(); // Start Token Ids at 1
         saleIsActive = true;
     }
