@@ -30,20 +30,6 @@ function App() {
 	const [currentTime, setCurrentTime] = useState(new Date().getTime())
 	const [revealTime, setRevealTime] = useState(0)
 	
-	/*let multiMintEvent = yeti.multiMint();
-	multiMint.watch(
-		function(error, result)
-		{
-			if(!error)
-				yetiCount =- result.args.amountMinted;
-		}
-	)
-	yeti.events.yetiMinted({}
-	.on('data', function(event){
-		console.log(event);
-		if(event != null)
-		yetiCount =- event.returnValues['amountMinted'];
-	}))*/
 
 
 	const loadBlockchainData = async () => {
@@ -56,6 +42,8 @@ function App() {
 				console.log('YetiPunks.networks[networkId].address', YetiPunks.networks)
 				const yeti = new web3.eth.Contract(YetiPunks.abi, YetiPunks.networks[networkId].address)
 				setYeti(yeti)
+
+
 
 				const maxSupply = await yeti.methods.MAX_SUPPLY().call()
 				const totalSupply = await yeti.methods.totalSupply().call()
@@ -76,6 +64,13 @@ function App() {
 
 		}
 	}
+
+	/*yeti.events.mint()
+	.on('data', (event)=>{
+		console.log(event);
+	})
+	.on('error', console.error);
+	*/
 
 	const loadWeb3 = async () => {
 		if (typeof window.ethereum !== 'undefined' && !account) {
@@ -141,35 +136,13 @@ function App() {
 
 	function mintNFTHandler(numberOfTokens){
 		let price = web3.utils.toWei("0.03", "ether") * numberOfTokens;
-		let encoded = yeti.methods.mint(numberOfTokens).encodeABI()
-		// try encodeFunctionCall
-
-		let gasLimit;
-		// using the promise
-		yeti.methods.mint(numberOfTokens).estimateGas({from: account})
-			.then(limit => {
-				gasLimit = limit
-			})
-			.catch(error => {
-				//set a default
-			});
-
-		let gasPrice;
-		web3.eth.getGasPrice()
-			.then(result => {
-				gasPrice = result
-			});
-
-		const gas = numberOfTokens * 200000;
+		let encoded = yeti.methods.mint().encodeABI()
 	
 		let tx = {
 			from: account,
 			to : "0xcC8c35D9c9769A962fECF704Ca906675A13E0376",
 			data : encoded,
 			nonce: "0x00",
-			// gas: '0x76c0', // 30400 gwei
-			gas: web3.utils.numberToHex(gas), //gas limit?
-			gasPrice: gasPrice,
 			value: web3.utils.numberToHex(price)
 		}
 	
