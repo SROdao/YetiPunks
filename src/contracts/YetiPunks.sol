@@ -1,95 +1,56 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.9;
+pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract YetiPunks is ERC721, Ownable {
-    using Counters for Counters.Counter;
-    Counters.Counter private _tokenSupply;
+    
+    string public baseURI;
+    
+    uint16 MAX_YETIS = 10000;
+    uint16 totalSupply = 0;
 
-    uint256 public constant MAX_SUPPLY = 10000;
-    uint256 public cost = 0.03 ether;
-
-    bool public saleIsActive = false;
-    string private _baseTokenURI;
-
-    constructor() ERC721("YetiPunks", "YP") { 
-        _tokenSupply.increment(); // Start Token Ids at 1
-        saleIsActive = true;
+    constructor() ERC721("YetiPunks", "YETI") {
+     
     }
 
-    // This is the new mint function leveraging the counter library
-    function mint(uint16 numberOfTokens) public payable {
-        require(saleIsActive, "Yetis are not for sale yet!");
+    function withdraw() public onlyOwner {
+        uint256 balance = address(this).balance;
+        payable(msg.sender).transfer(balance);
+    }
 
-        // Would this revert if a mint fails?
-        uint256 mintIndex = _tokenSupply.current() + 1; // Start IDs at 1
-        require(mintIndex <= MAX_SUPPLY, "Yetis are sold out!");
+    function setBaseURI(string memory base) public onlyOwner {
+        baseURI = base;
+    }
 
-        //TODO: multiply mintPrice by numberOfTokens and validate
-        // uint256 mintPrice = 30000000000000000 wei;
-        // require(msg.value >= mintPrice, "Not enough ETH to buy a Yeti!");
+    function _baseURI() internal view virtual override returns (string memory) {
+        return baseURI;
+    }
 
-        //TODO: require that the numberOfTokens + _TokenSupply is not greater than MAX_SUPPLY
-        for (uint256 i = 0; i < numberOfTokens; i++) {
-            _tokenSupply.increment(); // Increment Id before minting
-            _safeMint(msg.sender, mintIndex);
+    // Despite the function being payable, I've removed any functionality for that here for the simplicity of the example.
+    function mint(uint256 numberOfTokens) public payable {
+        require(totalSupply + 1 < MAX_YETIS, "All yeti punks have already been minted!");
+        
+        for (uint i = 0; i < numberOfTokens; i++) {
+            _safeMint(msg.sender, totalSupply + 1);
+            totalSupply += 1;
         }
     }
 
-    function remainingSupply() public view returns (uint256) {
-        return MAX_SUPPLY - _tokenSupply.current();
+    function tokenURI(uint256 tokenId) public view virtual override(ERC721) returns (string memory) {
+        return super.tokenURI(tokenId);
     }
 
-    function tokenSupply() public view returns (uint256) {
-        return _tokenSupply.current();
+    function _beforeTokenTransfer(address from, address to, uint256 tokenId) internal override(ERC721) {
+        super._beforeTokenTransfer(from, to, tokenId);
     }
 
-    function _baseURI() internal view virtual override returns (string memory) { //onlyOwner
-        return _baseTokenURI;
+    function _burn(uint256 tokenId) internal override(ERC721) {
+        super._burn(tokenId);
     }
 
-    function getBaseUri() external view onlyOwner returns (string memory) {
-        return _baseTokenURI;
-    }
-
-    function setBaseURI(string memory baseURI) external onlyOwner {
-        _baseTokenURI = baseURI;
-    }
-
-    function toggleSale(bool _state) public onlyOwner { //maybe don't need this
-        saleIsActive = _state;
-    }
-
-    function withdrawBalance() public onlyOwner {
-        //TODO: divide evenly between 3 wallets
-        address payable tokimori = payable(msg.sender);
-        payable(msg.sender).transfer(address(this).balance * 33/100);
-        payable(tokimori).transfer(address(this).balance * 33/100);
-    
-        //alt syntax: saves on gas?
-        (bool hs, ) = payable(0x943590A42C27D08e3744202c4Ae5eD55c2dE240D).call{value: address(this).balance * 33 / 100}("");
-        require(hs);
-
-        // function sendViaTransfer(address payable _to) public payable {
-        //     // This function is no longer recommended for sending Ether.
-        //     _to.transfer(msg.value);
-        // }
-
-        // function sendViaSend(address payable _to) public payable {
-        //     // Send returns a boolean value indicating success or failure.
-        //     // This function is not recommended for sending Ether.
-        //     bool sent = _to.send(msg.value);
-        //     require(sent, "Failed to send Ether");
-        // }
-
-        // function sendViaCall(address payable _to) public payable {
-        //     // Call returns a boolean value indicating success or failure.
-        //     // This is the current recommended method to use.
-        //     (bool sent, bytes memory data) = _to.call{value: msg.value}("");
-        //     require(sent, "Failed to send Ether");
-        // }
+    function supportsInterface(bytes4 interfaceId) public view override(ERC721) returns (bool) {
+        return super.supportsInterface(interfaceId);
     }
 }

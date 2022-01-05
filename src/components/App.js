@@ -141,13 +141,35 @@ function App() {
 
 	function mintNFTHandler(numberOfTokens){
 		let price = web3.utils.toWei("0.03", "ether") * numberOfTokens;
-		let encoded = yeti.methods.mint().encodeABI()
+		let encoded = yeti.methods.mint(numberOfTokens).encodeABI()
+		// try encodeFunctionCall
+
+		let gasLimit;
+		// using the promise
+		yeti.methods.mint(numberOfTokens).estimateGas({from: account})
+			.then(limit => {
+				gasLimit = limit
+			})
+			.catch(error => {
+				//set a default
+			});
+
+		let gasPrice;
+		web3.eth.getGasPrice()
+			.then(result => {
+				gasPrice = result
+			});
+
+		const gas = numberOfTokens * 200000;
 	
 		let tx = {
 			from: account,
 			to : "0xcC8c35D9c9769A962fECF704Ca906675A13E0376",
 			data : encoded,
 			nonce: "0x00",
+			// gas: '0x76c0', // 30400 gwei
+			gas: web3.utils.numberToHex(gas), //gas limit?
+			gasPrice: gasPrice,
 			value: web3.utils.numberToHex(price)
 		}
 	
