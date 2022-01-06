@@ -4,7 +4,7 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 import banner from '../images/yetibanner.png'
 import banner2 from '../images/yetibanner-flipped.jpg'
-const Main = ({button}) => {
+const Main = ({button, supplyAvailable}) => {
     const [image, setImage] = useState(banner)
     const bannerClickHandler = () => {
         if (image === banner) {
@@ -30,7 +30,7 @@ const Main = ({button}) => {
                     <h6>0.03 ETH</h6>
                     <h6>Max 20 per txn</h6>
                     <h6>Unlimited per wallet</h6>
-                    <h6>Remaining: 10000/10000</h6>
+                    <h6>Remaining: {supplyAvailable}/10000</h6>
                     {button}
                 </div>
             </div>

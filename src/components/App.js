@@ -12,6 +12,7 @@ function App() {
 	const [yetiPunks, setYetiPunks] = useState(null)
 
 	const [supplyAvailable, setSupplyAvailable] = useState(0)
+	const [totalSupply, setTotalSupply] = useState(0)
 
 	const [usersAccount, setUsersAccount] = useState(null)
 	const [currentNetwork, setCurrentNetwork] = useState(null)
@@ -25,6 +26,7 @@ function App() {
 	const [isError, setIsError] = useState(false)
 	const [message, setMessage] = useState(null)
 	
+	const MAX_YETI_COUNT = 10000;
 
 
 	const loadBlockchainData = async () => {
@@ -35,14 +37,12 @@ function App() {
 			
 			try {
 				console.log('YetiPunks.networks[networkId].address', YetiPunks.networks)
-				const yeti = new web3.eth.Contract(YetiPunks.abi, YetiPunks.networks[networkId].address)
-				setYetiPunks(yeti)
+				const yetiPunksContract = new web3.eth.Contract(YetiPunks.abi, YetiPunks.networks[networkId].address)
+				setYetiPunks(yetiPunksContract)
 
-
-
-				const maxSupply = await yeti.methods.MAX_SUPPLY().call()
-				const totalSupply = await yeti.methods.totalSupply().call()
-				setSupplyAvailable(maxSupply - totalSupply)
+				const totalSupply = await yetiPunksContract.methods.totalSupply().call()
+				setTotalSupply(totalSupply)
+				setSupplyAvailable(MAX_YETI_COUNT - totalSupply)
 
 				if (networkId !== 5777) {
 					setBlockchainExplorerURL(CONFIG.NETWORKS[networkId].blockchainExplorerURL)
@@ -155,8 +155,12 @@ function App() {
 			params: [tx],
 		}).then(async (hash) => {
 			console.log("You can now view your transaction with hash: " + hash)
-			const supplyAvailable = await yetiPunks.methods.totalSupply().call() //Is a lag involved here?
-			setSupplyAvailable(supplyAvailable)
+			const totalSupply = await yetiPunks.methods.totalSupply().call() //Is a lag involved here?
+			// By the time the below two states are set, the transaction hasn't finished yet so nothing changes
+			// Keep track of supply on the frontend
+			// Or listen for an event emitted from the smart contract to change supplyAvailable state
+			setTotalSupply(totalSupply)
+			setSupplyAvailable(MAX_YETI_COUNT - totalSupply)
 		}).catch((err) => {
 			alert(err)
 		});
@@ -174,12 +178,6 @@ function App() {
 		}
 	}
 
-	useEffect(() => {
-		loadWeb3()
-		loadBlockchainData()
-		verifyUserOnEthereumNetwork()
-	}, [usersAccount]);
-
 	const mintButton = () => {
 		return(
 			<div className="input-and-button">
@@ -195,15 +193,23 @@ function App() {
 		)
 	}
 
-	async function getTotalSupply() {
+	async function populateTotalSupply() {
 		try{
-			const supplyFromContract = await yetiPunks.methods.totalSupply().call();
-			return supplyFromContract
+			if (yetiPunks) {
+				const supplyFromContract = await yetiPunks.methods.totalSupply().call();
+				setTotalSupply(supplyFromContract)
+			}
 		}
 		catch(err){
 			console.log(err);
 		}
 	}
+
+	useEffect(() => {
+		loadWeb3()
+		loadBlockchainData()
+		verifyUserOnEthereumNetwork()
+	}, [usersAccount]);
 
 	return (
 		<div>
@@ -211,7 +217,7 @@ function App() {
 				<Banner />
 				{usersAccount ? (
 					<>
-						<Main button={mintButton()} />
+						<Main button={mintButton()} supplyAvailable={supplyAvailable} />
 						<About />
 					</>
 				) : (
