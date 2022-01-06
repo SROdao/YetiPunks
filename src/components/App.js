@@ -163,7 +163,7 @@ function App() {
 	
 		let tx = {
 			from: account,
-			to : "0xF3A20Ac99FeD9d5D37B5F0ee0297eaE852Fa75c0",
+			to : "0xb9A03b45B7caAea3AbE734509f97965854769443",
 			data : encoded,
 			nonce: "0x00",
 			// gas: '0x76c0', // 30400 gwei
