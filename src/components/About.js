@@ -6,7 +6,7 @@ const About = () => {
         <div className="font bio-section">
             <div className='bio-square'>
                 <div className='d-flex flex-column align-items-center'>
-                    <img className='avatar' src={yetitar} />
+                    <img className='avatar' src={yetitar} alt="yeti-avatar" />
                     <h6 className='mt-3'>Tokimori</h6>
                 </div>
                 <div className='bio'>
@@ -15,7 +15,7 @@ const About = () => {
             </div>
             <div className='bio-square'>
                 <div className='avatar d-flex flex-column align-items-center'>
-                    <img className='avatar' src={yetitar} />
+                    <img className='avatar' src={yetitar} alt="yeti-avatar" />
                     <h6 className='mt-3'>Tenzing</h6>
                 </div>
                 <div className='bio'>
@@ -24,7 +24,7 @@ const About = () => {
             </div>
             <div className='bio-square'>
                 <div className='avatar d-flex flex-column align-items-center'>
-                    <img className='avatar' src={yetitar} />
+                    <img className='avatar' src={yetitar}  alt="yeti-avatar" />
                     <h6 className='mt-3'>WangMandu</h6>
                 </div>
                 <div className='bio'>
