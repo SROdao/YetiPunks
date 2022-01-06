@@ -28,7 +28,6 @@ function App() {
 	
 	const MAX_YETI_COUNT = 10000;
 
-
 	const loadBlockchainData = async () => {
 		// Fetch Contract, Data, etc.
 		if (web3) {
@@ -41,7 +40,7 @@ function App() {
 				setYetiPunks(yetiPunksContract)
 
 				const totalSupply = await yetiPunksContract.methods.totalSupply().call()
-				setTotalSupply(totalSupply)
+				setTotalSupply(parseInt(totalSupply, 10))
 				setSupplyAvailable(MAX_YETI_COUNT - totalSupply)
 
 				if (networkId !== 5777) {
@@ -155,14 +154,16 @@ function App() {
 			params: [tx],
 		}).then(async (hash) => {
 			console.log("You can now view your transaction with hash: " + hash)
-			const totalSupply = await yetiPunks.methods.totalSupply().call() //Is a lag involved here?
 			// By the time the below two states are set, the transaction hasn't finished yet so nothing changes
 			// Keep track of supply on the frontend
 			// Or listen for an event emitted from the smart contract to change supplyAvailable state
-			setTotalSupply(totalSupply)
-			setSupplyAvailable(MAX_YETI_COUNT - totalSupply)
+			const newTotalSupply = totalSupply + numberOfTokens
+
+			setTotalSupply(newTotalSupply)
+			setSupplyAvailable(MAX_YETI_COUNT - newTotalSupply)
+			// await yetiPunks.methods.totalSupply().call() //Is a lag involved here?
 		}).catch((err) => {
-			alert(err)
+			console.error(err)
 		});
 		
 		return txHash
