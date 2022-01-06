@@ -16,7 +16,7 @@ const Main = ({button}) => {
 
     return (
         <div className = "main">
-            <img className = 'yeti-banner' src={image} onClick={bannerClickHandler}/>
+            <img className = 'yeti-banner' src={image} onClick={bannerClickHandler} alt="banner-of-yetis"/>
             <div className='float-text font'>
                 <h1>NO ROADMAP</h1>
                 <h1>JUST VIBES</h1>
