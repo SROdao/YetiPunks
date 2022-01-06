@@ -6,10 +6,10 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract YetiPunks is ERC721, Ownable {
     
-    string public baseURI;
-    event yetiMintedAmount(uint16 amount);
+    string private baseURI;
+    uint16 public totalSupply = 0;
     uint16 MAX_YETIS = 10000;
-    uint16 totalSupply = 0;
+    event yetiMintedAmount(uint16 amount);
 
     constructor() ERC721("YetiPunks", "YETI") {
      
@@ -32,7 +32,7 @@ contract YetiPunks is ERC721, Ownable {
     // Despite the function being payable, I've removed any functionality for that here for the simplicity of the example.
     function mint(uint16 numberOfTokens) public payable {
         require(totalSupply + 1 < MAX_YETIS, "All yeti punks have already been minted!");
-        require(totalSupply + numberOfTokens <= MAX_YETIS, "You are trying to mint more Yetis thatn are left, decrease the number of yetis and try again.");
+        require(totalSupply + numberOfTokens <= MAX_YETIS, "You are trying to mint more Yetis than are left, decrease the number of yetis and try again.");
         
         for (uint i = 0; i < numberOfTokens; i++) {
             _safeMint(msg.sender, totalSupply + 1);
