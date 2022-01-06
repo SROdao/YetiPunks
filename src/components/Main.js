@@ -4,6 +4,7 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 import banner from '../images/yetibanner.png'
 import banner2 from '../images/yetibanner-flipped.jpg'
+
 const Main = ({button, supplyAvailable}) => {
     const [image, setImage] = useState(banner)
     const bannerClickHandler = () => {
