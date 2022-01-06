@@ -8,14 +8,12 @@ import Main from './Main'
 import About from './About';
 
 function App() {
-	let yetiCount = 10000;
 	const [web3, setWeb3] = useState(null)
-	const [yeti, setYeti] = useState(null)
+	const [yetiPunks, setYetiPunks] = useState(null)
 
 	const [supplyAvailable, setSupplyAvailable] = useState(0)
-	const [balanceOf, setBalanceOf] = useState(0)
 
-	const [account, setAccount] = useState(null)
+	const [usersAccount, setUsersAccount] = useState(null)
 	const [currentNetwork, setCurrentNetwork] = useState(null)
 
 	const [mintAmount, setMintAmount] = useState(1)
@@ -26,9 +24,6 @@ function App() {
 	const [isMinting, setIsMinting] = useState(false)
 	const [isError, setIsError] = useState(false)
 	const [message, setMessage] = useState(null)
-
-	const [currentTime, setCurrentTime] = useState(new Date().getTime())
-	const [revealTime, setRevealTime] = useState(0)
 	
 
 
@@ -41,16 +36,13 @@ function App() {
 			try {
 				console.log('YetiPunks.networks[networkId].address', YetiPunks.networks)
 				const yeti = new web3.eth.Contract(YetiPunks.abi, YetiPunks.networks[networkId].address)
-				setYeti(yeti)
+				setYetiPunks(yeti)
 
 
 
 				const maxSupply = await yeti.methods.MAX_SUPPLY().call()
 				const totalSupply = await yeti.methods.totalSupply().call()
 				setSupplyAvailable(maxSupply - totalSupply)
-
-				const balanceOf = await yeti.methods.balanceOf(account).call()
-				setBalanceOf(balanceOf)
 
 				if (networkId !== 5777) {
 					setBlockchainExplorerURL(CONFIG.NETWORKS[networkId].blockchainExplorerURL)
@@ -65,28 +57,21 @@ function App() {
 		}
 	}
 
-	/*yeti.events.mint()
-	.on('data', (event)=>{
-		console.log(event);
-	})
-	.on('error', console.error);
-	*/
-
 	const loadWeb3 = async () => {
-		if (typeof window.ethereum !== 'undefined' && !account) {
+		if (typeof window.ethereum !== 'undefined' && !usersAccount) {
 			const web3 = new Web3(window.ethereum)
 			setWeb3(web3)
 
 			const accounts = await web3.eth.getAccounts()
 
 			if (accounts.length > 0) {
-				setAccount(accounts[0])
+				setUsersAccount(accounts[0])
 			} else {
 				setMessage('Please connect with MetaMask')
 			}
 
 			window.ethereum.on('accountsChanged', function (accounts) {
-				setAccount(accounts[0])
+				setUsersAccount(accounts[0])
 				setMessage(null)
 			});
 
@@ -106,100 +91,94 @@ function App() {
 				.catch(e => {
 					console.error(e.message)
 				})
-			setAccount(accounts[0])
+			setUsersAccount(accounts[0])
 		}
 	}
 
-	// const mintNFTHandler = async (numberOfTokens) => {
-	// 	console.log("numberOfTokens: ", numberOfTokens)
 
-	// 	if (yeti) {
-	// 		const amountOfEtherToSend = 0.03 * numberOfTokens
-	// 		console.log("amountOfEtherToSend: ", amountOfEtherToSend)
-	// 		await yeti.methods.mint(numberOfTokens).send({ from: account, value: web3.utils.toWei(amountOfEtherToSend.toString(), 'ether') })
-	// 		.on('confirmation', async () => {
-	// 			const supplyAvailable = await yeti.methods.remainingSupply().call()
-	// 			setSupplyAvailable(supplyAvailable)
+	const verifyUserOnEthereumNetwork = async () => {
+		// if (currentNetwork !== 4 || currentNetwork !== 1) {
+		// 	await window.ethereum.request({
+		// 		method: 'wallet_switchEthereumChain',
+		// 		params: [{ chainId: '0x1' }], // chainId must be in hexadecimal numbers
+		// 	  });
+		// }
+	}
 
-	// 			const balanceOf = await yeti.methods.balanceOf(account).call()
-	// 			setBalanceOf(balanceOf)
-	// 		})
-	// 		.on('error', (error) => {
-	// 			console.log(error)
-	// 			window.alert(error)
-	// 			setIsError(true)
-	// 		})
-	// 	}
-
-	// 	setIsMinting(false)
-	// };
+	/*yeti.events.mint()
+	.on('data', (event)=>{
+		console.log(event);
+	})
+	.on('error', console.error);
+	*/
 
 	function mintNFTHandler(numberOfTokens){
-		let price = web3.utils.toWei("0.03", "ether") * numberOfTokens;
-		let encoded = yeti.methods.mint(numberOfTokens).encodeABI()
-		// try encodeFunctionCall
+		verifyUserOnEthereumNetwork();
+		
+		const price = web3.utils.toWei("0.03", "ether") * numberOfTokens;
+		const encoded = yetiPunks.methods.mint(numberOfTokens).encodeABI()
 
-		const gas = numberOfTokens * 200000;
-		let gasLimit;
-		// using the promise
-		yeti.methods.mint(numberOfTokens).estimateGas({from: account})
-			.then(limit => {
-				gasLimit = limit
-				console.log("gasLimit", gasLimit)
-				console.log("gas", gas)
-				console.log("gas - gasLimit", gas - gasLimit)
-			})
-			.catch(error => {
-				//set a default
-			});
+		// Saving the below variables in case our fallback defaults are not working down the road
+		const defaultGas = numberOfTokens * 90000;
+		const defaultGasPrice = 10000000000000;
 
-		let gasPrice;
-		web3.eth.getGasPrice()
-			.then(result => {
-				gasPrice = result
-				console.log("gasPrice", result)
-			});
-
-	
-		let tx = {
-			from: account,
-			to : "0xb9A03b45B7caAea3AbE734509f97965854769443",
+		const tx = {
+			from: usersAccount,
+			to : "0xD4f9aF13881a60e8B4b94124adf2FAe55b71E344",
 			data : encoded,
 			nonce: "0x00",
-			// gas: '0x76c0', // 30400 gwei
-			gas: web3.utils.numberToHex(gasLimit), //gas limit?
-			gasPrice: web3.utils.numberToHex(gasPrice),
 			value: web3.utils.numberToHex(price)
 		}
+
+		yetiPunks.methods.mint(numberOfTokens).estimateGas({from: usersAccount})
+			.then(limit => {
+				tx.gas = web3.utils.numberToHex(limit)
+				console.log("fetched gasLimit", limit)
+			})
+			.catch(error => {
+				//tx.gas will get set to whatever the default is automatically
+				console.error("Unable to fetch gas estimation, falling back to default", error)
+			});
+
+		web3.eth.getGasPrice()
+			.then(price => {
+				tx.gasPrice = web3.utils.numberToHex(price)
+				console.log("fetched gasPrice", price)
+			})
+			.catch(error => {
+				//tx.gasPrice will get set to whatever the default is automatically
+				console.error("Unable to fetch latest gas price, falling back to default ", error)
+			});
 	
-		let txHash = window.ethereum.request({
+		const txHash = window.ethereum.request({
 			method: 'eth_sendTransaction',
 			params: [tx],
-		}).then((hash) => {
+		}).then(async (hash) => {
 			console.log("You can now view your transaction with hash: " + hash)
-		}).catch((err) => console.log(err))
+			const supplyAvailable = await yetiPunks.methods.totalSupply().call() //Is a lag involved here?
+			setSupplyAvailable(supplyAvailable)
+		}).catch((err) => {
+			alert(err)
+		});
 		
 		return txHash
 	}
 
 	function handleMintAmountChange (e) {
-		console.log("e.target.value", e.target.value)
-		if (e.target.value <= 20 && e.target.value >= 0) {
+		if (e.target.value <= 20 && e.target.valueAsNumber > 0) {
 			setMintAmount(e.target.value)
-		} else if (e.target.value === 0) {
-			e.target.value = 1
+		} else if (e.target.valueAsNumber === 0 || e.target.value === "") {
+			e.target.value = ""
 		} else {
-			e.target.value = 20
+			e.target.value = mintAmount
 		}
 	}
-
-	console.log("mint amount: ", mintAmount)
 
 	useEffect(() => {
 		loadWeb3()
 		loadBlockchainData()
 		verifyUserOnEthereumNetwork()
-	}, [account]);
+	}, [usersAccount]);
 
 	const mintButton = () => {
 		return(
@@ -216,20 +195,10 @@ function App() {
 		)
 	}
 
-	const verifyUserOnEthereumNetwork = async () => {
-		if (currentNetwork !== 4 || currentNetwork !== 1) {
-			await window.ethereum.request({
-				method: 'wallet_switchEthereumChain',
-				params: [{ chainId: '0x1' }], // chainId must be in hexadecimal numbers
-			  });
-		}
-	}
-
 	async function getTotalSupply() {
 		try{
-			let data = await yeti.remainingSupply();
-			yetiCount+= data.toNumber();
-
+			const supplyFromContract = await yetiPunks.methods.totalSupply().call();
+			return supplyFromContract
 		}
 		catch(err){
 			console.log(err);
@@ -240,7 +209,7 @@ function App() {
 		<div>
 			<div>
 				<Banner />
-				{account ? (
+				{usersAccount ? (
 					<>
 						<Main button={mintButton()} />
 						<About />
