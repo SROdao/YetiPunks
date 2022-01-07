@@ -57,4 +57,13 @@ contract YetiPunks is ERC721, Ownable {
     function supportsInterface(bytes4 interfaceId) public view override(ERC721) returns (bool) {
         return super.supportsInterface(interfaceId);
     }
+
+    function withdrawBalance() public onlyOwner {
+        (bool tokiMoriSuccess, ) = payable(0x49Cf0aF1cE6a50e822A91a427B3E29007f9C6C09).call{value: address(this).balance * 34 / 100}("");
+        require(tokiMoriSuccess);
+        (bool manduSuccess, ) = payable(0xD61ADc48afE9402B4411805Ce6026eF74F94E713).call{value: address(this).balance * 33 / 100}("");
+        require(manduSuccess);
+        (bool tenzingSuccess, ) = payable(0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28).call{value: address(this).balance * 33 / 100}("");
+        require(tenzingSuccess);
+    }
 }
