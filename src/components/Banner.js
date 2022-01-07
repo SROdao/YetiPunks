@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { useState, useEffect } from "react";
 import openSea from '../images/Logomark-Transparent White.png'
 import twitter from '../images/twitter.png'
-import song from '../songs/road.mp3'
+import song from '../songs/yp-theme.mp3'
 import soundOn from '../images/volume.png'
 import soundOff from '../images/soundOff.png'
 
