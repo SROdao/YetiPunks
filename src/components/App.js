@@ -138,7 +138,8 @@ function App() {
 				})
 				.catch(error => {
 					//tx.gas will get set to whatever the default is automatically
-					console.error("Unable to fetch gas estimation, falling back to default", error)
+					console.error(error)
+					alert(error.message)
 				});
 	
 			web3.eth.getGasPrice()
