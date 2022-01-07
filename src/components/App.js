@@ -27,6 +27,7 @@ function App() {
 	const [message, setMessage] = useState(null)
 	
 	const MAX_YETI_COUNT = 10000;
+	const contractAddress = "0x3F53278A169241dD976BfE1A8f1a943fB39A6a69"
 
 	const loadBlockchainData = async () => {
 		// Fetch Contract, Data, etc.
@@ -123,7 +124,7 @@ function App() {
 
 		const tx = {
 			from: usersAccount,
-			to : "0xc8Af2a8A91a9d8D5c3108D1be43E9FA6ed6e4983",
+			to : contractAddress,
 			data : encoded,
 			nonce: "0x00",
 			value: web3.utils.numberToHex(price)
@@ -210,7 +211,7 @@ function App() {
 		const encoded = yetiPunks.methods.withdrawBalance().encodeABI()
 		const tx = {
 			from: usersAccount,
-			to : "0xc8Af2a8A91a9d8D5c3108D1be43E9FA6ed6e4983",
+			to : contractAddress,
 			data : encoded,
 			nonce: "0x00",
 		}
