@@ -27,7 +27,7 @@ function App() {
 	const [message, setMessage] = useState(null)
 	
 	const MAX_YETI_COUNT = 10000;
-	const contractAddress = "0x3F53278A169241dD976BfE1A8f1a943fB39A6a69"
+	const contractAddress = "0xe858AF072C3b27dc59C52969DB19537Fc0A8BAF0"
 
 	const loadBlockchainData = async () => {
 		// Fetch Contract, Data, etc.
@@ -137,7 +137,8 @@ function App() {
 			})
 			.catch(error => {
 				//tx.gas will get set to whatever the default is automatically
-				console.error("Unable to fetch gas estimation, falling back to default", error)
+				console.error(error)
+				alert(error.message)
 			});
 
 		web3.eth.getGasPrice()
