@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import song from '../songs/road.mp3'
+import soundOn from '../images/volume.png'
+import soundOff from '../images/soundOff.png'
 
 const useAudio = () => {
   const [audio] = useState(new Audio(song));
@@ -27,8 +29,10 @@ const Player = () => {
   const [playing, toggle] = useAudio();
 
   return (
-    <div>
-      <button onClick={toggle}>{playing ? "Pause" : "Play"}</button>
+    <div className="test">
+      {playing ?(
+        <img onClick={toggle} className="icon" src={soundOn}></img>
+      ):(<img onClick={toggle} className="icon" src={soundOff}></img>)}     
     </div>
   );
 };
