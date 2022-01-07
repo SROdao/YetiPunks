@@ -9,15 +9,8 @@ contract YetiPunks is ERC721, Ownable {
     string private baseURI;
     uint16 public totalSupply = 0;
     uint16 MAX_YETIS = 10000;
-    event yetiMintedAmount(uint16 amount);
 
-    constructor() ERC721("YetiPunks", "YETI") {
-     
-    }
-
-    function withdraw() public onlyOwner {
-        uint256 balance = address(this).balance;
-        payable(msg.sender).transfer(balance);
+    constructor() ERC721("Yeti Punks", "YP") {
 
     }
 
@@ -38,8 +31,6 @@ contract YetiPunks is ERC721, Ownable {
             _safeMint(msg.sender, totalSupply + 1);
             totalSupply += 1;
         }
-
-        emit yetiMintedAmount(numberOfTokens);
     }
 
     function tokenURI(uint256 tokenId) public view virtual override(ERC721) returns (string memory) {
