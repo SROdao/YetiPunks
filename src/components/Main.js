@@ -3,7 +3,6 @@ import React from 'react'
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 
-import Player from './Player'
 import banner from '../images/yetibanner.png'
 import banner2 from '../images/yetibanner-flipped.jpg'
 
