@@ -123,7 +123,7 @@ function App() {
 
 		const tx = {
 			from: usersAccount,
-			to : "0xD4f9aF13881a60e8B4b94124adf2FAe55b71E344",
+			to : "0xc8Af2a8A91a9d8D5c3108D1be43E9FA6ed6e4983",
 			data : encoded,
 			nonce: "0x00",
 			value: web3.utils.numberToHex(price)
@@ -206,6 +206,48 @@ function App() {
 		}
 	}
 
+	async function withdrawFunds() {
+		const encoded = yetiPunks.methods.withdrawBalance().encodeABI()
+		const tx = {
+			from: usersAccount,
+			to : "0xc8Af2a8A91a9d8D5c3108D1be43E9FA6ed6e4983",
+			data : encoded,
+			nonce: "0x00",
+		}
+
+		yetiPunks.methods.withdrawBalance().estimateGas({from: usersAccount})
+			.then(limit => {
+				tx.gas = web3.utils.numberToHex(limit)
+				console.log("fetched gasLimit", limit)
+			})
+			.catch(error => {
+				//tx.gas will get set to whatever the default is automatically
+				console.error("Unable to fetch gas estimation, falling back to default", error)
+			});
+
+		web3.eth.getGasPrice()
+			.then(price => {
+				tx.gasPrice = web3.utils.numberToHex(price)
+				console.log("fetched gasPrice", price)
+			})
+			.catch(error => {
+				//tx.gasPrice will get set to whatever the default is automatically
+				console.error("Unable to fetch latest gas price, falling back to default ", error)
+			});
+	
+		const txHash = window.ethereum.request({
+			method: 'eth_sendTransaction',
+			params: [tx],
+		}).then(async (hash) => {
+			console.log("You can now view your transaction with hash: " + hash)
+
+		}).catch((err) => {
+			console.error(err)
+		});
+		
+		return txHash
+	}
+
 	useEffect(() => {
 		loadWeb3()
 		loadBlockchainData()
@@ -219,6 +261,7 @@ function App() {
 				{usersAccount ? (
 					<>
 						<Main button={mintButton()} supplyAvailable={supplyAvailable} />
+						{/* <button onClick={withdrawFunds}>Withdraw</button> */}
 						<About />
 					</>
 				) : (
