@@ -24,11 +24,11 @@ const Main = ({button, supplyAvailable}) => {
                 <h1>NO ROADMAP</h1>
                 <h1>JUST VIBES</h1>
             </div>
-            <div className="font">
+            <div className="info">
                 10K randomly-generated ERC721 tokens chillin' on the Ethereum blockchain
             </div>
-            <div className="d-flex justify-content-center font">
-                <div className='d-flex flex-column m-5 font'>
+            <div className="d-flex justify-content-center">
+                <div className='d-flex flex-column m-5'>
                     <h1>MINT A YETI PUNK</h1>
                     <h6>0.03 ETH</h6>
                     <h6>Max 20 per txn</h6>

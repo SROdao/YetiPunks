@@ -45,8 +45,6 @@ const Banner = ({ title }) => {
         
                     <a href='https://opensea.io/'><img className='icon' src={openSea} alt="opensea-logo"/></a>
                     <a href='https://twitter.com/YetiPunks'><img className='icon' src={twitter} alt="twitter-logo"/></a>
-                
-              
              </div>
         </div>
     )
