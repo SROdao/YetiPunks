@@ -1,4 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
+@font-face {
+  font-family: "OldSansBlack";
+  src: url('../fonts/OldSansBlack.ttf');
+}
 
 * {
   box-sizing: border-box;
@@ -9,6 +13,8 @@
 body {
   background-color: #d2effe;
   color: #68b4b5;
+  font-family: "OldSansBlack"
+
 }
 
 .container {
@@ -73,23 +79,23 @@ body {
 }
 
 .topnav {
-  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+  font-size: 30px;
+  padding: 10px 20px
 }
 
 /* Style the links inside the navigation bar */
-.topnav a {
-float: left;
-color: #b56888;
-text-align: center;
-padding: 14px 16px;
-text-decoration: none;
-font-size: 30px;
+
+.topnav-right{
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  align-content: center;
 }
 
+
 /* Right-aligned section inside the top navigation */
-.topnav-right {
-  float: right;
-}
 
 .main{
   text-align: center;
@@ -109,11 +115,11 @@ font-size: 30px;
   width: 35%;
 }
 
-.bio {
+
+
+.bio-section {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 10vh;
+  justify-content: space-around;
 }
 
 .bio-square {
@@ -122,23 +128,22 @@ font-size: 30px;
   width: 25%;
 }
 
-.bio-section {
+.bio-card{
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px
+}
+
+.bio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 10vh;
 }
 
 .avatar{
   width: 100px;
-  margin-right: 10px;
-}
-
-@font-face {
-  font-family: "OldSansBlack";
-  src: url('../fonts/OldSansBlack.ttf');
-}
-
-.font{
-  font-family: "OldSansBlack"
 }
 
 .icon {
@@ -151,12 +156,25 @@ font-size: 30px;
   color: #c1dedf;
 }
 
+
 /* media query for mobile */
 
 @media screen and (max-width: 600px) {
+
+  .main {
+    padding: 0 15px;
+  }
+
+  .info {
+    padding: 10px 15px
+  }
+
   .bio-square {
     flex-direction: column;
     width: 60%;
+    padding-top: 25px;
+    text-align: center;
+    gap: 10px
   }
 
   .bio-section {
@@ -164,17 +182,13 @@ font-size: 30px;
     align-items: center;
   }
 
-  .topnav a {
-    font-size: 20px;
-  }
-
-  /* change later */
-  .topnav-right {
-    font-size: 20px;
+  .topnav {
+    font-size: 25px;
   }
 
   .yeti-banner {
     width: 100%;
+    padding: 25px 0;
   }
   
   .avatar {
