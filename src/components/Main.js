@@ -2,6 +2,8 @@
 import React from 'react'
 import { useState } from 'react'
 import PropTypes from 'prop-types'
+
+import Player from './Player'
 import banner from '../images/yetibanner.png'
 import banner2 from '../images/yetibanner-flipped.jpg'
 
@@ -21,6 +23,7 @@ const Main = ({button, supplyAvailable}) => {
             <div className='float-text font'>
                 <h1>NO ROADMAP</h1>
                 <h1>JUST VIBES</h1>
+                <Player />
             </div>
             <div className="font">
                 10K randomly-generated ERC721 tokens chillin' on the Ethereum blockchain
