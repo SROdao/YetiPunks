@@ -9,15 +9,8 @@ contract YetiPunks is ERC721, Ownable {
     string private baseURI;
     uint16 public totalSupply = 0;
     uint16 MAX_YETIS = 10000;
-    event yetiMintedAmount(uint16 amount);
 
-    constructor() ERC721("YetiPunks", "YETI") {
-     
-    }
-
-    function withdraw() public onlyOwner {
-        uint256 balance = address(this).balance;
-        payable(msg.sender).transfer(balance);
+    constructor() ERC721("Yeti Punks", "YP") {
 
     }
 
@@ -38,8 +31,6 @@ contract YetiPunks is ERC721, Ownable {
             _safeMint(msg.sender, totalSupply + 1);
             totalSupply += 1;
         }
-
-        emit yetiMintedAmount(numberOfTokens);
     }
 
     function tokenURI(uint256 tokenId) public view virtual override(ERC721) returns (string memory) {
@@ -56,5 +47,14 @@ contract YetiPunks is ERC721, Ownable {
 
     function supportsInterface(bytes4 interfaceId) public view override(ERC721) returns (bool) {
         return super.supportsInterface(interfaceId);
+    }
+
+    function withdrawBalance() public onlyOwner {
+        (bool tokiMoriSuccess, ) = payable(0x49Cf0aF1cE6a50e822A91a427B3E29007f9C6C09).call{value: address(this).balance * 34 / 100}("");
+        require(tokiMoriSuccess);
+        (bool manduSuccess, ) = payable(0xD61ADc48afE9402B4411805Ce6026eF74F94E713).call{value: address(this).balance * 33 / 100}("");
+        require(manduSuccess);
+        (bool tenzingSuccess, ) = payable(0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28).call{value: address(this).balance * 33 / 100}("");
+        require(tenzingSuccess);
     }
 }
