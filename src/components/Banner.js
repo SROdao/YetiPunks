@@ -6,8 +6,8 @@ const Banner = ({ title }) => {
         <div className="topnav font">
             <a>{title}</a>
             <div className="topnav-right">
-                <a href='https://opensea.io/'><img className='icon' src={openSea} alt="opensea-logo"/></a>
-                <a href='https://twitter.com/YetiPunks'><img className='icon' src={twitter} alt="twitter-logo"/></a>
+                <a href='https://opensea.io/' target="_blank"><img className='icon' src={openSea} alt="opensea-logo"/></a>
+                <a href='https://twitter.com/YetiPunks' target="_blank"><img className='icon' src={twitter} alt="twitter-logo"/></a>
             </div>
         </div>
     )
