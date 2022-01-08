@@ -46,6 +46,12 @@ body {
   text-decoration: none;
   font-size: 15px;
   font-family: inherit;
+  height: 60px;
+  width: 80px;
+}
+
+.green-btn {
+  background-color: #68b4b5;
 }
 
 .btn:focus {
@@ -67,9 +73,16 @@ body {
 
 .mint-input {
   text-align: center;
-  width: 60px;
-  height: 40px;
+  width: 80px;
+  height: 60px;
+  margin: 5px;
   border-radius: 5%;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .input-and-button {

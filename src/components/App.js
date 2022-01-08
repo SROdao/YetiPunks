@@ -114,8 +114,7 @@ function App() {
 
 	function mintNFTHandler(numberOfTokens){
 		verifyUserOnEthereumNetwork();
-		if(supplyAvailable != 0 || numberOfTokens < supplyAvailable)
-		{
+		if(supplyAvailable != 0 || numberOfTokens < supplyAvailable) {
 			const price = web3.utils.toWei("0.03", "ether") * numberOfTokens;
 			const encoded = yetiPunks.methods.mint(numberOfTokens).encodeABI()
 	
@@ -174,6 +173,7 @@ function App() {
 
 	}
 
+	console.log("supplyAvailable", supplyAvailable)
 	function handleMintAmountChange (e) {
 		if (e.target.value <= 20 && e.target.valueAsNumber > 0) {
 			setMintAmount(e.target.value)
@@ -184,12 +184,32 @@ function App() {
 		}
 	}
 
+	const incrementMintAmount = () => {
+		if (mintAmount < 20) {
+			const newMintAmount = mintAmount + 1;
+			setMintAmount(newMintAmount)
+		}
+	}
+
+	const decrementMintAmount = () => {
+		if (mintAmount > 1) {
+			const newMintAmount = mintAmount - 1;
+			setMintAmount(newMintAmount)
+		}
+	}
+
 	const mintButton = () => {
 		return(
-			<div className="input-and-button">
-				<input className="mint-input" type = 'number' min='1' max='20' placeholder='1' onChange={e => handleMintAmountChange(e)}></input>
-				<button onClick={() => mintNFTHandler(mintAmount)} className='btn font'> MINT </button>
-			</div>
+			<>
+				<div className="input-and-button">
+					<input className="mint-input" type = 'number' min='1' max='20' value={mintAmount} onChange={e => handleMintAmountChange(e)}></input>
+					<button onClick={() => mintNFTHandler(mintAmount)} className='btn'> MINT </button>
+				</div>
+				<div className="plus-minus">
+					<button className="btn green-btn" onClick={decrementMintAmount}>-</button>
+					<button className="btn green-btn" onClick={incrementMintAmount}>+</button>
+				</div>
+			</>
 		)
 	}
 
