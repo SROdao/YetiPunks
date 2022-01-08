@@ -202,12 +202,12 @@ function App() {
 		return(
 			<>
 				<div className="input-and-button">
+					<button className="btn green-btn" onClick={decrementMintAmount}>-</button>
 					<input className="mint-input" type = 'number' min='1' max='20' value={mintAmount} onChange={e => handleMintAmountChange(e)}></input>
-					<button onClick={() => mintNFTHandler(mintAmount)} className='btn'> MINT </button>
+					<button className="btn green-btn" onClick={incrementMintAmount}>+</button>
 				</div>
 				<div className="plus-minus">
-					<button className="btn green-btn" onClick={decrementMintAmount}>-</button>
-					<button className="btn green-btn" onClick={incrementMintAmount}>+</button>
+					<button onClick={() => mintNFTHandler(mintAmount)} className='btn'> MINT </button>
 				</div>
 			</>
 		)
