@@ -19,33 +19,22 @@ const Main = ({button, supplyAvailable}) => {
     return (
         <div className = "main">
             <img className = 'yeti-banner' src={image} onClick={bannerClickHandler} alt="banner-of-yetis"/>
-            <div className='float-text font'>
-                <h1>NO ROADMAP</h1>
-                <h1>JUST VIBES</h1>
+            <div className='title-and-description'>
+                <h1 className="title">YETI PUNKS</h1>
+                <h2>NO ROADMAP</h2>
+                <h2>JUST VIBES</h2>
+                <p>10K randomly-generated ERC721 tokens chillin' on the Ethereum blockchain</p>
             </div>
-            <div className="info">
-                10K randomly-generated ERC721 tokens chillin' on the Ethereum blockchain
-            </div>
-            <div className="d-flex justify-content-center">
-                <div className='d-flex flex-column m-5'>
-                    <h1>MINT A YETI PUNK</h1>
-                    <h6>0.03 ETH</h6>
-                    <h6>Max 20 per txn</h6>
-                    <h6>Unlimited per wallet</h6>
-                    <h6>Remaining: {supplyAvailable}/10000</h6>
-                    {button}
-                </div>
+            <div className="minting-section">
+                <h2>MINT A YETI PUNK</h2>
+                <h6>0.03 ETH</h6>
+                <h6>Max 20 per txn</h6>
+                <h6>Unlimited per wallet</h6>
+                <h6>Remaining: {supplyAvailable}/10000</h6>
+                {button}
             </div>
         </div>
     )
-}
-
-Main.defaultProps = {
-    yetiCount: "10000"
-};
-
-Main.propTypes={
-    count:PropTypes.string.isRequired
 }
 
 export default Main

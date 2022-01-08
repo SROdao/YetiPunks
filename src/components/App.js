@@ -207,7 +207,7 @@ function App() {
 					<button className="btn green-btn" onClick={incrementMintAmount}>+</button>
 				</div>
 				<div className="plus-minus">
-					<button onClick={() => mintNFTHandler(mintAmount)} className='btn'> MINT </button>
+					<button onClick={() => mintNFTHandler(mintAmount)} className='btn mint-btn'> MINT </button>
 				</div>
 			</>
 		)
