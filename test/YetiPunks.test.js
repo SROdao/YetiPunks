@@ -1,3 +1,5 @@
+const { assert } = require('chai')
+
 const YetiPunks = artifacts.require("./YetiPunks")
 
 require('chai')
@@ -21,12 +23,34 @@ contract('YetiPunks', ([deployer, user]) => {
 
         let milliseconds = 120000 // Number between 100000 - 999999
         let result, timeDeployed
+        const [deployerAddress, tokenAddr1] = accounts;
 
         beforeEach(async () => {
             yetiPunks = await YetiPunks.new(
                 NAME,
                 SYMBOL
             )
+        })
+
+        it("is possible to mint tokens", async ()=>{
+            let token = await yetiPunks.deployed();
+            await token.mint(tokenAddr1);
+        })
+
+        it("Is possible to set royalties", async ()=>{
+            let token = await yetiPunks.deployed();
+            await token.setRoyalties(0, deployerAddress, 1000);
+            let royalties = await token.getRaribleV2Royalties(0);
+            assert.equal(royalties[0].value, '1000');
+            assert.equal(royalties[0].account, deployerAddress);
+        })
+
+        if("Works with ERC2981 royalites", async ()=>{
+            let token = await yetiPunks.deployed();
+            let royalites = await token.royaltyInfo(0, 100000);
+
+            assert.equal(royalites.royaltyAmount.toString(), '10000');
+            assert.equal(royalites.reciever, deployerAddress);
         })
 
         it('Returns the contract name', async () => {
