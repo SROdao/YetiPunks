@@ -32,11 +32,10 @@ const useAudio = () => {
 
 
 
-const Banner = ({ title }) => {
+const Banner = () => {
     const [playing, toggle] = useAudio();
     return (
-        <div className="topnav font">
-            <a>{title}</a>
+        <div className="topnav">
             <div className="topnav-right">
                
                     {playing ?(
@@ -48,17 +47,6 @@ const Banner = ({ title }) => {
              </div>
         </div>
     )
-}
-
-
-
-
-Banner.defaultProps = {
-    title: "YETI PUNKS"
-};
-
-Banner.propTypes = {
-    title: PropTypes.string.isRequired
 }
 
 export default Banner;
