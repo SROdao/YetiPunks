@@ -22,7 +22,7 @@ const Main = ({button, supplyAvailable}) => {
             <div className='title-and-description'>
                 <h1 className="title">YETI PUNKS</h1>
                 <h2>NO ROADMAP</h2>
-                <h2>JUST VIBES</h2>
+                <h2>JUST ART AND GOOD VIBES</h2>
                 <p>10K randomly-generated ERC721 tokens chillin' on the Ethereum blockchain</p>
             </div>
             <div className="minting-section">
