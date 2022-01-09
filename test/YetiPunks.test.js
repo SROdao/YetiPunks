@@ -18,14 +18,14 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             yetiPunks = await YetiPunks.new()
         })
 
-        it("Is possible to set royalties", async ()=>{
+        it("Is possible to set royalties", async () => {
             await yetiPunks.setRoyalties(0, deployerAddress, 1000);
             const royalties = await yetiPunks.getRaribleV2Royalties(0);
             assert.equal(royalties[0].value, '1000');
             assert.equal(royalties[0].account, deployerAddress);
         })
 
-        if("Works with ERC2981 royalites", async ()=>{
+        if("Works with ERC2981 royalites", async () => {
             let royalites = await yetiPunks.royaltyInfo(0, 100000);
 
             assert.equal(royalites.royaltyAmount.toString(), '10000');
@@ -42,10 +42,10 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             result.should.equal("PM")
         })
 
-        // TODO: decide if there's any reason to make MAX_YETIS public to be able to call this
+        // TODO: decide if there's any reason to make MAX_SUPPLY public to be able to call this
 
         // it('Returns the max supply', async () => { 
-        //     result = await yetiPunks.MAX_YETIS()
+        //     result = await yetiPunks.MAX_SUPPLY()
         //     result.toString().should.equal('5000')
         // })
 
@@ -61,7 +61,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
 
             beforeEach(async () => {
                 yetiPunks = await YetiPunks.new()
-                result = await yetiPunks.mint(1)
+                result = await yetiPunks.mint(1, { from: user, value: web3.utils.toWei('0.03', 'ether') })
             })
 
             // it('Returns the address of the minter', async () => {
