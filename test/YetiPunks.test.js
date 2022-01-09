@@ -1,3 +1,5 @@
+const { assert } = require('chai')
+
 const YetiPunks = artifacts.require("./YetiPunks")
 
 require('chai')
@@ -6,7 +8,7 @@ require('chai')
 
 const EVM_REVERT = 'VM Exception while processing transaction: revert'
 
-contract('YetiPunks', ([deployer, user]) => {
+contract('YetiPunks', ([deployerAddress, user]) => {
     let yetiPunks
 
     describe('Deployment', () => {
@@ -16,14 +18,28 @@ contract('YetiPunks', ([deployer, user]) => {
             yetiPunks = await YetiPunks.new()
         })
 
+        it("Is possible to set royalties", async ()=>{
+            await yetiPunks.setRoyalties(0, deployerAddress, 1000);
+            const royalties = await yetiPunks.getRaribleV2Royalties(0);
+            assert.equal(royalties[0].value, '1000');
+            assert.equal(royalties[0].account, deployerAddress);
+        })
+
+        if("Works with ERC2981 royalites", async ()=>{
+            let royalites = await yetiPunks.royaltyInfo(0, 100000);
+
+            assert.equal(royalites.royaltyAmount.toString(), '10000');
+            assert.equal(royalites.reciever, deployerAddress);
+        })
+
         it('Returns the contract name', async () => {
             result = await yetiPunks.name()
-            result.should.equal(NAME)
+            result.should.equal("Petty Monks")
         })
 
         it('Returns the symbol', async () => {
             result = await yetiPunks.symbol()
-            result.should.equal(SYMBOL)
+            result.should.equal("PM")
         })
 
         // TODO: decide if there's any reason to make MAX_YETIS public to be able to call this
