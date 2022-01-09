@@ -21,10 +21,6 @@ function App() {
 
 	const [blockchainExplorerURL, setBlockchainExplorerURL] = useState('https://etherscan.io/')
 	const [openseaURL, setOpenseaURL] = useState('https://opensea.io/')
-
-	const [isMinting, setIsMinting] = useState(false)
-	const [isError, setIsError] = useState(false)
-	const [message, setMessage] = useState(null)
 	
 	const MAX_YETI_COUNT = 10000;
 	const contractAddress = "0xe858AF072C3b27dc59C52969DB19537Fc0A8BAF0"
@@ -50,8 +46,7 @@ function App() {
 				}
 
 			} catch (error) {
-				setIsError(true)
-				setMessage("Contract not deployed to current network, please change network to Ethereum in MetaMask")
+				alert("Contract not deployed to current network, please change network to Ethereum in MetaMask")
 			}
 
 		}
@@ -67,12 +62,11 @@ function App() {
 			if (accounts.length > 0) {
 				setUsersAccount(accounts[0])
 			} else {
-				setMessage('Please connect with MetaMask')
+				alert('Please connect with MetaMask')
 			}
 
 			window.ethereum.on('accountsChanged', function (accounts) {
 				setUsersAccount(accounts[0])
-				setMessage(null)
 			});
 
 			window.ethereum.on('chainChanged', (chainId) => {
@@ -104,13 +98,6 @@ function App() {
 		// 	  });
 		// }
 	}
-
-	/*yeti.events.mint()
-	.on('data', (event)=>{
-		console.log(event);
-	})
-	.on('error', console.error);
-	*/
 
 	function mintNFTHandler(numberOfTokens){
 		verifyUserOnEthereumNetwork();
