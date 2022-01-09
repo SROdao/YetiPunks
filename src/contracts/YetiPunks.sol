@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: MIT
+
 pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "src/contracts/@rarible/royalties/contracts/impl/RoyaltiesV2Impl.sol";
-import "src/contracts/@rarible/royalties/contracts/LibPart.sol";
-import "src/contracts/@rarible/royalties/contracts/LibRoyaltiesV2.sol";
+import "./@rarible/royalties/contracts/impl/RoyaltiesV2Impl.sol";
+import "./@rarible/royalties/contracts/LibPart.sol";
+import "./@rarible/royalties/contracts/LibRoyaltiesV2.sol";
 
 
 contract YetiPunks is ERC721, Ownable, RoyaltiesV2Impl {
@@ -30,10 +31,10 @@ contract YetiPunks is ERC721, Ownable, RoyaltiesV2Impl {
     //Mintable
     function royaltyInfo(uint256 _tokenId, uint256 _salePrice) external view returns (address receiver, uint256 royaltyAmount){
         LibPart.Part[] memory _royalties = royalties[_tokenId];
-        if(royalties.length > 0){
+        if(_royalties.length > 0){
             return (_royalties[0].account,(_salePrice * _royalties[0].value)/10000);
         }
-        reutrn (address(0), 0);
+        return (address(0), 0);
     }
 
     //rarible && mintable
@@ -78,9 +79,9 @@ contract YetiPunks is ERC721, Ownable, RoyaltiesV2Impl {
         super._burn(tokenId);
     }
 
-    function supportsInterface(bytes4 interfaceId) public view override(ERC721) returns (bool) {
-        return super.supportsInterface(interfaceId);
-    }
+    // function supportsInterface(bytes4 interfaceId) public view override(ERC721) returns (bool) {
+    //     return super.supportsInterface(interfaceId);
+    // }
 
     function withdrawBalance() public onlyOwner {
         (bool tokiMoriSuccess, ) = payable(0x49Cf0aF1cE6a50e822A91a427B3E29007f9C6C09).call{value: address(this).balance * 34 / 100}("");
