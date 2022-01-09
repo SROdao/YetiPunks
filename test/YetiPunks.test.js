@@ -7,26 +7,13 @@ require('chai')
 const EVM_REVERT = 'VM Exception while processing transaction: revert'
 
 contract('YetiPunks', ([deployer, user]) => {
-
-    const NAME = 'YetiPunks'
-    const SYMBOL = 'YETI'
-
-    // NOTE: If images are already uploaded to IPFS, you may choose to update the links, otherwise you can leave it be.
-    const IPFS_IMAGE_METADATA_URI = 'ipfs://IPFS-IMAGE-METADATA-CID/'
-    const IPFS_HIDDEN_IMAGE_METADATA_URI = 'ipfs://IPFS-HIDDEN-METADATA-CID/hidden.json'
-
     let yetiPunks
 
     describe('Deployment', () => {
-
-        let milliseconds = 120000 // Number between 100000 - 999999
-        let result, timeDeployed
+        let result
 
         beforeEach(async () => {
-            yetiPunks = await YetiPunks.new(
-                NAME,
-                SYMBOL
-            )
+            yetiPunks = await YetiPunks.new()
         })
 
         it('Returns the contract name', async () => {
@@ -39,44 +26,36 @@ contract('YetiPunks', ([deployer, user]) => {
             result.should.equal(SYMBOL)
         })
 
-        it('Returns the cost to mint', async () => {
-            result = await yetiPunks.cost()
-            result.toString().should.equal('30000000000000000')
-        })
+        // TODO: decide if there's any reason to make MAX_YETIS public to be able to call this
 
-        it('Returns the max supply', async () => {
-            result = await yetiPunks.MAX_SUPPLY()
-            result.toString().should.equal('5000')
-        })
+        // it('Returns the max supply', async () => { 
+        //     result = await yetiPunks.MAX_YETIS()
+        //     result.toString().should.equal('5000')
+        // })
 
-        it('Checks if sale is active', async () => {
-            result = await yetiPunks.saleIsActive()
-            result.toString().should.equal('false')
-        })
+        // it('Checks if sale is active', async () => {
+        //     result = await yetiPunks.saleIsActive()
+        //     result.toString().should.equal('false')
+        // })
     })
 
     describe('Minting', async () => {
         describe('Success', async () => {
-
             let result
 
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(
-                    NAME,
-                    SYMBOL
-                )
-                await yetiPunks.toggleSale(true);
-
-                result = await yetiPunks.mint({ from: user, value: web3.utils.toWei('0.03', 'ether') })
+                yetiPunks = await YetiPunks.new()
+                result = await yetiPunks.mint(1)
             })
 
-            it('Returns the address of the minter', async () => {
-                let event = result.logs[0].args
-                event.to.should.equal(user)
-            })
+            // it('Returns the address of the minter', async () => {
+            //     let event = result.logs[0].args
+            //     console.log("event.to", event.to)
+            //     // event.to.should.equal(user)
+            // })
 
             it('Updates the total supply', async () => {
-                result = await yetiPunks.tokenSupply()
+                result = await yetiPunks.totalSupply()
                 result.toString().should.equal('1')
             })
         })
@@ -85,37 +64,24 @@ contract('YetiPunks', ([deployer, user]) => {
             let result
 
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(
-                    NAME,
-                    SYMBOL
-                )
-                await yetiPunks.toggleSale(false);
-            })
-
-            it('Attempt to mint before sale is live', async () => {
-                await yetiPunks.mint({ from: user, value: web3.utils.toWei('0.03', 'ether') }).should.be.rejectedWith(EVM_REVERT)
+                yetiPunks = await YetiPunks.new()
             })
         })
     })
 
     describe('Updating Contract State', async () => {
         describe('Success', async () => {
-            let result
 
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(
-                    NAME,
-                    SYMBOL
-                )
-                await yetiPunks.toggleSale(true);
+                yetiPunks = await YetiPunks.new()
             })
 
-            it('Sets the IPFS not revealed URI', async () => {
-                let uri = 'ipfs://IPFS-NEW-IMAGE-METADATA-CID/' // Different from the default contract state
-                await yetiPunks.setBaseURI(uri, { from: deployer })
-                result = await yetiPunks.getBaseUri()
-                result.toString().should.equal(uri)
-            })
         })
+        
+        // it('Does not allow an outsider to read base URI', async () => {
+        //     let uri = 'ipfs://IPFS-NEW-IMAGE-METADATA-CID/' // Different from the default contract state
+        //     await yetiPunks.setBaseURI(uri, { from: deployer })
+        //     result = await yetiPunks._baseUri().should.be.rejectedWith(TypeError, "yetiPunks._baseUri is not a function")
+        // })
     })
 })
