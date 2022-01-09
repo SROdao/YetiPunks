@@ -62,31 +62,6 @@ contract YetiPunks is ERC721, Ownable, RoyaltiesV2Impl {
         _mintLoop(_receiver, _mintAmount);
     }
 
-    function tokenURI(uint256 _tokenId)
-        public
-        view
-        virtual
-        override
-        returns (string memory)
-    {
-        require(
-            _exists(_tokenId),
-            "ERC721Metadata: URI query for nonexistent token"
-        );
-
-        string memory currentBaseURI = _baseURI();
-        return
-            bytes(currentBaseURI).length > 0
-                ? string(
-                    abi.encodePacked(
-                        currentBaseURI,
-                        _tokenId.toString(),
-                        ".json"
-                    )
-                )
-                : "";
-    }
-
     function setUriPrefix(string memory _uriPrefix) public onlyOwner {
         uriPrefix = _uriPrefix;
     }
