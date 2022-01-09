@@ -10,7 +10,7 @@ contract YetiPunks is ERC721, Ownable {
     uint16 public totalSupply = 0;
     uint16 MAX_YETIS = 10000;
 
-    constructor() ERC721("Yeti Punks", "YP") {
+    constructor() ERC721("Petty Monks", "PM") {
 
     }
 
