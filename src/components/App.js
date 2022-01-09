@@ -124,7 +124,7 @@ function App() {
 	
 			const tx = {
 				from: usersAccount,
-				to : "0xD4f9aF13881a60e8B4b94124adf2FAe55b71E344",
+				to : contractAddress,
 				data : encoded,
 				nonce: "0x00",
 				value: web3.utils.numberToHex(price)
