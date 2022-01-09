@@ -46,6 +46,16 @@ body {
   text-decoration: none;
   font-size: 15px;
   font-family: inherit;
+  height: 60px;
+  width: 80px;
+}
+
+.green-btn {
+  background-color: #68b4b5;
+}
+
+.mint-btn {
+  width: 255px;
 }
 
 .btn:focus {
@@ -67,9 +77,18 @@ body {
 
 .mint-input {
   text-align: center;
-  width: 60px;
-  height: 40px;
+  width: 80px;
+  height: 60px;
+  margin: 5px;
   border-radius: 5%;
+  /* border: 1px solid rgba(1,1,1,0.5); */
+  border: 1px solid #68b4b5;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .input-and-button {
@@ -80,16 +99,17 @@ body {
 
 .topnav {
   display: flex;
-  justify-content: space-between;
+  justify-content: right;
+  width: 100%;
   font-size: 30px;
-  padding: 10px 20px
+  padding: 10px 20px;
 }
 
 /* Style the links inside the navigation bar */
 
 .topnav-right{
   display: flex;
-  gap: 15px;
+  gap: 20px;
   align-items: center;
   align-content: center;
 }
@@ -104,15 +124,41 @@ body {
   height: auto;
 }
 
-.float-text{ 
+.title-and-description {
   text-align: center;
-  padding-top: 100;
-  margin-top: 100;
   width: 100%;
+  margin: 0;
+}
+
+.title-and-description h1 {
+  margin: 0;
+}
+
+.title-and-description h2 {
+  margin: 0;
+}
+
+.title-and-description p {
+  margin: 0;
+}
+
+.title {
+  font-size: 60px;
+}
+
+.minting-section {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: 30px;
+}
+
+.minting-section h2 {
+  margin: 0;
 }
 
 .yeti-banner {
-  width: 35%;
+  width: 30%;
 }
 
 

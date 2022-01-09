@@ -27250,8 +27250,8 @@
                             "id": 2027,
                             "isConstant": false,
                             "isLValue": false,
-                            "isPure": true,
-                            "kind": "number",
+                            "isPure": false,
+                            "kind": "typeConversion",
                             "lValueRequested": false,
                             "nodeType": "Literal",
                             "src": "1329:1:15",
@@ -29289,7 +29289,7 @@
                                 "typeIdentifier": "t_address",
                                 "typeString": "address"
                               },
-                              "value": "0x49Cf0aF1cE6a50e822A91a427B3E29007f9C6C09"
+                              "value": "0xD61ADc48afE9402B4411805Ce6026eF74F94E713"
                             }
                           ],
                           "expression": {
@@ -29661,7 +29661,7 @@
                                 "typeIdentifier": "t_address",
                                 "typeString": "address"
                               },
-                              "value": "0xD61ADc48afE9402B4411805Ce6026eF74F94E713"
+                              "value": "0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28"
                             }
                           ],
                           "expression": {
@@ -30033,7 +30033,7 @@
                                 "typeIdentifier": "t_address",
                                 "typeString": "address"
                               },
-                              "value": "0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28"
+                              "value": "0x49Cf0aF1cE6a50e822A91a427B3E29007f9C6C09"
                             }
                           ],
                           "expression": {
@@ -30174,8 +30174,8 @@
                                 "src": "3567:13:15",
                                 "tryCall": false,
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_address",
-                                  "typeString": "address"
+                                  "typeIdentifier": "t_contract$_YetiPunks_$1882",
+                                  "typeString": "contract YetiPunks"
                                 }
                               },
                               "id": 2242,
@@ -30199,15 +30199,20 @@
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
-                              "kind": "number",
                               "lValueRequested": false,
                               "nodeType": "Literal",
                               "src": "3591:2:15",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_rational_33_by_1",
-                                "typeString": "int_const 33"
+                                "typeIdentifier": "t_type$_t_address_$",
+                                "typeString": "type(address)"
                               },
-                              "value": "33"
+                              "typeName": {
+                                "id": 1867,
+                                "name": "address",
+                                "nodeType": "ElementaryTypeName",
+                                "src": "2229:7:10",
+                                "typeDescriptions": {}
+                              }
                             },
                             "src": "3567:26:15",
                             "typeDescriptions": {
@@ -30222,16 +30227,15 @@
                             "id": 2245,
                             "isConstant": false,
                             "isLValue": false,
-                            "isPure": true,
-                            "kind": "number",
+                            "isPure": false,
+                            "kind": "typeConversion",
                             "lValueRequested": false,
                             "nodeType": "Literal",
                             "src": "3596:3:15",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_rational_100_by_1",
-                              "typeString": "int_const 100"
-                            },
-                            "value": "100"
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
                           },
                           "src": "3567:32:15",
                           "typeDescriptions": {

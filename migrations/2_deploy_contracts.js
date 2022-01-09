@@ -1,4 +1,4 @@
-const YetiPunks = artifacts.require("YetiPunks")
+const YetiPunks = artifacts.require("./YetiPunks")
 
 module.exports = async function (deployer) {
 

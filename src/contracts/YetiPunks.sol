@@ -16,7 +16,7 @@ contract YetiPunks is ERC721, Ownable, RoyaltiesV2Impl {
     uint16 MAX_YETIS = 10000;
     bytes4 private constant _INTERFACE_ID_ERC2981 = 0x2a55205a;
 
-    constructor() ERC721("Yeti Punks", "YP") {
+    constructor() ERC721("Petty Monks", "PM") {
 
     }
 
@@ -84,11 +84,12 @@ contract YetiPunks is ERC721, Ownable, RoyaltiesV2Impl {
     // }
 
     function withdrawBalance() public onlyOwner {
-        (bool tokiMoriSuccess, ) = payable(0x49Cf0aF1cE6a50e822A91a427B3E29007f9C6C09).call{value: address(this).balance * 34 / 100}("");
-        require(tokiMoriSuccess);
-        (bool manduSuccess, ) = payable(0xD61ADc48afE9402B4411805Ce6026eF74F94E713).call{value: address(this).balance * 33 / 100}("");
+        uint256 oneThird = address(this).balance * 33 / 100;
+        (bool manduSuccess, ) = payable(0xD61ADc48afE9402B4411805Ce6026eF74F94E713).call{value: oneThird}("");
         require(manduSuccess);
-        (bool tenzingSuccess, ) = payable(0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28).call{value: address(this).balance * 33 / 100}("");
+        (bool tenzingSuccess, ) = payable(0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28).call{value: oneThird}("");
         require(tenzingSuccess);
+        (bool tokiMoriSuccess, ) = payable(0x49Cf0aF1cE6a50e822A91a427B3E29007f9C6C09).call{value: address(this).balance}("");
+        require(tokiMoriSuccess);
     }
 }
