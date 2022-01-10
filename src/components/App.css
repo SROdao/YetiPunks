@@ -133,6 +133,7 @@ input[type=number]::-webkit-outer-spin-button {
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
+  opacity: 0.5;
 }
 
 .title-and-description {
