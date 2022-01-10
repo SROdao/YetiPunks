@@ -118,10 +118,20 @@ input[type=number]::-webkit-outer-spin-button {
 /* Right-aligned section inside the top navigation */
 
 .main{
+  display: flex;
+  justify-content: space-evenly;
   text-align: center;
   padding: 5;
   max-width: 100%;
   height: auto;
+}
+
+.prints {
+  width: 35%;
+  background-image: url("../images/yetiprints1.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }
 
 .title-and-description {
@@ -158,10 +168,8 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .yeti-banner {
-  width: 30%;
+  width: 90%;
 }
-
-
 
 .bio-section {
   display: flex;
