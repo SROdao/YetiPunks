@@ -46,7 +46,8 @@ function App() {
 				}
 
 			} catch (error) {
-				alert("Contract not deployed to current network, please change network to Ethereum in MetaMask")
+				console.error("Contract not deployed to current network, please change network to Ethereum in MetaMask")
+				verifyUserOnEthereumNetwork();
 			}
 
 		}
@@ -149,10 +150,9 @@ function App() {
 			}).catch((err) => {
 				console.error(err)
 			});
-			
+
 			return txHash
 		}
-
 	}
 
 	function handleMintAmountChange (e) {
