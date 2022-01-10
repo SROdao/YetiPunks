@@ -36,11 +36,11 @@ const Banner = () => {
     const [playing, toggle] = useAudio();
     return (
         <div className="topnav">
+            {playing ?(
+            <img onClick={toggle} className="icon" src={soundOn}></img>
+            ):(<img onClick={toggle} className="icon" src={soundOff}></img>)}     
             <div className="topnav-right">
                
-                    {playing ?(
-                    <img onClick={toggle} className="icon" src={soundOn}></img>
-                    ):(<img onClick={toggle} className="icon" src={soundOff}></img>)}     
         
                     <a href='https://opensea.io/' target="_blank"><img className='icon' src={openSea} alt="opensea-logo"/></a>
                     <a href='https://twitter.com/YetiPunks' target="_blank"><img className='icon' src={twitter} alt="twitter-logo"/></a>
