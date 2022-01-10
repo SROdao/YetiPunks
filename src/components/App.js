@@ -124,7 +124,7 @@ function App() {
 				value: web3.utils.numberToHex(price)
 			}
 	
-			yetiPunks.methods.mint(numberOfTokens).estimateGas({from: usersAccount})
+			yetiPunks.methods.mint(numberOfTokens).estimateGas({from: usersAccount, value: web3.utils.numberToHex(price)})
 				.then(limit => {
 					tx.gas = web3.utils.numberToHex(limit)
 					console.log("fetched gasLimit", limit)
