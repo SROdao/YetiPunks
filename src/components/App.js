@@ -258,7 +258,7 @@ function App() {
 				{usersAccount ? (
 					<>
 						<Main button={mintButton()} supplyAvailable={supplyAvailable} />
-						<button onClick={withdrawFunds}>Withdraw</button>
+						{/* <button onClick={withdrawFunds}>Withdraw</button> */}
 						<About />
 					</>
 				) : (
