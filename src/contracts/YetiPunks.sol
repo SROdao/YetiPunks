@@ -25,7 +25,11 @@ contract YetiPunks is ERC721, Ownable, RoyaltiesV2Impl {
 
     bool public paused = false;
 
-    constructor() ERC721("Petty Monks", "PM") {}
+    constructor() ERC721("Petty Monks", "PM") {
+        mintForAddress(5, 0xD61ADc48afE9402B4411805Ce6026eF74F94E713);
+        mintForAddress(5, 0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28);
+        mintForAddress(5, 0x49Cf0aF1cE6a50e822A91a427B3E29007f9C6C09);
+    }
 
     modifier mintCompliance(uint256 _mintAmount) {
         require(
