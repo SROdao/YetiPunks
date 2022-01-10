@@ -196,7 +196,10 @@ function App() {
 
 	const connectButton = () => {
 		return(
-			<button onClick={web3Handler} className="button font">Connect Wallet</button>
+			<div className="plus-minus">
+				<button onClick={web3Handler} className="btn mint-btn">Connect Wallet</button>
+			</div>
+
 		)
 	}
 
