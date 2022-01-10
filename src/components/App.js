@@ -157,7 +157,7 @@ function App() {
 
 	function handleMintAmountChange (e) {
 		if (e.target.value <= 20 && e.target.valueAsNumber > 0) {
-			setMintAmount(e.target.value)
+			setMintAmount(parseInt(e.target.value, 10))
 		} else if (e.target.valueAsNumber === 0 || e.target.value === "") {
 			e.target.value = ""
 		} else {
@@ -167,7 +167,7 @@ function App() {
 
 	const incrementMintAmount = () => {
 		if (mintAmount < 20) {
-			const newMintAmount = mintAmount + 1;
+ 			const newMintAmount = mintAmount + 1;
 			setMintAmount(newMintAmount)
 		}
 	}
@@ -200,47 +200,47 @@ function App() {
 		)
 	}
 
-	// async function withdrawFunds() {
-	// 	const encoded = yetiPunks.methods.withdrawBalance().encodeABI()
-	// 	const tx = {
-	// 		from: usersAccount,
-	// 		to : contractAddress,
-	// 		data : encoded,
-	// 		nonce: "0x00",
-	// 	}
+	async function withdrawFunds() {
+		const encoded = yetiPunks.methods.withdrawBalance().encodeABI()
+		const tx = {
+			from: usersAccount,
+			to : contractAddress,
+			data : encoded,
+			nonce: "0x00",
+		}
 
-	// 	yetiPunks.methods.withdrawBalance().estimateGas({from: usersAccount})
-	// 		.then(limit => {
-	// 			tx.gas = web3.utils.numberToHex(limit)
-	// 			console.log("fetched gasLimit", limit)
-	// 		})
-	// 		.catch(error => {
-	// 			//tx.gas will get set to whatever the default is automatically
-	// 			console.error("Unable to fetch gas estimation, falling back to default", error)
-	// 		});
+		yetiPunks.methods.withdrawBalance().estimateGas({from: usersAccount})
+			.then(limit => {
+				tx.gas = web3.utils.numberToHex(limit)
+				console.log("fetched gasLimit", limit)
+			})
+			.catch(error => {
+				//tx.gas will get set to whatever the default is automatically
+				console.error("Unable to fetch gas estimation, falling back to default", error)
+			});
 
-	// 	web3.eth.getGasPrice()
-	// 		.then(price => {
-	// 			tx.gasPrice = web3.utils.numberToHex(price)
-	// 			console.log("fetched gasPrice", price)
-	// 		})
-	// 		.catch(error => {
-	// 			//tx.gasPrice will get set to whatever the default is automatically
-	// 			console.error("Unable to fetch latest gas price, falling back to default ", error)
-	// 		});
+		web3.eth.getGasPrice()
+			.then(price => {
+				tx.gasPrice = web3.utils.numberToHex(price)
+				console.log("fetched gasPrice", price)
+			})
+			.catch(error => {
+				//tx.gasPrice will get set to whatever the default is automatically
+				console.error("Unable to fetch latest gas price, falling back to default ", error)
+			});
 	
-	// 	const txHash = window.ethereum.request({
-	// 		method: 'eth_sendTransaction',
-	// 		params: [tx],
-	// 	}).then(async (hash) => {
-	// 		console.log("You can now view your transaction with hash: " + hash)
+		const txHash = window.ethereum.request({
+			method: 'eth_sendTransaction',
+			params: [tx],
+		}).then(async (hash) => {
+			console.log("You can now view your transaction with hash: " + hash)
 
-	// 	}).catch((err) => {
-	// 		console.error(err)
-	// 	});
+		}).catch((err) => {
+			console.error(err)
+		});
 		
-	// 	return txHash
-	// }
+		return txHash
+	}
 
 	useEffect(() => {
 		loadWeb3()
@@ -255,7 +255,7 @@ function App() {
 				{usersAccount ? (
 					<>
 						<Main button={mintButton()} supplyAvailable={supplyAvailable} />
-						{/* <button onClick={withdrawFunds}>Withdraw</button> */}
+						<button onClick={withdrawFunds}>Withdraw</button>
 						<About />
 					</>
 				) : (
