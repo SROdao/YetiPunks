@@ -130,9 +130,8 @@ function App() {
 					console.log("fetched gasLimit", limit)
 				})
 				.catch(error => {
-					//tx.gas will get set to whatever the default is automatically
-					console.error(error)
-					alert(error.message)
+					console.error(error.message)
+					// alert(error.message) <---- alerts when there's not enough funds in the wallet
 				});
 	
 			web3.eth.getGasPrice()
