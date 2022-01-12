@@ -6,6 +6,7 @@ import CONFIG from '../config.json';
 import Banner from './Banner'
 import Main from './Main'
 import About from './About';
+import Reveal from './Reveal';
 
 function App() {
 	const [web3, setWeb3] = useState(null)
@@ -259,6 +260,7 @@ function App() {
 		verifyUserOnEthereumNetwork()
 	}, [usersAccount]);
 
+	let testTokens = [1,2,3,5,6,7,8,9,10,11]
 	return (
 		<div>
 			<div>
@@ -275,7 +277,7 @@ function App() {
 						<About />
 					</>
 				)}
-				
+				<Reveal tokenIds={testTokens} />
 			</div>
 		</div>
 	)
