@@ -136,6 +136,22 @@ input[type=number]::-webkit-outer-spin-button {
   opacity: 0.5;
 }
 
+.mountains {
+  /*width: 100%;
+  height: 20%;
+  /*background-image: url("../images/yetiMountain.png");*/
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 0;
+}
+.test{
+  width: auto;
+  height: auto;
+}
+
 .title-and-description {
   text-align: center;
   width: 100%;

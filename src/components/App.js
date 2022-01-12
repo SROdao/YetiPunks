@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Web3 from 'web3'
 import './App.css'
 import YetiPunks from '../abis/YetiPunks.json';
@@ -6,8 +6,11 @@ import CONFIG from '../config.json';
 import Banner from './Banner'
 import Main from './Main'
 import About from './About';
+import Footer from './Footer'
 
 function App() {
+	const [isVisible, setIsVisible] = useState(false);
+
 	const [web3, setWeb3] = useState(null)
 	const [yetiPunks, setYetiPunks] = useState(null)
 
@@ -24,6 +27,25 @@ function App() {
 	
 	const MAX_YETI_COUNT = 10000;
 	const contractAddress = "0x716Cc763C6DC805Ff9d0f58bb63131383DF2471E"
+
+	const prevScrollY = useRef(0);
+	useEffect(() => {
+		const handleScroll = () => {
+		  const currentScrollY = window.scrollY;
+		  if (prevScrollY.current < currentScrollY ) {
+			setIsVisible(false);
+		  }
+		  if (prevScrollY.current > currentScrollY ) {
+			setIsVisible(true);
+		  }
+	
+		  prevScrollY.current = currentScrollY;
+		};
+	
+		window.addEventListener("scroll", handleScroll, { passive: true });
+	
+		return () => window.removeEventListener("scroll", handleScroll);
+	  });
 
 	const loadBlockchainData = async () => {
 		// Fetch Contract, Data, etc.
@@ -267,15 +289,17 @@ function App() {
 					<>
 						<Main button={mintButton()} supplyAvailable={supplyAvailable} />
 						{/* <button onClick={withdrawFunds}>Withdraw</button> */}
-						<About />
+						
 					</>
 				) : (
 					<>
 						<Main button={connectButton()} />
-						<About />
+						
 					</>
 				)}
+				{isVisible ? (<About/>) :("")}
 				
+				<Footer/>
 			</div>
 		</div>
 	)
