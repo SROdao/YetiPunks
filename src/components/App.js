@@ -39,6 +39,13 @@ function App() {
 				const totalSupply = await yetiPunksContract.methods.totalSupply().call()
 				setTotalSupply(parseInt(totalSupply, 10))
 				setSupplyAvailable(MAX_YETI_COUNT - totalSupply)
+				
+				// listen for Transfer event
+				await yetiPunksContract.events.Transfer({ filter: { value: [] }, fromBlock: 0 })
+					.on('data', event => console.log("EVENT", event))
+					.on('changed', changed => console.log(changed))
+					.on('error', err => {throw err})
+					.on('connected', str => console.log(str))
 
 				if (networkId !== 5777) {
 					setBlockchainExplorerURL(CONFIG.NETWORKS[networkId].blockchainExplorerURL)
@@ -100,7 +107,7 @@ function App() {
 		// }
 	}
 
-	function mintNFTHandler(numberOfTokens){
+	const mintNFTHandler = (numberOfTokens) => {
 		if (isNaN(numberOfTokens)) {
 			numberOfTokens = 1
 		
@@ -160,7 +167,7 @@ function App() {
 		}
 	}
 
-	function handleMintAmountChange (e) {
+	const handleMintAmountChange = (e) => {
 		if (e.target.value <= 20 && e.target.valueAsNumber >= 0) {
 			const newMintAmouint = e.target.valueAsNumber
 			setMintAmount(newMintAmouint)
@@ -170,8 +177,6 @@ function App() {
 			e.target.value = mintAmount
 		}
 	}
-
-	console.log("mintAmount", mintAmount)
 
 	const incrementMintAmount = () => {
 		if (mintAmount < 20) {
@@ -211,7 +216,7 @@ function App() {
 		)
 	}
 
-	async function withdrawFunds() {
+	const withdrawFunds = async () => {
 		const encoded = yetiPunks.methods.withdrawBalance().encodeABI()
 		const tx = {
 			from: usersAccount,
