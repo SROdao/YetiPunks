@@ -46,7 +46,7 @@ function App() {
 	
 		return () => window.removeEventListener("scroll", handleScroll);
 	  });
-
+	  
 	const loadBlockchainData = async () => {
 		// Fetch Contract, Data, etc.
 		if (web3) {
@@ -283,24 +283,21 @@ function App() {
 
 	return (
 		<div>
-			<div>
-				<Banner />
-				{usersAccount ? (
-					<>
-						<Main button={mintButton()} supplyAvailable={supplyAvailable} />
-						{/* <button onClick={withdrawFunds}>Withdraw</button> */}
-						
-					</>
-				) : (
-					<>
-						<Main button={connectButton()} />
-						
-					</>
-				)}
-				{isVisible ? (<About/>) :("")}
-				
-				<Footer/>
-			</div>
+			<Banner />
+
+			{usersAccount ? (
+				<>
+					<Main button={mintButton()} supplyAvailable={supplyAvailable} />
+					{/* <button onClick={withdrawFunds}>Withdraw</button> */}	
+				</>
+			) : (
+				<>
+					<Main button={connectButton()} />
+				</>
+			)}
+
+			<About/>
+			<Footer/>	
 		</div>
 	)
 }
