@@ -3,10 +3,7 @@ import Mountain from '../images/yetiMountain.png';
 
 const Footer = () => {
     return (
-        
-            <div className='mountains'>
-                <img className='test' src={Mountain}></img>
-            </div>
+            <img className='test' src={Mountain}></img>
        
 
 

@@ -126,21 +126,12 @@ input[type=number]::-webkit-outer-spin-button {
   opacity: 0.5;
 }
 
-.mountains {
-  /*width: 100%;
-  height: 20%;
-  /*background-image: url("../images/yetiMountain.png");*/
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
-  position: absolute;
-  bottom: 0;
-  margin-bottom: 0;
-}
 .test{
-  width: auto;
-  height: auto;
-}
+  width: 100vw;
+  height: 15vh;
+  position: fixed;
+  bottom: 0;
+} 
 
 .title-and-description {
   text-align: center;
@@ -182,6 +173,7 @@ input[type=number]::-webkit-outer-spin-button {
 .bio-section {
   display: flex;
   justify-content: space-around;
+  margin: 20vh 0vh;
 }
 
 .bio-square {
