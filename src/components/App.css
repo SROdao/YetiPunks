@@ -126,7 +126,7 @@ input[type=number]::-webkit-outer-spin-button {
   opacity: 0.5;
 }
 
-.test{
+.mtns {
   width: 100vw;
   height: 15vh;
   position: fixed;
@@ -254,4 +254,7 @@ input[type=number]::-webkit-outer-spin-button {
     height: 100%;
   }
 
+  .mtns {
+    height: 7vh;
+  }
 }
