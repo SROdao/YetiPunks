@@ -5,6 +5,8 @@ import twitter from '../images/twitter.png'
 import song from '../songs/yp-theme.mp3'
 import soundOn from '../images/volume.png'
 import soundOff from '../images/soundOff.png'
+import looksRare from '../images/looksrare.png'
+import rarible from '../images/rareable_logo.png'
 
 
 
@@ -40,11 +42,11 @@ const Banner = () => {
             <img onClick={toggle} className="icon" src={soundOn}></img>
             ):(<img onClick={toggle} className="icon" src={soundOff}></img>)}     
             <div className="topnav-right">
-               
-        
-                    <a href='https://opensea.io/' target="_blank"><img className='icon' src={openSea} alt="opensea-logo"/></a>
-                    <a href='https://twitter.com/YetiPunks' target="_blank"><img className='icon' src={twitter} alt="twitter-logo"/></a>
-             </div>
+                <a href='https://rarible.com/' target="_blank"><img className='icon' src={rarible} alt="rarible-logo"/></a>
+                <a href='https://looksrare.org/' target="_blank"><img className='icon' src={looksRare} alt="lookrare-logo"/></a>
+                <a href='https://opensea.io/' target="_blank"><img className='icon' src={openSea} alt="opensea-logo"/></a>
+                <a href='https://twitter.com/YetiPunks' target="_blank"><img className='icon' src={twitter} alt="twitter-logo"/></a>
+            </div>
         </div>
     )
 }
