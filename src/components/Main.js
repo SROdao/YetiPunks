@@ -1,28 +1,15 @@
-//rafce
 import React from 'react'
-import { useState } from 'react'
-import PropTypes from 'prop-types'
 
-import banner from '../images/yetibanner.png'
-import banner2 from '../images/yetibanner-flipped.jpg'
+import CarouselComponent from './CarouselComponent'
 
 const Main = ({button, supplyAvailable}) => {
-    const [image, setImage] = useState(banner)
-    const bannerClickHandler = () => {
-        if (image === banner) {
-            setImage(banner2)
-        } else {
-            setImage(banner)
-        }
-    }
-
     return (
         <div className = "main">
             <div className="prints">
 
             </div>
             <div>
-                <img className = 'yeti-banner' src={image} onClick={bannerClickHandler} alt="banner-of-yetis"/>
+                <CarouselComponent />
                 <div className='title-and-description'>
                     <h1 className="title">YETIPUNKS</h1>
                     <h2>NO ROADMAP</h2>

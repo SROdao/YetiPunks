@@ -166,7 +166,15 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .yeti-banner {
-  width: 90%;
+  width: 50vw;
+}
+
+.carousel-control-prev {
+  visibility: hidden;
+}
+
+.carousel-control-next {
+  visibility: hidden;
 }
 
 .bio-section {
@@ -242,7 +250,10 @@ input[type=number]::-webkit-outer-spin-button {
 
   .yeti-banner {
     width: 100%;
-    padding: 25px 0;
+  }
+  
+  .carousel-item > img {
+    width: 100%;
   }
   
   .avatar {
