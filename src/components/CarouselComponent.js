@@ -7,7 +7,7 @@ import banner2 from '../images/yetibanner-flipped.jpg'
 
 const CarouselComponent = () => {
     return (
-        <Carousel className="yeti-banner" >
+        <Carousel className="yeti-banner" fade>
             <Carousel.Item interval={3000}>
                 <img
                     // className="d-block w-100"
