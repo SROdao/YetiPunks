@@ -3,17 +3,17 @@ import yetitar from '../images/yetipunk_bios.png'
 
 const yetis = [
     {
-        name: 'Tokimori',
+        name: '4ndreas',
         profile: yetitar,
         bio: 'The artist who made this all happen. His bond with yeti punks is cemented through a love for kush.'
     },
     {
-        name: 'Tenzing',
+        name: 'Somkid',
         profile: yetitar,
-        bio: 'A developer who brought together Tokimori and WangMandoo to create a trio of yeti heads.'
+        bio: 'A developer who brought together 4ndreas and Mandu to create a trio of yeti heads.'
     },
     {
-        name: 'WangMandu',
+        name: 'Mandu',
         profile: yetitar,
         bio: 'A king-sized dumpling skilled in dev and nft art'
     }
