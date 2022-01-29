@@ -5,10 +5,10 @@ import Carousel from 'react-bootstrap/Carousel'
 import banner from '../images/yetibanner.png'
 import banner2 from '../images/yetibanner-flipped.jpg'
 
-function CarouselComponent() {
+const CarouselComponent = () => {
     return (
-        <Carousel className="yeti-banner">
-            <Carousel.Item interval={1000}>
+        <Carousel className="yeti-banner" >
+            <Carousel.Item interval={3000}>
                 <img
                     // className="d-block w-100"
                     src={banner}
@@ -19,13 +19,13 @@ function CarouselComponent() {
                     <p>some text.</p>
                 </Carousel.Caption> */}
             </Carousel.Item>
-            <Carousel.Item interval={1000}>
+            <Carousel.Item interval={3000}>
                 <img
                     src={banner2}
                     alt="Yeti Punks 2"
                 />
             </Carousel.Item>
-            <Carousel.Item interval={1000}>
+            <Carousel.Item interval={3000}>
                 <img
                     src={banner}
                     alt="Yeti Punks 3"
