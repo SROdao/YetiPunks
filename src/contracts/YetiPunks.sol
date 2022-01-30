@@ -1,159 +1,222 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./@rarible/royalties/contracts/impl/RoyaltiesV2Impl.sol";
-import "./@rarible/royalties/contracts/LibPart.sol";
-import "./@rarible/royalties/contracts/LibRoyaltiesV2.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import "./ERC721A.sol";
 
-contract YetiPunks is ERC721, Ownable, RoyaltiesV2Impl {
-    using Strings for uint256;
-    using Counters for Counters.Counter;
+contract XRC is ERC721A, Ownable, ReentrancyGuard {
+    using ECDSA for bytes32;
 
-    Counters.Counter private supply;
-
-    string public uriPrefix = "";
-
-    bytes4 private constant _INTERFACE_ID_ERC2981 = 0x2a55205a;
-
-    uint16 public constant MAX_SUPPLY = 10000;
-    uint16 public maxMintAmountPerTx = 20;
-    uint256 public cost = 0.03 ether;
-
-    bool public paused = false;
-
-    constructor() ERC721("Petty Monks", "PM") {
-        mintForAddress(5, 0xD61ADc48afE9402B4411805Ce6026eF74F94E713);
-        mintForAddress(5, 0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28);
-        mintForAddress(5, 0x49Cf0aF1cE6a50e822A91a427B3E29007f9C6C09);
+    enum Status {
+        Pending,
+        PreSale,
+        PublicSale,
+        Finished
     }
 
-    modifier mintCompliance(uint256 _mintAmount) {
-        require(
-            _mintAmount > 0 && _mintAmount <= maxMintAmountPerTx,
-            "Invalid mint amount!"
-        );
-        require(
-            supply.current() + _mintAmount <= MAX_SUPPLY,
-            "Max supply exceeded!"
-        );
-        _;
+    Status public status;
+    string public baseURI;
+    address private _signer;
+    uint256 public tokensReserved;
+    uint256 public immutable maxMint;
+    uint256 public immutable maxSupply;
+    uint256 public immutable reserveAmount;
+    uint256 public constant PRICE = 0.03 * 10**18; // 0.0502 ETH
+    bool public balanceWithdrawn;
+
+    mapping(address => bool) public publicMinted;
+
+    event Minted(address minter, uint256 amount);
+    event StatusChanged(Status status);
+    event SignerChanged(address signer);
+    event ReservedToken(address minter, address recipient, uint256 amount);
+    event BaseURIChanged(string newBaseURI);
+
+    constructor(
+        string memory initBaseURI,
+        address signer,
+        uint256 _maxBatchSize,
+        uint256 _collectionSize,
+        uint256 _reserveAmount
+    ) ERC721A("PettyMonks", "PETTY", _maxBatchSize, _collectionSize) {
+        baseURI = initBaseURI;
+        _signer = signer;
+        maxMint = _maxBatchSize;
+        maxSupply = _collectionSize;
+        reserveAmount = _reserveAmount;
     }
 
-    function totalSupply() public view returns (uint256) {
-        return supply.current();
-    }
-
-    function mint(uint256 _mintAmount)
-        public
-        payable
-        mintCompliance(_mintAmount)
-    {
-        // for some unknown reason, this fires when sending the correct amount on Rinkeby
-        require(msg.value >= cost * _mintAmount, "Insufficient funds!");
-
-        _mintLoop(msg.sender, _mintAmount);
-    }
-
-    function mintForAddress(uint256 _mintAmount, address _receiver)
-        public
-        mintCompliance(_mintAmount)
-        onlyOwner
-    {
-        _mintLoop(_receiver, _mintAmount);
-    }
-
-    function setUriPrefix(string memory _uriPrefix) public onlyOwner {
-        uriPrefix = _uriPrefix;
-    }
-
-    function setPaused(bool _state) public onlyOwner {
-        paused = _state;
-    }
-
-    function withdrawBalance() public onlyOwner {
-        uint256 oneThird = (address(this).balance * 33) / 100;
-        (bool manduSuccess, ) = payable(
-            0xD61ADc48afE9402B4411805Ce6026eF74F94E713
-        ).call{value: oneThird}("");
-        require(manduSuccess);
-        (bool tenzingSuccess, ) = payable(
-            0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28
-        ).call{value: oneThird}("");
-        require(tenzingSuccess);
-        (bool tokiMoriSuccess, ) = payable(
-            0x49Cf0aF1cE6a50e822A91a427B3E29007f9C6C09
-        ).call{value: address(this).balance}("");
-        require(tokiMoriSuccess);
-    }
-
-    //Rarible
-    function setRoyalties(
-        uint256 tokenId,
-        address payable royaltyTo,
-        uint96 percentageBasisPoints
-    ) public onlyOwner {
-        LibPart.Part[] memory _royalties = new LibPart.Part[](1);
-        _royalties[0].value = percentageBasisPoints;
-        _royalties[0].account = royaltyTo;
-        _saveRoyalties(tokenId, _royalties);
-    }
-
-    //Mintable
-    function royaltyInfo(uint256 _tokenId, uint256 _salePrice)
-        external
+    function _hash(string calldata salt, address _address)
+        internal
         view
-        returns (address receiver, uint256 royaltyAmount)
+        returns (bytes32)
     {
-        LibPart.Part[] memory _royalties = royalties[_tokenId];
-        if (_royalties.length > 0) {
-            return (
-                _royalties[0].account,
-                (_salePrice * _royalties[0].value) / 10000
-            );
-        }
-        return (address(0), 0);
+        return keccak256(abi.encode(salt, address(this), _address));
     }
 
-    //rarible && mintable
-    function supportsInterface(bytes4 interfaceId)
-        public
+    function _verify(bytes32 hash, bytes memory token)
+        internal
         view
-        virtual
-        override(ERC721)
         returns (bool)
     {
-        if (interfaceId == LibRoyaltiesV2._INTERFACE_ID_ROYALTIES) {
-            return true;
-        }
-
-        //mintable
-        if (interfaceId == _INTERFACE_ID_ERC2981) {
-            return super.supportsInterface(interfaceId);
-        }
-
-        return super.supportsInterface(interfaceId);
+        return (_recover(hash, token) == _signer);
     }
 
-    function _mintLoop(address _receiver, uint256 _mintAmount) internal {
-        for (uint256 i = 0; i < _mintAmount; i++) {
-            supply.increment();
-            _safeMint(_receiver, supply.current());
+    function _recover(bytes32 hash, bytes memory token)
+        internal
+        pure
+        returns (address)
+    {
+        return hash.toEthSignedMessageHash().recover(token);
+    }
+
+    function _baseURI() internal view override returns (string memory) {
+        return baseURI;
+    }
+
+    function reserve(address recipient, uint256 amount) external onlyOwner {
+        require(recipient != address(0), "XRC: zero address");
+        require(amount > 0, "XRC: invalid amount");
+        require(
+            totalSupply() + amount <= collectionSize,
+            "XRC: max supply exceeded"
+        );
+        require(
+            tokensReserved + amount <= reserveAmount,
+            "XRC: max reserve amount exceeded"
+        );
+        require(
+            amount % maxBatchSize == 0,
+            "XRC: can only mint a multiple of the maxBatchSize"
+        );
+
+        uint256 numChunks = amount / maxBatchSize;
+        for (uint256 i = 0; i < numChunks; i++) {
+            _safeMint(recipient, maxBatchSize);
+        }
+        tokensReserved += amount;
+        emit ReservedToken(msg.sender, recipient, amount);
+    }
+
+    function presaleMint(
+        uint256 amount,
+        string calldata salt,
+        bytes calldata token
+    ) external payable {
+        require(status == Status.PreSale, "XRC: Presale is not active.");
+        require(
+            tx.origin == msg.sender,
+            "XRC: contract is not allowed to mint."
+        );
+        require(_verify(_hash(salt, msg.sender), token), "XRC: Invalid token.");
+        require(
+            numberMinted(msg.sender) + amount <= maxMint,
+            "XRC: Max mint amount per wallet exceeded."
+        );
+        require(
+            totalSupply() + amount + reserveAmount - tokensReserved <=
+                collectionSize,
+            "XRC: Max supply exceeded."
+        );
+
+        _safeMint(msg.sender, amount);
+        refundIfOver(PRICE * amount);
+
+        emit Minted(msg.sender, amount);
+    }
+
+    function mint() external payable {
+        require(status == Status.PublicSale, "XRC: Public sale is not active.");
+        require(
+            tx.origin == msg.sender,
+            "XRC: contract is not allowed to mint."
+        );
+        require(
+            !publicMinted[msg.sender],
+            "XRC: The wallet has already minted during public sale."
+        );
+        require(
+            totalSupply() + 1 + reserveAmount - tokensReserved <=
+                collectionSize,
+            "XRC: Max supply exceeded."
+        );
+
+        _safeMint(msg.sender, 1);
+        publicMinted[msg.sender] = true;
+        refundIfOver(PRICE);
+
+        emit Minted(msg.sender, 1);
+    }
+
+    function refundIfOver(uint256 price) private {
+        require(msg.value >= price, "XRC: Need to send more ETH.");
+        if (msg.value > price) {
+            payable(msg.sender).transfer(msg.value - price);
         }
     }
 
-    function _baseURI() internal view virtual override returns (string memory) {
-        return uriPrefix;
+    function withdraw() external nonReentrant onlyOwner {
+        require(
+            status == Status.Finished,
+            "XRC: invalid status for withdrawn."
+        );
+        require(!balanceWithdrawn, "XRC: balance has already been withdrawn.");
+
+        uint256 balance = address(this).balance;
+
+        uint256 v1 = 3.5 * 10**18;
+        uint256 v2 = 0.5 * 10**18;
+        uint256 v3 = balance - v1 - v2;
+
+        balanceWithdrawn = true;
+
+        (bool success1, ) = payable(0xFcda4EE4E98F3d25CB2F4e3C164deAF277372f35)
+            .call{value: v1}("");
+        (bool success2, ) = payable(0xb811EC5250796966f1400C8e30E5e8A2bC44a068)
+            .call{value: v2}("");
+        (bool success3, ) = payable(0xe9EAA95B03f40F13C5609b54e40C155e6f77f648)
+            .call{value: v3}("");
+
+        require(success1, "Transfer 1 failed.");
+        require(success2, "Transfer 2 failed.");
+        require(success3, "Transfer 3 failed.");
     }
 
-    function _beforeTokenTransfer(
-        address from,
-        address to,
-        uint256 tokenId
-    ) internal override(ERC721) {
-        super._beforeTokenTransfer(from, to, tokenId);
+    function setBaseURI(string calldata newBaseURI) external onlyOwner {
+        baseURI = newBaseURI;
+        emit BaseURIChanged(newBaseURI);
+    }
+
+    function setStatus(Status _status) external onlyOwner {
+        status = _status;
+        emit StatusChanged(_status);
+    }
+
+    function setSigner(address signer) external onlyOwner {
+        _signer = signer;
+        emit SignerChanged(signer);
+    }
+
+    function setOwnersExplicit(uint256 quantity)
+        external
+        onlyOwner
+        nonReentrant
+    {
+        _setOwnersExplicit(quantity);
+    }
+
+    function numberMinted(address owner) public view returns (uint256) {
+        return _numberMinted(owner);
+    }
+
+    function getOwnershipData(uint256 tokenId)
+        external
+        view
+        returns (TokenOwnership memory)
+    {
+        return ownershipOf(tokenId);
     }
 }
