@@ -117,8 +117,9 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .prints {
-  width: 35%;
-  background-image: url("../images/yetiprints1.png");
+  width: 100%;
+  height: 100px;
+  background-image: url("../images/yeti_big_print.png");
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
