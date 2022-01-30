@@ -54,10 +54,10 @@ contract ERC721A is
 
     // Mapping from token ID to ownership details
     // An empty struct value does not necessarily mean the token is unowned. See ownershipOf implementation for details.
-    mapping(uint256 => TokenOwnership) private _ownerships;
+    mapping(uint256 => TokenOwnership) internal _ownerships;
 
     // Mapping owner address to address data
-    mapping(address => AddressData) private _addressData;
+    mapping(address => AddressData) internal _addressData;
 
     // Mapping from token ID to approved address
     mapping(uint256 => address) private _tokenApprovals;
