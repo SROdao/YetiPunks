@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "./ERC721A.sol";
 
-contract YetiPunks is ERC721A, Ownable, ReentrancyGuard {
+contract XRC is ERC721A, Ownable, ReentrancyGuard {
     using ECDSA for bytes32;
 
     enum Status {
@@ -20,9 +20,12 @@ contract YetiPunks is ERC721A, Ownable, ReentrancyGuard {
     Status public status;
     string public baseURI;
     address private _signer;
+    uint256 public tokensReserved;
     uint256 public immutable maxMint;
     uint256 public immutable maxSupply;
-    uint256 public constant PRICE = 0.03 * 10**18; // 0.03 ETH
+    uint256 public immutable reserveAmount;
+    uint256 public constant PRICE = 0.0502 * 10**18; // 0.0502 ETH
+    bool public balanceWithdrawn;
 
     mapping(address => bool) public publicMinted;
 
@@ -36,12 +39,14 @@ contract YetiPunks is ERC721A, Ownable, ReentrancyGuard {
         string memory initBaseURI,
         address signer,
         uint256 _maxBatchSize,
-        uint256 _collectionSize
-    ) ERC721A("PettyMonks", "PETTY", _maxBatchSize, _collectionSize) {
+        uint256 _collectionSize,
+        uint256 _reserveAmount
+    ) ERC721A("X Rabbits Club", "XRC", _maxBatchSize, _collectionSize) {
         baseURI = initBaseURI;
         _signer = signer;
         maxMint = _maxBatchSize;
         maxSupply = _collectionSize;
+        reserveAmount = _reserveAmount;
     }
 
     function _hash(string calldata salt, address _address)
@@ -66,39 +71,55 @@ contract YetiPunks is ERC721A, Ownable, ReentrancyGuard {
         returns (address)
     {
         return hash.toEthSignedMessageHash().recover(token);
-        // toEthSignedMessageHash/recover:
-        // Returns an Ethereum Signed Message, created from a `hash`. 
-        // This produces hash corresponding to the one signed with the https://eth.wiki/json-rpc/API#eth_sign[`eth_sign`] JSON-RPC method as part of EIP-191.
-        // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/cryptography/ECDSA.sol#L74-L77
-
-        // toEthSignedMessageHash simply builds a hash and recover will return the address from a digest and a signature.
     }
 
     function _baseURI() internal view override returns (string memory) {
         return baseURI;
     }
 
-    function presaleMint( // TODO: add whitelist address logic
+    function reserve(address recipient, uint256 amount) external onlyOwner {
+        require(recipient != address(0), "XRC: zero address");
+        require(amount > 0, "XRC: invalid amount");
+        require(
+            totalSupply() + amount <= collectionSize,
+            "XRC: max supply exceeded"
+        );
+        require(
+            tokensReserved + amount <= reserveAmount,
+            "XRC: max reserve amount exceeded"
+        );
+        require(
+            amount % maxBatchSize == 0,
+            "XRC: can only mint a multiple of the maxBatchSize"
+        );
+
+        uint256 numChunks = amount / maxBatchSize;
+        for (uint256 i = 0; i < numChunks; i++) {
+            _safeMint(recipient, maxBatchSize);
+        }
+        tokensReserved += amount;
+        emit ReservedToken(msg.sender, recipient, amount);
+    }
+
+    function presaleMint(
         uint256 amount,
         string calldata salt,
         bytes calldata token
     ) external payable {
-        require(status == Status.PreSale, "PETTY: Presale is not active.");
+        require(status == Status.PreSale, "XRC: Presale is not active.");
         require(
             tx.origin == msg.sender,
-            "PETTY: contract is not allowed to mint."
+            "XRC: contract is not allowed to mint."
         );
-        require(
-            _verify(_hash(salt, msg.sender), token),
-            "PETTY: Invalid token."
-        );
+        require(_verify(_hash(salt, msg.sender), token), "XRC: Invalid token.");
         require(
             numberMinted(msg.sender) + amount <= maxMint,
-            "PETTY: Max mint amount per wallet exceeded."
+            "XRC: Max mint amount per wallet exceeded."
         );
         require(
-            totalSupply() + amount <= collectionSize,
-            "PETTY: Max supply exceeded."
+            totalSupply() + amount + reserveAmount - tokensReserved <=
+                collectionSize,
+            "XRC: Max supply exceeded."
         );
 
         _safeMint(msg.sender, amount);
@@ -108,22 +129,19 @@ contract YetiPunks is ERC721A, Ownable, ReentrancyGuard {
     }
 
     function mint() external payable {
-        require(
-            status == Status.PublicSale,
-            "PETTY: Public sale is not active."
-        );
+        require(status == Status.PublicSale, "XRC: Public sale is not active.");
         require(
             tx.origin == msg.sender,
-            "PETTY: contract is not allowed to mint."
+            "XRC: contract is not allowed to mint."
         );
         require(
             !publicMinted[msg.sender],
-            "PETTY: The wallet has already minted during public sale."
+            "XRC: The wallet has already minted during public sale."
         );
         require(
-            totalSupply() + 1 <=
+            totalSupply() + 1 + reserveAmount - tokensReserved <=
                 collectionSize,
-            "PETTY: Max supply exceeded."
+            "XRC: Max supply exceeded."
         );
 
         _safeMint(msg.sender, 1);
@@ -134,27 +152,37 @@ contract YetiPunks is ERC721A, Ownable, ReentrancyGuard {
     }
 
     function refundIfOver(uint256 price) private {
-        // need this?
-        require(msg.value >= price, "PETTY: Need to send more ETH.");
+        require(msg.value >= price, "XRC: Need to send more ETH.");
         if (msg.value > price) {
             payable(msg.sender).transfer(msg.value - price);
         }
     }
 
-    function withdrawBalance() external nonReentrant onlyOwner {
-        uint256 oneThird = (address(this).balance * 33) / 100;
-        (bool manduSuccess, ) = payable(
-            0xD61ADc48afE9402B4411805Ce6026eF74F94E713
-        ).call{value: oneThird}("");
-        require(manduSuccess);
-        (bool somkidSuccess, ) = payable(
-            0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28
-        ).call{value: oneThird}("");
-        require(somkidSuccess);
-        (bool andreasSuccess, ) = payable(
-            0x49Cf0aF1cE6a50e822A91a427B3E29007f9C6C09
-        ).call{value: address(this).balance}("");
-        require(andreasSuccess);
+    function withdraw() external nonReentrant onlyOwner {
+        require(
+            status == Status.Finished,
+            "XRC: invalid status for withdrawn."
+        );
+        require(!balanceWithdrawn, "XRC: balance has already been withdrawn.");
+
+        uint256 balance = address(this).balance;
+
+        uint256 v1 = 3.5 * 10**18;
+        uint256 v2 = 0.5 * 10**18;
+        uint256 v3 = balance - v1 - v2;
+
+        balanceWithdrawn = true;
+
+        (bool success1, ) = payable(0xFcda4EE4E98F3d25CB2F4e3C164deAF277372f35)
+            .call{value: v1}("");
+        (bool success2, ) = payable(0xb811EC5250796966f1400C8e30E5e8A2bC44a068)
+            .call{value: v2}("");
+        (bool success3, ) = payable(0xe9EAA95B03f40F13C5609b54e40C155e6f77f648)
+            .call{value: v3}("");
+
+        require(success1, "Transfer 1 failed.");
+        require(success2, "Transfer 2 failed.");
+        require(success3, "Transfer 3 failed.");
     }
 
     function setBaseURI(string calldata newBaseURI) external onlyOwner {
