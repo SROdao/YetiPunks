@@ -70,6 +70,8 @@ contract YetiPunks is ERC721A, Ownable, ReentrancyGuard {
         // Returns an Ethereum Signed Message, created from a `hash`. 
         // This produces hash corresponding to the one signed with the https://eth.wiki/json-rpc/API#eth_sign[`eth_sign`] JSON-RPC method as part of EIP-191.
         // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/cryptography/ECDSA.sol#L74-L77
+
+        // toEthSignedMessageHash simply builds a hash and recover will return the address from a digest and a signature.
     }
 
     function _baseURI() internal view override returns (string memory) {
