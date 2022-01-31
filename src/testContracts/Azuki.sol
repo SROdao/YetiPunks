@@ -13,7 +13,6 @@ contract Azuki is Ownable, ERC721A, ReentrancyGuard {
   uint256 public immutable amountForAuctionAndDev;
 
   struct SaleConfig {
-    uint32 auctionSaleStartTime;
     uint32 publicSaleStartTime;
     uint64 mintlistPrice;
     uint64 publicPrice;
@@ -42,25 +41,6 @@ contract Azuki is Ownable, ERC721A, ReentrancyGuard {
   modifier callerIsUser() {
     require(tx.origin == msg.sender, "The caller is another contract");
     _;
-  }
-
-  function auctionMint(uint256 quantity) external payable callerIsUser {
-    uint256 _saleStartTime = uint256(saleConfig.auctionSaleStartTime);
-    require(
-      _saleStartTime != 0 && block.timestamp >= _saleStartTime,
-      "sale has not started yet"
-    );
-    require(
-      totalSupply() + quantity <= amountForAuctionAndDev,
-      "not enough remaining reserved for auction to support desired mint amount"
-    );
-    require(
-      numberMinted(msg.sender) + quantity <= maxPerAddressDuringMint,
-      "can not mint this many"
-    );
-    uint256 totalCost = getAuctionPrice(_saleStartTime) * quantity;
-    _safeMint(msg.sender, quantity);
-    refundIfOver(totalCost);
   }
 
   function allowlistMint() external payable callerIsUser {
@@ -116,49 +96,6 @@ contract Azuki is Ownable, ERC721A, ReentrancyGuard {
       publicPriceWei != 0 &&
       publicSaleKey != 0 &&
       block.timestamp >= publicSaleStartTime;
-  }
-
-  uint256 public constant AUCTION_START_PRICE = 1 ether;
-  uint256 public constant AUCTION_END_PRICE = 0.15 ether;
-  uint256 public constant AUCTION_PRICE_CURVE_LENGTH = 340 minutes;
-  uint256 public constant AUCTION_DROP_INTERVAL = 20 minutes;
-  uint256 public constant AUCTION_DROP_PER_STEP =
-    (AUCTION_START_PRICE - AUCTION_END_PRICE) /
-      (AUCTION_PRICE_CURVE_LENGTH / AUCTION_DROP_INTERVAL);
-
-  function getAuctionPrice(uint256 _saleStartTime)
-    public
-    view
-    returns (uint256)
-  {
-    if (block.timestamp < _saleStartTime) {
-      return AUCTION_START_PRICE;
-    }
-    if (block.timestamp - _saleStartTime >= AUCTION_PRICE_CURVE_LENGTH) {
-      return AUCTION_END_PRICE;
-    } else {
-      uint256 steps = (block.timestamp - _saleStartTime) /
-        AUCTION_DROP_INTERVAL;
-      return AUCTION_START_PRICE - (steps * AUCTION_DROP_PER_STEP);
-    }
-  }
-
-  function endAuctionAndSetupNonAuctionSaleInfo(
-    uint64 mintlistPriceWei,
-    uint64 publicPriceWei,
-    uint32 publicSaleStartTime
-  ) external onlyOwner {
-    saleConfig = SaleConfig(
-      0,
-      publicSaleStartTime,
-      mintlistPriceWei,
-      publicPriceWei,
-      saleConfig.publicSaleKey
-    );
-  }
-
-  function setAuctionSaleStartTime(uint32 timestamp) external onlyOwner {
-    saleConfig.auctionSaleStartTime = timestamp;
   }
 
   function setPublicSaleKey(uint32 key) external onlyOwner {
