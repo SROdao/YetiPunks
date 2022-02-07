@@ -165,7 +165,7 @@ contract ERC721A is
         return uint256(_addressData[owner].balance);
     }
 
-    function _numberMinted(address owner) internal view returns (uint256) {
+    function _numberMinted(address owner) public view returns (uint256) {
         require(
             owner != address(0),
             "ERC721A: number minted query for the zero address"
