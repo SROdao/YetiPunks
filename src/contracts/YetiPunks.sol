@@ -4,191 +4,139 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "./ERC721A.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 
-contract YetiPunks is ERC721A, Ownable, ReentrancyGuard {
-    using ECDSA for bytes32;
+contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
+  uint256 public immutable maxPerAddressDuringMint;
+  uint256 public immutable amountForDevs;
+  uint256 public immutable amountForAuctionAndDev;
 
-    enum Status {
-        Pending,
-        PreSale,
-        PublicSale,
-        Finished
+  mapping(address => uint256) public allowlist;
+
+  constructor(
+    uint256 maxBatchSize_,
+    uint256 collectionSize_,
+    uint256 amountForAuctionAndDev_,
+    uint256 amountForDevs_
+  ) ERC721A("Petty Monks", "PM", maxBatchSize_, collectionSize_) {
+    maxPerAddressDuringMint = maxBatchSize_;
+    amountForAuctionAndDev = amountForAuctionAndDev_;
+    amountForDevs = amountForDevs_;
+    require(
+      amountForAuctionAndDev_ <= collectionSize_,
+      "larger collection size needed"
+    );
+  }
+
+  modifier callerIsUser() {
+    require(tx.origin == msg.sender, "The caller is another contract");
+    _;
+  }
+
+  function allowlistMint() external payable callerIsUser {
+    uint256 price = 0.05 ether;
+    require(price != 0, "allowlist sale has not begun yet");
+    require(allowlist[msg.sender] > 0, "not eligible for allowlist mint");
+    require(totalSupply() + 1 <= collectionSize, "reached max supply");
+    allowlist[msg.sender]--;
+    _safeMint(msg.sender, 1);
+    refundIfOver(price);
+  }
+
+  function publicSaleMint(uint256 quantity)
+    external
+    payable
+    callerIsUser
+  {
+
+    uint256 publicPrice = 0.03 ether;
+
+    require(totalSupply() + quantity <= collectionSize, "reached max supply");
+    require(
+      numberMinted(msg.sender) + quantity <= maxPerAddressDuringMint,
+      "can not mint this many"
+    );
+    _safeMint(msg.sender, quantity);
+    refundIfOver(publicPrice * quantity);
+  }
+
+  function refundIfOver(uint256 price) private {
+    require(msg.value >= price, "Need to send more ETH.");
+    if (msg.value > price) {
+      payable(msg.sender).transfer(msg.value - price);
     }
+  }
 
-    Status public status;
-    string public baseURI;
-    address private _signer;
-    uint256 public immutable maxMint;
-    uint256 public immutable maxSupply;
-    uint256 public constant PRICE = 0.03 * 10**18; // 0.03 ETH
+  function isPublicSaleOn(
+    uint256 publicPriceWei,
+    uint256 publicSaleKey,
+    uint256 publicSaleStartTime
+  ) public view returns (bool) {
+    return
+      publicPriceWei != 0 &&
+      publicSaleKey != 0 &&
+      block.timestamp >= publicSaleStartTime;
+  }
 
-    mapping(address => bool) public publicMinted;
-
-    event Minted(address minter, uint256 amount);
-    event StatusChanged(Status status);
-    event SignerChanged(address signer);
-    event ReservedToken(address minter, address recipient, uint256 amount);
-    event BaseURIChanged(string newBaseURI);
-
-    constructor(
-        string memory initBaseURI,
-        address signer,
-        uint256 _maxBatchSize,
-        uint256 _collectionSize
-    ) ERC721A("PettyMonks", "PETTY", _maxBatchSize, _collectionSize) {
-        baseURI = initBaseURI;
-        _signer = signer;
-        maxMint = _maxBatchSize;
-        maxSupply = _collectionSize;
+  function seedAllowlist(address[] memory addresses, uint256[] memory numSlots)
+    external
+    onlyOwner
+  {
+    require(
+      addresses.length == numSlots.length,
+      "addresses does not match numSlots length"
+    );
+    for (uint256 i = 0; i < addresses.length; i++) {
+      allowlist[addresses[i]] = numSlots[i];
     }
+  }
 
-    function _hash(string calldata salt, address _address)
-        internal
-        view
-        returns (bytes32)
-    {
-        return keccak256(abi.encode(salt, address(this), _address));
+  // For marketing etc.
+  function devMint(uint256 quantity) external onlyOwner {
+    require(
+      totalSupply() + quantity <= amountForDevs,
+      "too many already minted before dev mint"
+    );
+    require(
+      quantity % maxBatchSize == 0,
+      "can only mint a multiple of the maxBatchSize"
+    );
+    uint256 numChunks = quantity / maxBatchSize;
+    for (uint256 i = 0; i < numChunks; i++) {
+      _safeMint(msg.sender, maxBatchSize);
     }
+  }
 
-    function _verify(bytes32 hash, bytes memory token)
-        internal
-        view
-        returns (bool)
-    {
-        return (_recover(hash, token) == _signer);
-    }
+  // metadata URI
+  string private _baseTokenURI;
 
-    function _recover(bytes32 hash, bytes memory token)
-        internal
-        pure
-        returns (address)
-    {
-        return hash.toEthSignedMessageHash().recover(token);
-        // toEthSignedMessageHash/recover:
-        // Returns an Ethereum Signed Message, created from a `hash`. 
-        // This produces hash corresponding to the one signed with the https://eth.wiki/json-rpc/API#eth_sign[`eth_sign`] JSON-RPC method as part of EIP-191.
-        // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/cryptography/ECDSA.sol#L74-L77
+  function _baseURI() internal view virtual override returns (string memory) {
+    return _baseTokenURI;
+  }
 
-        // toEthSignedMessageHash simply builds a hash and recover will return the address from a digest and a signature.
-    }
+  function setBaseURI(string calldata baseURI) external onlyOwner {
+    _baseTokenURI = baseURI;
+  }
 
-    function _baseURI() internal view override returns (string memory) {
-        return baseURI;
-    }
+  function withdrawMoney() external onlyOwner nonReentrant {
+    (bool success, ) = msg.sender.call{value: address(this).balance}("");
+    require(success, "Transfer failed.");
+  }
 
-    function presaleMint( // TODO: add whitelist address logic
-        uint256 amount,
-        string calldata salt,
-        bytes calldata token
-    ) external payable {
-        require(status == Status.PreSale, "PETTY: Presale is not active.");
-        require(
-            tx.origin == msg.sender,
-            "PETTY: contract is not allowed to mint."
-        );
-        require(
-            _verify(_hash(salt, msg.sender), token),
-            "PETTY: Invalid token."
-        );
-        require(
-            numberMinted(msg.sender) + amount <= maxMint,
-            "PETTY: Max mint amount per wallet exceeded."
-        );
-        require(
-            totalSupply() + amount <= collectionSize,
-            "PETTY: Max supply exceeded."
-        );
+  function setOwnersExplicit(uint256 quantity) external onlyOwner nonReentrant {
+    _setOwnersExplicit(quantity);
+  }
 
-        _safeMint(msg.sender, amount);
-        refundIfOver(PRICE * amount);
+  function numberMinted(address owner) public view returns (uint256) {
+    return _numberMinted(owner);
+  }
 
-        emit Minted(msg.sender, amount);
-    }
-
-    function mint() external payable {
-        require(
-            status == Status.PublicSale,
-            "PETTY: Public sale is not active."
-        );
-        require(
-            tx.origin == msg.sender,
-            "PETTY: contract is not allowed to mint."
-        );
-        require(
-            !publicMinted[msg.sender],
-            "PETTY: The wallet has already minted during public sale."
-        );
-        require(
-            totalSupply() + 1 <=
-                collectionSize,
-            "PETTY: Max supply exceeded."
-        );
-
-        _safeMint(msg.sender, 1);
-        publicMinted[msg.sender] = true;
-        refundIfOver(PRICE);
-
-        emit Minted(msg.sender, 1);
-    }
-
-    function refundIfOver(uint256 price) private {
-        // need this?
-        require(msg.value >= price, "PETTY: Need to send more ETH.");
-        if (msg.value > price) {
-            payable(msg.sender).transfer(msg.value - price);
-        }
-    }
-
-    function withdrawBalance() external nonReentrant onlyOwner {
-        uint256 oneThird = (address(this).balance * 33) / 100;
-        (bool manduSuccess, ) = payable(
-            0xD61ADc48afE9402B4411805Ce6026eF74F94E713
-        ).call{value: oneThird}("");
-        require(manduSuccess);
-        (bool somkidSuccess, ) = payable(
-            0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28
-        ).call{value: oneThird}("");
-        require(somkidSuccess);
-        (bool andreasSuccess, ) = payable(
-            0x49Cf0aF1cE6a50e822A91a427B3E29007f9C6C09
-        ).call{value: address(this).balance}("");
-        require(andreasSuccess);
-    }
-
-    function setBaseURI(string calldata newBaseURI) external onlyOwner {
-        baseURI = newBaseURI;
-        emit BaseURIChanged(newBaseURI);
-    }
-
-    function setStatus(Status _status) external onlyOwner {
-        status = _status;
-        emit StatusChanged(_status);
-    }
-
-    function setSigner(address signer) external onlyOwner {
-        _signer = signer;
-        emit SignerChanged(signer);
-    }
-
-    function setOwnersExplicit(uint256 quantity)
-        external
-        onlyOwner
-        nonReentrant
-    {
-        _setOwnersExplicit(quantity);
-    }
-
-    function numberMinted(address owner) public view returns (uint256) {
-        return _numberMinted(owner);
-    }
-
-    function getOwnershipData(uint256 tokenId)
-        external
-        view
-        returns (TokenOwnership memory)
-    {
-        return ownershipOf(tokenId);
-    }
+  function getOwnershipData(uint256 tokenId)
+    external
+    view
+    returns (TokenOwnership memory)
+  {
+    return ownershipOf(tokenId);
+  }
 }
