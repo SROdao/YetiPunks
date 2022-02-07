@@ -6,8 +6,6 @@ require('chai')
     .use(require('chai-as-promised'))
     .should()
 
-const EVM_REVERT = 'VM Exception while processing transaction: revert'
-
 contract('YetiPunks', ([deployerAddress, user]) => {
     let yetiPunks
 
@@ -39,9 +37,9 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             })
 
             it('Returns the address of the minter', async () => {
-                let event = result.logs[0].args
-                console.log("event.to", event.to)
-                event.to.should.equal(user)
+                const event = result.logs[0].args
+                const toAddress = event.to
+                toAddress.should.equal(user)
             })
             
             it('Updates the total supply', async () => {
@@ -82,6 +80,10 @@ contract('YetiPunks', ([deployerAddress, user]) => {
                 const numberMintedAfterTransfer = await yetiPunks.balanceOf(user)
                 numberMintedAfterTransfer.toString().should.equal('0')
             });
+
+            it(`refunds if value is over price`, async () => {
+                
+            });
         })
 
         describe('Failure', async () => {
@@ -100,6 +102,38 @@ contract('YetiPunks', ([deployerAddress, user]) => {
                 await yetiPunks.publicSaleMint(21, { from: user, value: web3.utils.toWei('0.03', 'ether') })
                     .should.be.rejectedWith('Reason given: can not mint this many')
             });
+        })
+    })
+
+    describe('Allow list Mint', async () => {
+        describe('Success', async () => {
+            let result
+
+            beforeEach(async () => {
+                yetiPunks = await YetiPunks.new(20, 6420, 20, 20)
+                result = await yetiPunks.allowlistMint({ from: user, value: web3.utils.toWei('0.03', 'ether') })
+            })
+
+            // it(`allows you to mint if you're on the list`, async () => {
+                
+            // });
+        })
+
+        describe('Failure', async () => {
+            let result
+
+            beforeEach(async () => {
+                yetiPunks = await YetiPunks.new(20, 6420, 20, 20)
+            })
+
+            it(`reverts if minter address is not on the allow list`, async () => {
+                await yetiPunks.allowlistMint({ from: user, value: web3.utils.toWei('0.02', 'ether') })
+                    .should.be.rejectedWith('Reason given: not eligible for allowlist mint')
+            });
+
+            // it(`reverts if trying to mint from contract address`, async () => {
+               
+            // });
         })
     })
 

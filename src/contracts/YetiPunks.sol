@@ -35,8 +35,7 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
   }
 
   function allowlistMint() external payable callerIsUser {
-    uint256 price = 0.05 ether;
-    require(price != 0, "allowlist sale has not begun yet");
+    uint256 price = 0.03 ether;
     require(allowlist[msg.sender] > 0, "not eligible for allowlist mint");
     require(totalSupply() + 1 <= collectionSize, "reached max supply");
     allowlist[msg.sender]--;
