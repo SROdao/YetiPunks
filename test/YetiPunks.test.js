@@ -41,13 +41,47 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             it('Returns the address of the minter', async () => {
                 let event = result.logs[0].args
                 console.log("event.to", event.to)
-                // event.to.should.equal(user)
+                event.to.should.equal(user)
             })
-
+            
             it('Updates the total supply', async () => {
                 result = await yetiPunks.totalSupply()
                 result.toString().should.equal('1')
             })
+
+            it(`shows how many NFTs a given address has minted so far (1 in beforeEach)`, async () => {
+                result = await yetiPunks._numberMinted(user)
+                result.toString().should.equal('1')
+            });
+
+            it(`shows that 1 has been minted after mint and transfer out of wallet`, async () => {
+                const numberMintedBeforeTransfer = await yetiPunks._numberMinted(user)
+                numberMintedBeforeTransfer.toString().should.equal('1')
+                
+                const vitalikWallet = '0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B'
+                const tokenId = 0 // the first token minted
+                await yetiPunks.safeTransferFrom(user, vitalikWallet, tokenId, {from: user})
+
+                const numberMintedAfterTransfer = await yetiPunks._numberMinted(user)
+                numberMintedAfterTransfer.toString().should.equal('1')
+            });
+
+            it(`shows the balance of NFTs a given address currently has`, async () => {
+                result = await yetiPunks.balanceOf(user)
+                result.toString().should.equal('1')
+            });
+
+            it(`shows that the balance is 0 after mint and transfer out of wallet`, async () => {
+                const numberMintedBeforeTransfer = await yetiPunks.balanceOf(user)
+                numberMintedBeforeTransfer.toString().should.equal('1')
+                
+                const vitalikWallet = '0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B'
+                const tokenId = 0 // the first token minted
+                await yetiPunks.safeTransferFrom(user, vitalikWallet, tokenId, {from: user})
+
+                const numberMintedAfterTransfer = await yetiPunks.balanceOf(user)
+                numberMintedAfterTransfer.toString().should.equal('0')
+            });
         })
 
         describe('Failure', async () => {
@@ -60,6 +94,11 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             it(`reverts if not enough ETH is sent for a mint`, async () => {
                 await yetiPunks.publicSaleMint(1, { from: user, value: web3.utils.toWei('0.02', 'ether') })
                     .should.be.rejectedWith('out of gas -- Reason given: Need to send more ETH..')
+            });
+
+            it(`reverts if trying to mint more than 20`, async () => {
+                await yetiPunks.publicSaleMint(21, { from: user, value: web3.utils.toWei('0.03', 'ether') })
+                    .should.be.rejectedWith('Reason given: can not mint this many')
             });
         })
     })
