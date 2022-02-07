@@ -15,21 +15,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
         let result
 
         beforeEach(async () => {
-            yetiPunks = await YetiPunks.new()
-        })
-
-        it("Is possible to set royalties", async () => {
-            await yetiPunks.setRoyalties(0, deployerAddress, 1000);
-            const royalties = await yetiPunks.getRaribleV2Royalties(0);
-            assert.equal(royalties[0].value, '1000');
-            assert.equal(royalties[0].account, deployerAddress);
-        })
-
-        if("Works with ERC2981 royalites", async () => {
-            let royalites = await yetiPunks.royaltyInfo(0, 100000);
-
-            assert.equal(royalites.royaltyAmount.toString(), '10000');
-            assert.equal(royalites.reciever, deployerAddress);
+            yetiPunks = await YetiPunks.new(20, 6420, 20, 20)
         })
 
         it('Returns the contract name', async () => {
@@ -41,34 +27,22 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             result = await yetiPunks.symbol()
             result.should.equal("PM")
         })
-
-        // TODO: decide if there's any reason to make MAX_SUPPLY public to be able to call this
-
-        // it('Returns the max supply', async () => { 
-        //     result = await yetiPunks.MAX_SUPPLY()
-        //     result.toString().should.equal('5000')
-        // })
-
-        // it('Checks if sale is active', async () => {
-        //     result = await yetiPunks.saleIsActive()
-        //     result.toString().should.equal('false')
-        // })
     })
 
-    describe('Minting', async () => {
+    describe('Public sale mint', async () => {
         describe('Success', async () => {
             let result
 
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new()
-                result = await yetiPunks.mint(1, { from: user, value: web3.utils.toWei('0.03', 'ether') })
+                yetiPunks = await YetiPunks.new(20, 6420, 20, 20)
+                result = await yetiPunks.publicSaleMint(1, { from: user, value: web3.utils.toWei('0.03', 'ether') })
             })
 
-            // it('Returns the address of the minter', async () => {
-            //     let event = result.logs[0].args
-            //     console.log("event.to", event.to)
-            //     // event.to.should.equal(user)
-            // })
+            it('Returns the address of the minter', async () => {
+                let event = result.logs[0].args
+                console.log("event.to", event.to)
+                // event.to.should.equal(user)
+            })
 
             it('Updates the total supply', async () => {
                 result = await yetiPunks.totalSupply()
@@ -80,8 +54,13 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             let result
 
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new()
+                yetiPunks = await YetiPunks.new(20, 6420, 20, 20)
             })
+
+            it(`reverts if not enough ETH is sent for a mint`, async () => {
+                await yetiPunks.publicSaleMint(1, { from: user, value: web3.utils.toWei('0.02', 'ether') })
+                    .should.be.rejectedWith('out of gas -- Reason given: Need to send more ETH..')
+            });
         })
     })
 
@@ -89,7 +68,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
         describe('Success', async () => {
 
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new()
+                yetiPunks = await YetiPunks.new(20, 6420, 20, 20)
             })
 
         })
