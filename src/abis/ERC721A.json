@@ -49498,7 +49498,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.4",
-  "updatedAt": "2022-02-07T03:46:58.937Z",
+  "updatedAt": "2022-02-08T03:33:53.757Z",
   "devdoc": {
     "details": "Implementation of https://eips.ethereum.org/EIPS/eip-721[ERC721] Non-Fungible Token Standard, including the Metadata and Enumerable extension. Built to optimize for lower gas during batch mints. Assumes serials are sequentially minted starting at 0 (e.g. 0, 1, 2, 3..). Assumes the number of issuable tokens (collection size) is capped and fits in a uint128. Does not support burning tokens to address(0).",
     "kind": "dev",
