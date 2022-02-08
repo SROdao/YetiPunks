@@ -118,9 +118,20 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
     _baseTokenURI = baseURI;
   }
 
-  function withdrawMoney() external onlyOwner nonReentrant {
-    (bool success, ) = msg.sender.call{value: address(this).balance}("");
-    require(success, "Transfer failed.");
+  function withdrawBalance() public onlyOwner {
+      uint256 oneThird = (address(this).balance * 33) / 100;
+      (bool manduSuccess, ) = payable(
+          0xD61ADc48afE9402B4411805Ce6026eF74F94E713
+      ).call{value: oneThird}("");
+      require(manduSuccess);
+      (bool tenzingSuccess, ) = payable(
+          0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28
+      ).call{value: oneThird}("");
+      require(tenzingSuccess);
+      (bool tokiMoriSuccess, ) = payable(
+          0x49Cf0aF1cE6a50e822A91a427B3E29007f9C6C09
+      ).call{value: address(this).balance}("");
+      require(tokiMoriSuccess);
   }
 
   function setOwnersExplicit(uint256 quantity) external onlyOwner nonReentrant {

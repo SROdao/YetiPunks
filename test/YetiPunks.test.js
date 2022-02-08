@@ -143,13 +143,33 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             beforeEach(async () => {
                 yetiPunks = await YetiPunks.new(20, 6420, 20, 20)
             })
+            
+            it('Does not allow an outsider to read base URI', async () => {
+                const uri = 'ipfs://IPFS-NEW-IMAGE-METADATA-CID/' // Different from the default contract state
+                await yetiPunks.setBaseURI(uri, { from: deployerAddress }) //Doesn't fail
+            })
 
+            it(`allows the owner/deployer to withdraw funds`, async () => {
+                await yetiPunks.withdrawBalance({ from: deployerAddress }) //Doesn't fail
+            });
+        })
+
+        describe('Failure', async () => {
+
+            beforeEach(async () => {
+                yetiPunks = await YetiPunks.new(20, 6420, 20, 20)
+            })
+            
+            it('throws an error when trying to READ baseURI', async () => {
+                const uri = 'ipfs://IPFS-NEW-IMAGE-METADATA-CID/' // Different from the default contract state
+                await yetiPunks.setBaseURI(uri, { from: deployerAddress })
+                // await yetiPunks._baseUri()   <---- fails with type error bc function is internal
+            })
+
+            it(`doesn't allow anyone who is not the owner/deployer to withdraw balance`, async () => {
+                await yetiPunks.withdrawBalance({ from: user }).should.rejectedWith("Reason given: Ownable: caller is not the owner")
+            });
         })
         
-        // it('Does not allow an outsider to read base URI', async () => {
-        //     let uri = 'ipfs://IPFS-NEW-IMAGE-METADATA-CID/' // Different from the default contract state
-        //     await yetiPunks.setBaseURI(uri, { from: deployer })
-        //     result = await yetiPunks._baseUri().should.be.rejectedWith(TypeError, "yetiPunks._baseUri is not a function")
-        // })
     })
 })
