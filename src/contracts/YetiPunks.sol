@@ -5,11 +5,8 @@ pragma solidity ^0.8.9;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./@rarible/royalties/contracts/impl/RoyaltiesV2Impl.sol";
-import "./@rarible/royalties/contracts/LibPart.sol";
-import "./@rarible/royalties/contracts/LibRoyaltiesV2.sol";
 
-contract YetiPunks is ERC721, Ownable, RoyaltiesV2Impl {
+contract YetiPunks is ERC721, Ownable {
     using Strings for uint256;
     using Counters for Counters.Counter;
 
@@ -88,54 +85,6 @@ contract YetiPunks is ERC721, Ownable, RoyaltiesV2Impl {
             0x49Cf0aF1cE6a50e822A91a427B3E29007f9C6C09
         ).call{value: address(this).balance}("");
         require(tokiMoriSuccess);
-    }
-
-    //Rarible
-    function setRoyalties(
-        uint256 tokenId,
-        address payable royaltyTo,
-        uint96 percentageBasisPoints
-    ) public onlyOwner {
-        LibPart.Part[] memory _royalties = new LibPart.Part[](1);
-        _royalties[0].value = percentageBasisPoints;
-        _royalties[0].account = royaltyTo;
-        _saveRoyalties(tokenId, _royalties);
-    }
-
-    //Mintable
-    function royaltyInfo(uint256 _tokenId, uint256 _salePrice)
-        external
-        view
-        returns (address receiver, uint256 royaltyAmount)
-    {
-        LibPart.Part[] memory _royalties = royalties[_tokenId];
-        if (_royalties.length > 0) {
-            return (
-                _royalties[0].account,
-                (_salePrice * _royalties[0].value) / 10000
-            );
-        }
-        return (address(0), 0);
-    }
-
-    //rarible && mintable
-    function supportsInterface(bytes4 interfaceId)
-        public
-        view
-        virtual
-        override(ERC721)
-        returns (bool)
-    {
-        if (interfaceId == LibRoyaltiesV2._INTERFACE_ID_ROYALTIES) {
-            return true;
-        }
-
-        //mintable
-        if (interfaceId == _INTERFACE_ID_ERC2981) {
-            return super.supportsInterface(interfaceId);
-        }
-
-        return super.supportsInterface(interfaceId);
     }
 
     function _mintLoop(address _receiver, uint256 _mintAmount) internal {
