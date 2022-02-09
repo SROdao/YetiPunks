@@ -10,7 +10,7 @@ import Footer from './Footer'
 
 function App() {
 	const [isVisible, setIsVisible] = useState(false);
-
+	const [isPresale, setIsPresale] = useState(false);
 	const [web3, setWeb3] = useState(null)
 	const [yetiPunks, setYetiPunks] = useState(null)
 
@@ -213,26 +213,58 @@ function App() {
 			setMintAmount(newMintAmount)
 		}
 	}
+	
+	//JUnk this?
+	const checkPresale = ()=> {
+		let preSaleDate =  new Date(Date.UTC(2022,1,1));
+		let mintDate =  new Date(Date.UTC(2022,1,1));
+		let now = Date.now();
+		
+		console.log("Checking Presale - "+now);
+		if(now<preSaleDate)
+			setIsPresale(false)
+		if(now>preSaleDate && now<mintDate)
+			setIsPresale(true);
+		if(now>mintDate){
+			setIsPresale(false)
+
+		}
+		
+	};
 
 	const mintButton = () => {
-		return(
-			<>
-				<div className="input-and-button">
-					<button className="btn green-btn" onClick={decrementMintAmount}>-</button>
-					<input className="mint-input" type = 'number' min='1' max='20' placeholder="1" value={mintAmount} onChange={e => handleMintAmountChange(e)}></input>
-					<button className="btn green-btn" onClick={incrementMintAmount}>+</button>
-				</div>
-				<div className="plus-minus">
-					<button onClick={() => mintNFTHandler(mintAmount)} className='btn mint-btn'> MINT </button>
-				</div>
-			</>
-		)
+		if(isPresale)
+			return(
+				<>
+					<div className="input-and-button">
+						<button className="btn green-btn" onClick={decrementMintAmount}>-</button>
+						<input className="mint-input" type = 'number' min='1' max='20' placeholder="1" value={mintAmount} onChange={e => handleMintAmountChange(e)}></input>
+						<button className="btn green-btn" onClick={incrementMintAmount}>+</button>
+					</div>
+					<div className="plus-minus">
+						<button onClick={() => mintNFTHandler(mintAmount)} className='btn mint-btn'> MINT </button>
+					</div>
+				</>
+			)
+
+			return(
+				<>
+					<div className="input-and-button">
+						<button className="btn green-btn" onClick={decrementMintAmount}>-</button>
+						<input className="mint-input" type = 'number' min='1' max='5' placeholder="1" value={mintAmount} onChange={e => handleMintAmountChange(e)}></input>
+						<button className="btn green-btn" onClick={incrementMintAmount}>+</button>
+					</div>
+					<div className="plus-minus">
+						<button onClick={() => mintNFTHandler(mintAmount)} className='btn mint-btn'> MINT </button>
+					</div>
+				</>
+			)
 	}
 
 	const connectButton = () => {
 		return(
 			<div className="plus-minus">
-				<button onClick={web3Handler} className="btn mint-btn">Connect Wallet</button>
+				<button onClick={web3Handler} className="btn mint-btn">Connect</button>
 			</div>
 
 		)
@@ -281,6 +313,9 @@ function App() {
 	}
 
 	useEffect(() => {
+		const interval = setInterval(() => {
+			checkPresale();
+		  }, 1000);
 		loadWeb3()
 		loadBlockchainData()
 		verifyUserOnEthereumNetwork()
@@ -292,7 +327,7 @@ function App() {
 
 			{usersAccount ? (
 				<>
-					<Main button={mintButton()} supplyAvailable={supplyAvailable} />
+					<Main button={mintButton()} supplyAvailable={supplyAvailable} isPresale={isPresale} />
 					{/* <button onClick={withdrawFunds}>Withdraw</button> */}	
 				</>
 			) : (
