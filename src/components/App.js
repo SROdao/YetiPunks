@@ -216,9 +216,10 @@ function App() {
 	
 	//JUnk this?
 	const checkPresale = ()=> {
-		let preSaleDate = new Date('Feb 18, 2022 02:30:00');
-		let mintDate =  new Date('Feb 19, 2022 02:30:00');
+		let preSaleDate =  new Date(Date.UTC(2022,1,1));
+		let mintDate =  new Date(Date.UTC(2022,1,1));
 		let now = Date.now();
+		
 		console.log("Checking Presale - "+now);
 		if(now<preSaleDate)
 			setIsPresale(false)
@@ -312,6 +313,9 @@ function App() {
 	}
 
 	useEffect(() => {
+		const interval = setInterval(() => {
+			checkPresale();
+		  }, 1000);
 		loadWeb3()
 		loadBlockchainData()
 		verifyUserOnEthereumNetwork()
