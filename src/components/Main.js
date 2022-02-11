@@ -2,7 +2,7 @@ import React from 'react'
 
 import CarouselComponent from './CarouselComponent'
 
-const Main = ({button, supplyAvailable, isPresale}) => {
+const Main = ({button, supplyAvailable, isPublic}) => {
     return (
         <div className = "main">
             {/* <div className="prints"> */}
@@ -20,7 +20,7 @@ const Main = ({button, supplyAvailable, isPresale}) => {
                         <h6>THANK YOU YETI PUNKS </h6>
                         <h6>YOU CAN STILL SNAG A YETI ON THE SECONDARY MARKET</h6>
                     </div>) : 
-                    (isPresale ? 
+                    (!isPublic ? 
                         (<div className="minting-section">
                         <h6>0.03 ETH</h6>
                         <h6>Max 5 per txn</h6>

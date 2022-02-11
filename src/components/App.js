@@ -10,7 +10,7 @@ import Footer from './Footer'
 
 function App() {
 	const [isVisible, setIsVisible] = useState(false);
-	const [isPresale, setIsPresale] = useState(false);
+	const [isPublic, setIsPublic] = useState(false);
 	const [web3, setWeb3] = useState(null)
 	const [yetiPunks, setYetiPunks] = useState(null)
 
@@ -27,6 +27,7 @@ function App() {
 	
 	const MAX_YETI_COUNT = 10000;
 	const contractAddress = "0x716Cc763C6DC805Ff9d0f58bb63131383DF2471E"
+	const NOSALE = "NoSale", PRESALE = "PreSale", PUBLICSALE = "PublicSale"
 
 	const prevScrollY = useRef(0);
 	useEffect(() => {
@@ -215,25 +216,12 @@ function App() {
 	}
 	
 	//JUnk this?
-	const checkPresale = ()=> {
-		let preSaleDate =  new Date(Date.UTC(2022,1,1));
-		let mintDate =  new Date(Date.UTC(2022,1,1));
-		let now = Date.now();
-		
-		console.log("Checking Presale - "+now);
-		if(now<preSaleDate)
-			setIsPresale(false)
-		if(now>preSaleDate && now<mintDate)
-			setIsPresale(true);
-		if(now>mintDate){
-			setIsPresale(false)
-
-		}
-		
+	const checkPublic = ()=> {		
+			setIsPublic(true)				
 	};
 
 	const mintButton = () => {
-		if(isPresale)
+		if(isPublic)
 			return(
 				<>
 					<div className="input-and-button">
@@ -313,12 +301,11 @@ function App() {
 	}
 
 	useEffect(() => {
-		const interval = setInterval(() => {
-			checkPresale();
-		  }, 1000);
+		const timeOut = setTimeout(() => checkPublic, 1000 * 60 * 60 * 24);
 		loadWeb3()
 		loadBlockchainData()
 		verifyUserOnEthereumNetwork()
+		console.log(timeOut);
 	}, [usersAccount]);
 
 	return (
@@ -327,7 +314,7 @@ function App() {
 
 			{usersAccount ? (
 				<>
-					<Main button={mintButton()} supplyAvailable={supplyAvailable} isPresale={isPresale} />
+					<Main button={mintButton()} supplyAvailable={supplyAvailable} isPresale={isPublic} />
 					{/* <button onClick={withdrawFunds}>Withdraw</button> */}	
 				</>
 			) : (
