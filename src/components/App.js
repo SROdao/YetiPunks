@@ -100,7 +100,7 @@ function App() {
 		}
 	}
 
-
+	// TODO: switch to mainnet before launch
 	const verifyUserOnEthereumNetwork = async () => {
 		const rinkeby = '0x4'
 		const ethereumMainnet = '0x1'
@@ -198,6 +198,11 @@ function App() {
 			setMintAmount(newMintAmount)
 		}
 	}
+	
+	//JUnk this?
+	const checkPublic = ()=> {		
+			setIsPublic(true)				
+	};
 
 	const setPublicSale = () => {
 		setIsPublic(true)
@@ -222,7 +227,7 @@ function App() {
 	const connectButton = () => {
 		return (
 			<div className="plus-minus">
-				<button onClick={web3Handler} className="btn mint-btn">Connect Wallet</button>
+				<button onClick={web3Handler} className="btn mint-btn">Connect</button>
 			</div>
 
 		)
@@ -275,6 +280,7 @@ function App() {
 		loadWeb3()
 		loadBlockchainData()
 		verifyUserOnEthereumNetwork()
+		console.log(timeOut);
 	}, [usersAccount]);
 
 	return (
