@@ -10,7 +10,7 @@ import Footer from './Footer'
 
 function App() {
 	const [isVisible, setIsVisible] = useState(false);
-
+	const [isPublic, setIsPublic] = useState(false);
 	const [web3, setWeb3] = useState(null)
 	const [yetiPunks, setYetiPunks] = useState(null)
 
