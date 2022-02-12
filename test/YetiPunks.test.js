@@ -186,8 +186,17 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             it('Allows onwer to set baseURI', async () => {
                 const uri = 'ipfs://IPFS-NEW-IMAGE-METADATA-CID/' // Different from the default contract state
                 await yetiPunks.setBaseURI(uri, { from: deployerAddress }) // Doesn't fail
+                // An assert reading baseURI would fail due to not being public/external
             })
 
+            it('Allows onwer to set notRevealedUri', async () => {
+                const uri = 'ipfs://IPFS-NEW-IMAGE-METADATA-CID/' // Different from the default contract state
+                
+                await yetiPunks.setNotRevealedURI(uri, { from: deployerAddress })
+
+                const result = await yetiPunks.notRevealedUri()
+                result.toString().should.equal(uri)
+            })
 
             it(`allows the owner/deployer to withdraw all funds`, async () => {
                 await yetiPunks.seedAllowlist([user], [user])
@@ -222,6 +231,12 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             it(`doesn't allow non-owner to set baseUri`, async () => {
                 const uri = 'ipfs://IPFS-NEW-IMAGE-METADATA-CID/' // Different from the default contract state
                 await yetiPunks.setBaseURI(uri, { from: user })
+                    .should.be.rejectedWith('Reason given: Ownable: caller is not the owner')
+            });
+
+            it(`doesn't allow non-owner to set notRevealedUri`, async () => {
+                const uri = 'ipfs://IPFS-NEW-IMAGE-METADATA-CID/' // Different from the default contract state
+                await yetiPunks.setNotRevealedURI(uri, { from: user })
                     .should.be.rejectedWith('Reason given: Ownable: caller is not the owner')
             });
 

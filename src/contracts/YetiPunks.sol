@@ -116,7 +116,7 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
     }
 
     function setNotRevealedURI(string memory _notRevealedURI) public onlyOwner {
-        _baseTokenURI = _notRevealedURI;
+        notRevealedUri = _notRevealedURI;
     }
 
     function setBaseURI(string calldata baseURI) external onlyOwner {
