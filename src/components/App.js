@@ -10,7 +10,7 @@ import Footer from './Footer'
 
 function App() {
 	const [isVisible, setIsVisible] = useState(false);
-
+	const [isPublic, setIsPublic] = useState(false);
 	const [web3, setWeb3] = useState(null)
 	const [yetiPunks, setYetiPunks] = useState(null)
 
@@ -27,6 +27,7 @@ function App() {
 	
 	const MAX_YETI_COUNT = 10000;
 	const contractAddress = "0x716Cc763C6DC805Ff9d0f58bb63131383DF2471E"
+	const NOSALE = "NoSale", PRESALE = "PreSale", PUBLICSALE = "PublicSale"
 
 	const prevScrollY = useRef(0);
 	useEffect(() => {
@@ -119,14 +120,16 @@ function App() {
 		}
 	}
 
-
+	// TODO: switch to mainnet before launch
 	const verifyUserOnEthereumNetwork = async () => {
-		// if (currentNetwork !== 4 || currentNetwork !== 1) {
-		// 	await window.ethereum.request({
-		// 		method: 'wallet_switchEthereumChain',
-		// 		params: [{ chainId: '0x1' }], // chainId must be in hexadecimal numbers
-		// 	  });
-		// }
+		const rinkeby = '0x4'
+		const ethereumMainnet = '0x1'
+		if (currentNetwork !== 4 || currentNetwork !== 1) {
+			await window.ethereum.request({
+				method: 'wallet_switchEthereumChain',
+				params: [{ chainId: rinkeby }], // chainId must be in hexadecimal numbers
+			  });
+		}
 	}
 
 	const mintNFTHandler = (numberOfTokens) => {
@@ -213,26 +216,45 @@ function App() {
 			setMintAmount(newMintAmount)
 		}
 	}
+	
+	//JUnk this?
+	const checkPublic = ()=> {		
+			setIsPublic(true)				
+	};
 
 	const mintButton = () => {
-		return(
-			<>
-				<div className="input-and-button">
-					<button className="btn green-btn" onClick={decrementMintAmount}>-</button>
-					<input className="mint-input" type = 'number' min='1' max='20' placeholder="1" value={mintAmount} onChange={e => handleMintAmountChange(e)}></input>
-					<button className="btn green-btn" onClick={incrementMintAmount}>+</button>
-				</div>
-				<div className="plus-minus">
-					<button onClick={() => mintNFTHandler(mintAmount)} className='btn mint-btn'> MINT </button>
-				</div>
-			</>
-		)
+		if(isPublic)
+			return(
+				<>
+					<div className="input-and-button">
+						<button className="btn green-btn" onClick={decrementMintAmount}>-</button>
+						<input className="mint-input" type = 'number' min='1' max='20' placeholder="1" value={mintAmount} onChange={e => handleMintAmountChange(e)}></input>
+						<button className="btn green-btn" onClick={incrementMintAmount}>+</button>
+					</div>
+					<div className="plus-minus">
+						<button onClick={() => mintNFTHandler(mintAmount)} className='btn mint-btn'> MINT </button>
+					</div>
+				</>
+			)
+
+			return(
+				<>
+					<div className="input-and-button">
+						<button className="btn green-btn" onClick={decrementMintAmount}>-</button>
+						<input className="mint-input" type = 'number' min='1' max='5' placeholder="1" value={mintAmount} onChange={e => handleMintAmountChange(e)}></input>
+						<button className="btn green-btn" onClick={incrementMintAmount}>+</button>
+					</div>
+					<div className="plus-minus">
+						<button onClick={() => mintNFTHandler(mintAmount)} className='btn mint-btn'> MINT </button>
+					</div>
+				</>
+			)
 	}
 
 	const connectButton = () => {
 		return(
 			<div className="plus-minus">
-				<button onClick={web3Handler} className="btn mint-btn">Connect Wallet</button>
+				<button onClick={web3Handler} className="btn mint-btn">Connect</button>
 			</div>
 
 		)
@@ -281,9 +303,11 @@ function App() {
 	}
 
 	useEffect(() => {
+		const timeOut = setTimeout(() => checkPublic, 1000 * 60 * 60 * 24);
 		loadWeb3()
 		loadBlockchainData()
 		verifyUserOnEthereumNetwork()
+		console.log(timeOut);
 	}, [usersAccount]);
 
 	return (
@@ -292,7 +316,7 @@ function App() {
 
 			{usersAccount ? (
 				<>
-					<Main button={mintButton()} supplyAvailable={supplyAvailable} />
+					<Main button={mintButton()} supplyAvailable={supplyAvailable} isPresale={isPublic} />
 					{/* <button onClick={withdrawFunds}>Withdraw</button> */}	
 				</>
 			) : (
