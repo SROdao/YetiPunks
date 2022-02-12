@@ -41,7 +41,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
                 const toAddress = event.to
                 toAddress.should.equal(user)
             })
-            
+
             it('Updates the total supply', async () => {
                 result = await yetiPunks.totalSupply()
                 result.toString().should.equal('1')
@@ -55,10 +55,10 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             it(`shows that 1 has been minted after mint and transfer out of wallet`, async () => {
                 const numberMintedBeforeTransfer = await yetiPunks._numberMinted(user)
                 numberMintedBeforeTransfer.toString().should.equal('1')
-                
+
                 const vitalikWallet = '0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B'
                 const tokenId = 0 // the first token minted
-                await yetiPunks.safeTransferFrom(user, vitalikWallet, tokenId, {from: user})
+                await yetiPunks.safeTransferFrom(user, vitalikWallet, tokenId, { from: user })
 
                 const numberMintedAfterTransfer = await yetiPunks._numberMinted(user)
                 numberMintedAfterTransfer.toString().should.equal('1')
@@ -72,17 +72,17 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             it(`shows that the balance is 0 after mint and transfer out of wallet`, async () => {
                 const numberMintedBeforeTransfer = await yetiPunks.balanceOf(user)
                 numberMintedBeforeTransfer.toString().should.equal('1')
-                
+
                 const vitalikWallet = '0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B'
                 const tokenId = 0 // the first token minted
-                await yetiPunks.safeTransferFrom(user, vitalikWallet, tokenId, {from: user})
+                await yetiPunks.safeTransferFrom(user, vitalikWallet, tokenId, { from: user })
 
                 const numberMintedAfterTransfer = await yetiPunks.balanceOf(user)
                 numberMintedAfterTransfer.toString().should.equal('0')
             });
 
             // it(`refunds if value is over price`, async () => {
-                
+
             // });
         })
 
@@ -113,7 +113,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
                 yetiPunks = await YetiPunks.new(20, 6420, 20, 20, "https://safelips.online/assets/meta/contract.json")
                 await yetiPunks.seedAllowlist([user], [user])
             })
-            
+
             it(`allows you to mint if you're on the list`, async () => {
                 result = await yetiPunks.allowlistMint(5, { from: user, value: web3.utils.toWei('0.15', 'ether') })
             });
@@ -140,7 +140,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             });
 
             // it(`reverts if trying to mint from contract address`, async () => {
-               
+
             // });
         })
     })
@@ -182,14 +182,24 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             beforeEach(async () => {
                 yetiPunks = await YetiPunks.new(20, 6420, 20, 20, "https://safelips.online/assets/meta/contract.json")
             })
-            
-            it('Does not allow an outsider to read base URI', async () => {
+
+            it('Allows onwer to set baseURI', async () => {
                 const uri = 'ipfs://IPFS-NEW-IMAGE-METADATA-CID/' // Different from the default contract state
-                await yetiPunks.setBaseURI(uri, { from: deployerAddress }) //Doesn't fail
+                await yetiPunks.setBaseURI(uri, { from: deployerAddress }) // Doesn't fail
             })
 
-            it(`allows the owner/deployer to withdraw funds`, async () => {
-                await yetiPunks.withdrawBalance({ from: deployerAddress }) //Doesn't fail
+
+            it(`allows the owner/deployer to withdraw all funds`, async () => {
+                await yetiPunks.seedAllowlist([user], [user])
+                await yetiPunks.allowlistMint(5, { from: user, value: web3.utils.toWei('0.15', 'ether') })
+
+                let balanceBefore = await web3.eth.getBalance(yetiPunks.address)
+                balanceBefore.should.equal('150000000000000000')
+
+                await yetiPunks.withdrawBalance({ from: deployerAddress })
+
+                let balance = await web3.eth.getBalance(yetiPunks.address)
+                balance.should.equal('0')
             });
 
             // Update pre-reveal URI
@@ -202,17 +212,24 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             beforeEach(async () => {
                 yetiPunks = await YetiPunks.new(20, 6420, 20, 20, "https://safelips.online/assets/meta/contract.json")
             })
-            
+
             it('throws an error when trying to READ baseURI', async () => {
                 const uri = 'ipfs://IPFS-NEW-IMAGE-METADATA-CID/' // Different from the default contract state
                 await yetiPunks.setBaseURI(uri, { from: deployerAddress })
                 // await yetiPunks._baseUri()   <---- fails with type error bc function is internal
             })
 
+            it(`doesn't allow non-owner to set baseUri`, async () => {
+                const uri = 'ipfs://IPFS-NEW-IMAGE-METADATA-CID/' // Different from the default contract state
+                await yetiPunks.setBaseURI(uri, { from: user })
+                    .should.be.rejectedWith('Reason given: Ownable: caller is not the owner')
+            });
+
             it(`doesn't allow anyone who is not the owner/deployer to withdraw balance`, async () => {
-                await yetiPunks.withdrawBalance({ from: user }).should.rejectedWith("Reason given: Ownable: caller is not the owner")
+                await yetiPunks.withdrawBalance({ from: user })
+                    .should.rejectedWith("Reason given: Ownable: caller is not the owner")
             });
         })
-        
+
     })
 })
