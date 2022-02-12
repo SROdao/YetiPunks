@@ -27,25 +27,6 @@ function App() {
 
 	const MAX_YETI_COUNT = 6420;
 	const contractAddress = "0x716Cc763C6DC805Ff9d0f58bb63131383DF2471E"
-
-	const prevScrollY = useRef(0);
-	useEffect(() => {
-		const handleScroll = () => {
-		  const currentScrollY = window.scrollY;
-		  if (prevScrollY.current < currentScrollY ) {
-			setIsVisible(false);
-		  }
-		  if (prevScrollY.current > currentScrollY ) {
-			setIsVisible(true);
-		  }
-	
-		  prevScrollY.current = currentScrollY;
-		};
-	
-		window.addEventListener("scroll", handleScroll, { passive: true });
-	
-		return () => window.removeEventListener("scroll", handleScroll);
-	  });
 	  
 	const loadBlockchainData = async () => {
 		// Fetch Contract, Data, etc.
