@@ -10,7 +10,7 @@ import Footer from './Footer'
 
 function App() {
 	const [isVisible, setIsVisible] = useState(false);
-	const [isPublic, setIsPublic] = useState(false);
+	const [maxPerTxn, setmaxPerTxn] = useState(5);
 	const [web3, setWeb3] = useState(null)
 	const [yetiPunks, setYetiPunks] = useState(null)
 
@@ -27,7 +27,7 @@ function App() {
 
 	const MAX_YETI_COUNT = 6420;
 	const contractAddress = "0x716Cc763C6DC805Ff9d0f58bb63131383DF2471E"
-	  
+
 	const loadBlockchainData = async () => {
 		// Fetch Contract, Data, etc.
 		if (web3) {
@@ -173,7 +173,6 @@ function App() {
 	}
 
 	const handleMintAmountChange = (e) => {
-		const maxPerTxn = isPublic ? 20 : 5
 		if (e.target.value <= maxPerTxn && e.target.valueAsNumber >= 0) {
 			const newMintAmouint = e.target.valueAsNumber
 			setMintAmount(newMintAmouint)
@@ -185,7 +184,6 @@ function App() {
 	}
 
 	const incrementMintAmount = () => {
-		const maxPerTxn = isPublic ? 20 : 5
 		if (mintAmount < maxPerTxn) {
 			const newMintAmount = mintAmount + 1;
 			setMintAmount(newMintAmount)
@@ -198,23 +196,18 @@ function App() {
 			setMintAmount(newMintAmount)
 		}
 	}
-	
-	//JUnk this?
-	const checkPublic = ()=> {		
-			setIsPublic(true)				
-	};
 
 	const setPublicSale = () => {
-		setIsPublic(true)
+		setmaxPerTxn(20)
 	};
-	console.log("isPublic: ", isPublic)
+	console.log("maxPerTxn: ", maxPerTxn)
 
 	const mintButton = () => {
 		return (
 			<>
 				<div className="input-and-button">
 					<button className="btn green-btn" onClick={decrementMintAmount}>-</button>
-					<input className="mint-input" type='number' min='1' max={isPublic ? '20' : '5'} placeholder="1" value={mintAmount} onChange={e => handleMintAmountChange(e)}></input>
+					<input className="mint-input" type='number' min='1' max={maxPerTxn} placeholder="1" value={mintAmount} onChange={e => handleMintAmountChange(e)}></input>
 					<button className="btn green-btn" onClick={incrementMintAmount}>+</button>
 				</div>
 				<div className="plus-minus">
@@ -276,11 +269,11 @@ function App() {
 	}
 
 	useEffect(() => {
-		const timeOut = setTimeout(setPublicSale, 1000 * 60 * 60 * 24);
+		const oneDay = 1000 * 60 * 60 * 24
+		const timeOut = setTimeout(setPublicSale, oneDay);
 		loadWeb3()
 		loadBlockchainData()
 		verifyUserOnEthereumNetwork()
-		console.log(timeOut);
 	}, [usersAccount]);
 
 	return (
@@ -289,7 +282,7 @@ function App() {
 
 			{usersAccount ? (
 				<>
-					<Main button={mintButton()} supplyAvailable={supplyAvailable} isPresale={isPublic} maxYetis={MAX_YETI_COUNT} />
+					<Main button={mintButton()} supplyAvailable={supplyAvailable} maxPerTxn={maxPerTxn} maxYetis={MAX_YETI_COUNT} />
 					{/* <button onClick={withdrawFunds}>Withdraw</button> */}
 				</>
 			) : (

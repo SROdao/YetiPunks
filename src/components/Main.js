@@ -2,7 +2,7 @@ import React from 'react'
 
 import CarouselComponent from './CarouselComponent'
 
-const Main = ({ button, supplyAvailable, isPublic, maxYetis }) => {
+const Main = ({ button, supplyAvailable, maxPerTxn, maxYetis }) => {
     return (
         <div className="main">
             {/* <div className="prints"> */}
@@ -21,7 +21,7 @@ const Main = ({ button, supplyAvailable, isPublic, maxYetis }) => {
                     </div>) :
                     <div className="minting-section">
                         <h6>0.03 ETH</h6>
-                        <h6>Max {isPublic ? '20' : '5'} per txn</h6>
+                        <h6>Max {maxPerTxn} per txn</h6>
                         <h6>Unlimited per wallet</h6>
                         <h6>Remaining: {supplyAvailable}/{maxYetis}</h6>
                         {button}
