@@ -29,7 +29,7 @@ const About = () => {
                     far away from civilization and far away from the chaos.
                     they live a simple life, filled with good vibes and only the best herb.
                     the water from the ice cap mountains is filled with magical nutrients that grows nugs the size of a tree in the redwood forest.
-                    all YETIPUNKS have different traits and features but they pride themselves on inclusivity and community. 
+                    all YETIPUNKS have different traits and features but they pride themselves on inclusivity and community.
                     they're always down to lend a helping hand, so never fear…
                     you will always have a fren in the YETIPUNKS
                 </p>
@@ -37,20 +37,20 @@ const About = () => {
 
             </div>
             <div className="bio-section">
-            {
-                yetis.map ( yeti =>
-                    <div className='bio-square' key={yeti.name}>
-                        <div className='bio-card'>
-                            <img className='avatar' src={yeti.profile} alt="yeti-avatar" />
-                            <h6>{yeti.name}</h6>
+                {
+                    yetis.map(yeti =>
+                        <div className='bio-square' key={yeti.name}>
+                            <div className='bio-card'>
+                                <img className='avatar' src={yeti.profile} alt="yeti-avatar" />
+                                <h6>{yeti.name}</h6>
+                            </div>
+                            <div className='bio'>
+                                <p>{yeti.bio}</p>
+                            </div>
                         </div>
-                        <div className='bio'>
-                            <p>{yeti.bio}</p>
-                        </div>
-                    </div>
-                )
-            }
-            
+                    )
+                }
+
             </div>
         </div>
 
