@@ -11,6 +11,7 @@ module.exports = async function (deployer) {
         20,
         6420,
         20,
-        20
+        20,
+        "https://safelips.online/assets/meta/contract.json"
     )
 };

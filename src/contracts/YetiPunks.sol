@@ -8,7 +8,7 @@ import "./ERC721A.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
 contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
-    uint256 public immutable maxPerAddressDuringPublicSale;
+    uint256 public immutable maxPerTxn;
     uint256 public immutable maxPerAddressDuringPresale = 5;
     uint256 public immutable amountForDevs;
     uint256 public immutable amountForAuctionAndDev;
@@ -23,7 +23,7 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
         uint256 amountForDevs_,
         string memory _initNotRevealedUri
     ) ERC721A("Petty Monks", "PM", maxBatchSize_, collectionSize_) {
-        maxPerAddressDuringPublicSale = maxBatchSize_;
+        maxPerTxn = maxBatchSize_;
         amountForAuctionAndDev = amountForAuctionAndDev_;
         amountForDevs = amountForDevs_;
         require(
@@ -41,7 +41,10 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
     function allowlistMint(uint256 quantity) external payable callerIsUser {
         uint256 price = 0.03 ether;
         require(allowlist[msg.sender] > 0, "not eligible for whitelist mint");
-        require(totalSupply() + 1 <= collectionSize, "exceeded max supply"); //is this possible?
+        require(
+            totalSupply() + quantity <= collectionSize,
+            "exceeded max supply"
+        ); //is this possible?
         require(
             numberMinted(msg.sender) + quantity <= maxPerAddressDuringPresale,
             "mint amount exceeds whitelist"
@@ -58,17 +61,13 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
             totalSupply() + quantity <= collectionSize,
             "exceeded max supply"
         );
-        require(
-            numberMinted(msg.sender) + quantity <=
-                maxPerAddressDuringPublicSale,
-            "can not mint this many"
-        );
+        require(quantity <= maxPerTxn, "can not mint this many in one batch");
         _safeMint(msg.sender, quantity);
         refundIfOver(publicPrice * quantity);
     }
 
     function refundIfOver(uint256 price) private {
-        require(msg.value >= price, "Need to send more ETH.");
+        require(msg.value >= price, "Need to send more ETH");
         if (msg.value > price) {
             payable(msg.sender).transfer(msg.value - price);
         }
@@ -104,14 +103,9 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
             totalSupply() + quantity <= amountForDevs,
             "too many already minted before dev mint"
         );
-        require(
-            quantity % maxBatchSize == 0,
-            "can only mint a multiple of the maxBatchSize"
-        );
-        uint256 numChunks = quantity / maxBatchSize;
-        for (uint256 i = 0; i < numChunks; i++) {
-            _safeMint(msg.sender, maxBatchSize);
-        }
+        require(quantity <= maxPerTxn, "can not mint this many in one batch");
+
+        _safeMint(msg.sender, quantity);
     }
 
     // metadata URI

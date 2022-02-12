@@ -2704,12 +2704,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x22f6BFD0f9b639e09893891603C60737263bE420",
-      "transactionHash": "0x882510dc0994599f756c1f3763e621c0ebfc17243311bffb9988e02fc911327c"
+      "address": "0x55d719969D0bcC8C95Cd229DA18B55F75377c649",
+      "transactionHash": "0x76cee2ed0c563aa09d9eccafbe9939eceeae06ab2567d569e92add1a77d8096a"
     }
   },
   "schemaVersion": "3.4.4",
-  "updatedAt": "2022-02-08T03:33:56.950Z",
+  "updatedAt": "2022-02-12T16:36:19.319Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
