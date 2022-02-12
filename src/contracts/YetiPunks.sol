@@ -98,14 +98,10 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
     }
 
     // For marketing etc.
-    function devMint(uint256 quantity) external onlyOwner {
-        require(
-            totalSupply() + quantity <= amountForDevs,
-            "too many already minted before dev mint"
-        );
-        require(quantity <= maxPerTxn, "can not mint this many in one batch");
-
-        _safeMint(msg.sender, quantity);
+    function giveAwayMint(address[] calldata addresses) external onlyOwner {        
+        for (uint256 i = 0; i < addresses.length; i++) {
+             _safeMint(addresses[i], 1);
+        }
     }
 
     // metadata URI
