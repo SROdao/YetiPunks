@@ -78,18 +78,18 @@
     "absolutePath": "project:/src/contracts/@rarible/royalties/contracts/RoyaltiesV2.sol",
     "exportedSymbols": {
       "LibPart": [
-        1687
+        927
       ],
       "RoyaltiesV2": [
-        1714
+        954
       ]
     },
-    "id": 1715,
+    "id": 955,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 1695,
+        "id": 935,
         "literals": [
           "solidity",
           "^",
@@ -97,17 +97,17 @@
           ".0"
         ],
         "nodeType": "PragmaDirective",
-        "src": "32:23:12"
+        "src": "32:23:13"
       },
       {
         "absolutePath": "project:/src/contracts/@rarible/royalties/contracts/LibPart.sol",
         "file": "./LibPart.sol",
-        "id": 1696,
+        "id": 936,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 1715,
-        "sourceUnit": 1688,
-        "src": "57:23:12",
+        "scope": 955,
+        "sourceUnit": 928,
+        "src": "57:23:13",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -118,34 +118,34 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "fullyImplemented": false,
-        "id": 1714,
+        "id": 954,
         "linearizedBaseContracts": [
-          1714
+          954
         ],
         "name": "RoyaltiesV2",
-        "nameLocation": "92:11:12",
+        "nameLocation": "92:11:13",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "anonymous": false,
-            "id": 1704,
+            "id": 944,
             "name": "RoyaltiesSet",
-            "nameLocation": "116:12:12",
+            "nameLocation": "116:12:13",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 1703,
+              "id": 943,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1698,
+                  "id": 938,
                   "indexed": false,
                   "mutability": "mutable",
                   "name": "tokenId",
-                  "nameLocation": "137:7:12",
+                  "nameLocation": "137:7:13",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1704,
-                  "src": "129:15:12",
+                  "scope": 944,
+                  "src": "129:15:13",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -153,10 +153,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1697,
+                    "id": 937,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "129:7:12",
+                    "src": "129:7:13",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -166,75 +166,75 @@
                 },
                 {
                   "constant": false,
-                  "id": 1702,
+                  "id": 942,
                   "indexed": false,
                   "mutability": "mutable",
                   "name": "royalties",
-                  "nameLocation": "161:9:12",
+                  "nameLocation": "161:9:13",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1704,
-                  "src": "146:24:12",
+                  "scope": 944,
+                  "src": "146:24:13",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_array$_t_struct$_Part_$1666_memory_ptr_$dyn_memory_ptr",
+                    "typeIdentifier": "t_array$_t_struct$_Part_$906_memory_ptr_$dyn_memory_ptr",
                     "typeString": "struct LibPart.Part[]"
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 1700,
+                      "id": 940,
                       "nodeType": "UserDefinedTypeName",
                       "pathNode": {
-                        "id": 1699,
+                        "id": 939,
                         "name": "LibPart.Part",
                         "nodeType": "IdentifierPath",
-                        "referencedDeclaration": 1666,
-                        "src": "146:12:12"
+                        "referencedDeclaration": 906,
+                        "src": "146:12:13"
                       },
-                      "referencedDeclaration": 1666,
-                      "src": "146:12:12",
+                      "referencedDeclaration": 906,
+                      "src": "146:12:13",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_Part_$1666_storage_ptr",
+                        "typeIdentifier": "t_struct$_Part_$906_storage_ptr",
                         "typeString": "struct LibPart.Part"
                       }
                     },
-                    "id": 1701,
+                    "id": 941,
                     "nodeType": "ArrayTypeName",
-                    "src": "146:14:12",
+                    "src": "146:14:13",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_array$_t_struct$_Part_$1666_storage_$dyn_storage_ptr",
+                      "typeIdentifier": "t_array$_t_struct$_Part_$906_storage_$dyn_storage_ptr",
                       "typeString": "struct LibPart.Part[]"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "128:43:12"
+              "src": "128:43:13"
             },
-            "src": "110:62:12"
+            "src": "110:62:13"
           },
           {
             "functionSelector": "cad96cca",
-            "id": 1713,
+            "id": 953,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "getRaribleV2Royalties",
-            "nameLocation": "187:21:12",
+            "nameLocation": "187:21:13",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1707,
+              "id": 947,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1706,
+                  "id": 946,
                   "mutability": "mutable",
                   "name": "id",
-                  "nameLocation": "217:2:12",
+                  "nameLocation": "217:2:13",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1713,
-                  "src": "209:10:12",
+                  "scope": 953,
+                  "src": "209:10:13",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -242,10 +242,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1705,
+                    "id": 945,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "209:7:12",
+                    "src": "209:7:13",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -254,88 +254,88 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "208:12:12"
+              "src": "208:12:13"
             },
             "returnParameters": {
-              "id": 1712,
+              "id": 952,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1711,
+                  "id": 951,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1713,
-                  "src": "244:21:12",
+                  "scope": 953,
+                  "src": "244:21:13",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_array$_t_struct$_Part_$1666_memory_ptr_$dyn_memory_ptr",
+                    "typeIdentifier": "t_array$_t_struct$_Part_$906_memory_ptr_$dyn_memory_ptr",
                     "typeString": "struct LibPart.Part[]"
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 1709,
+                      "id": 949,
                       "nodeType": "UserDefinedTypeName",
                       "pathNode": {
-                        "id": 1708,
+                        "id": 948,
                         "name": "LibPart.Part",
                         "nodeType": "IdentifierPath",
-                        "referencedDeclaration": 1666,
-                        "src": "244:12:12"
+                        "referencedDeclaration": 906,
+                        "src": "244:12:13"
                       },
-                      "referencedDeclaration": 1666,
-                      "src": "244:12:12",
+                      "referencedDeclaration": 906,
+                      "src": "244:12:13",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_Part_$1666_storage_ptr",
+                        "typeIdentifier": "t_struct$_Part_$906_storage_ptr",
                         "typeString": "struct LibPart.Part"
                       }
                     },
-                    "id": 1710,
+                    "id": 950,
                     "nodeType": "ArrayTypeName",
-                    "src": "244:14:12",
+                    "src": "244:14:13",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_array$_t_struct$_Part_$1666_storage_$dyn_storage_ptr",
+                      "typeIdentifier": "t_array$_t_struct$_Part_$906_storage_$dyn_storage_ptr",
                       "typeString": "struct LibPart.Part[]"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "243:23:12"
+              "src": "243:23:13"
             },
-            "scope": 1714,
-            "src": "178:89:12",
+            "scope": 954,
+            "src": "178:89:13",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 1715,
-        "src": "82:187:12",
+        "scope": 955,
+        "src": "82:187:13",
         "usedErrors": []
       }
     ],
-    "src": "32:237:12"
+    "src": "32:237:13"
   },
   "legacyAST": {
     "absolutePath": "project:/src/contracts/@rarible/royalties/contracts/RoyaltiesV2.sol",
     "exportedSymbols": {
       "LibPart": [
-        1687
+        927
       ],
       "RoyaltiesV2": [
-        1714
+        954
       ]
     },
-    "id": 1715,
+    "id": 955,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 1695,
+        "id": 935,
         "literals": [
           "solidity",
           "^",
@@ -343,17 +343,17 @@
           ".0"
         ],
         "nodeType": "PragmaDirective",
-        "src": "32:23:12"
+        "src": "32:23:13"
       },
       {
         "absolutePath": "project:/src/contracts/@rarible/royalties/contracts/LibPart.sol",
         "file": "./LibPart.sol",
-        "id": 1696,
+        "id": 936,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 1715,
-        "sourceUnit": 1688,
-        "src": "57:23:12",
+        "scope": 955,
+        "sourceUnit": 928,
+        "src": "57:23:13",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -364,34 +364,34 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "fullyImplemented": false,
-        "id": 1714,
+        "id": 954,
         "linearizedBaseContracts": [
-          1714
+          954
         ],
         "name": "RoyaltiesV2",
-        "nameLocation": "92:11:12",
+        "nameLocation": "92:11:13",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "anonymous": false,
-            "id": 1704,
+            "id": 944,
             "name": "RoyaltiesSet",
-            "nameLocation": "116:12:12",
+            "nameLocation": "116:12:13",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 1703,
+              "id": 943,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1698,
+                  "id": 938,
                   "indexed": false,
                   "mutability": "mutable",
                   "name": "tokenId",
-                  "nameLocation": "137:7:12",
+                  "nameLocation": "137:7:13",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1704,
-                  "src": "129:15:12",
+                  "scope": 944,
+                  "src": "129:15:13",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -399,10 +399,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1697,
+                    "id": 937,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "129:7:12",
+                    "src": "129:7:13",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -412,75 +412,75 @@
                 },
                 {
                   "constant": false,
-                  "id": 1702,
+                  "id": 942,
                   "indexed": false,
                   "mutability": "mutable",
                   "name": "royalties",
-                  "nameLocation": "161:9:12",
+                  "nameLocation": "161:9:13",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1704,
-                  "src": "146:24:12",
+                  "scope": 944,
+                  "src": "146:24:13",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_array$_t_struct$_Part_$1666_memory_ptr_$dyn_memory_ptr",
+                    "typeIdentifier": "t_array$_t_struct$_Part_$906_memory_ptr_$dyn_memory_ptr",
                     "typeString": "struct LibPart.Part[]"
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 1700,
+                      "id": 940,
                       "nodeType": "UserDefinedTypeName",
                       "pathNode": {
-                        "id": 1699,
+                        "id": 939,
                         "name": "LibPart.Part",
                         "nodeType": "IdentifierPath",
-                        "referencedDeclaration": 1666,
-                        "src": "146:12:12"
+                        "referencedDeclaration": 906,
+                        "src": "146:12:13"
                       },
-                      "referencedDeclaration": 1666,
-                      "src": "146:12:12",
+                      "referencedDeclaration": 906,
+                      "src": "146:12:13",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_Part_$1666_storage_ptr",
+                        "typeIdentifier": "t_struct$_Part_$906_storage_ptr",
                         "typeString": "struct LibPart.Part"
                       }
                     },
-                    "id": 1701,
+                    "id": 941,
                     "nodeType": "ArrayTypeName",
-                    "src": "146:14:12",
+                    "src": "146:14:13",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_array$_t_struct$_Part_$1666_storage_$dyn_storage_ptr",
+                      "typeIdentifier": "t_array$_t_struct$_Part_$906_storage_$dyn_storage_ptr",
                       "typeString": "struct LibPart.Part[]"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "128:43:12"
+              "src": "128:43:13"
             },
-            "src": "110:62:12"
+            "src": "110:62:13"
           },
           {
             "functionSelector": "cad96cca",
-            "id": 1713,
+            "id": 953,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "getRaribleV2Royalties",
-            "nameLocation": "187:21:12",
+            "nameLocation": "187:21:13",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1707,
+              "id": 947,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1706,
+                  "id": 946,
                   "mutability": "mutable",
                   "name": "id",
-                  "nameLocation": "217:2:12",
+                  "nameLocation": "217:2:13",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1713,
-                  "src": "209:10:12",
+                  "scope": 953,
+                  "src": "209:10:13",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -488,10 +488,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1705,
+                    "id": 945,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "209:7:12",
+                    "src": "209:7:13",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -500,71 +500,71 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "208:12:12"
+              "src": "208:12:13"
             },
             "returnParameters": {
-              "id": 1712,
+              "id": 952,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1711,
+                  "id": 951,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1713,
-                  "src": "244:21:12",
+                  "scope": 953,
+                  "src": "244:21:13",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_array$_t_struct$_Part_$1666_memory_ptr_$dyn_memory_ptr",
+                    "typeIdentifier": "t_array$_t_struct$_Part_$906_memory_ptr_$dyn_memory_ptr",
                     "typeString": "struct LibPart.Part[]"
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 1709,
+                      "id": 949,
                       "nodeType": "UserDefinedTypeName",
                       "pathNode": {
-                        "id": 1708,
+                        "id": 948,
                         "name": "LibPart.Part",
                         "nodeType": "IdentifierPath",
-                        "referencedDeclaration": 1666,
-                        "src": "244:12:12"
+                        "referencedDeclaration": 906,
+                        "src": "244:12:13"
                       },
-                      "referencedDeclaration": 1666,
-                      "src": "244:12:12",
+                      "referencedDeclaration": 906,
+                      "src": "244:12:13",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_Part_$1666_storage_ptr",
+                        "typeIdentifier": "t_struct$_Part_$906_storage_ptr",
                         "typeString": "struct LibPart.Part"
                       }
                     },
-                    "id": 1710,
+                    "id": 950,
                     "nodeType": "ArrayTypeName",
-                    "src": "244:14:12",
+                    "src": "244:14:13",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_array$_t_struct$_Part_$1666_storage_$dyn_storage_ptr",
+                      "typeIdentifier": "t_array$_t_struct$_Part_$906_storage_$dyn_storage_ptr",
                       "typeString": "struct LibPart.Part[]"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "243:23:12"
+              "src": "243:23:13"
             },
-            "scope": 1714,
-            "src": "178:89:12",
+            "scope": 954,
+            "src": "178:89:13",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 1715,
-        "src": "82:187:12",
+        "scope": 955,
+        "src": "82:187:13",
         "usedErrors": []
       }
     ],
-    "src": "32:237:12"
+    "src": "32:237:13"
   },
   "compiler": {
     "name": "solc",
@@ -572,7 +572,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.4",
-  "updatedAt": "2022-01-09T02:12:31.039Z",
+  "updatedAt": "2022-02-07T01:35:59.631Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

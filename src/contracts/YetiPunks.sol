@@ -1,74 +1,126 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "./ERC721A.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 
-contract YetiPunks is ERC721, Ownable {
-    using Strings for uint256;
-    using Counters for Counters.Counter;
+contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
+    uint256 public immutable maxPerTxn;
+    uint256 public immutable maxPerAddressDuringPresale = 5;
+    uint256 public immutable amountForDevs;
+    uint256 public immutable amountForAuctionAndDev;
+    string public notRevealedUri;
 
-    Counters.Counter private supply;
+    mapping(address => uint256) public allowlist; //seed this with the uint being 5
 
-    string public uriPrefix = "";
-
-    bytes4 private constant _INTERFACE_ID_ERC2981 = 0x2a55205a;
-
-    uint16 public constant MAX_SUPPLY = 10000;
-    uint16 public maxMintAmountPerTx = 20;
-    uint256 public cost = 0.03 ether;
-
-    bool public paused = false;
-
-    constructor() ERC721("Petty Monks", "PM") {
-        mintForAddress(5, 0xD61ADc48afE9402B4411805Ce6026eF74F94E713);
-        mintForAddress(5, 0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28);
-        mintForAddress(5, 0x49Cf0aF1cE6a50e822A91a427B3E29007f9C6C09);
+    constructor(
+        uint256 maxBatchSize_,
+        uint256 collectionSize_,
+        uint256 amountForAuctionAndDev_,
+        uint256 amountForDevs_,
+        string memory _initNotRevealedUri
+    ) ERC721A("Petty Monks", "PM", maxBatchSize_, collectionSize_) {
+        maxPerTxn = maxBatchSize_;
+        amountForAuctionAndDev = amountForAuctionAndDev_;
+        amountForDevs = amountForDevs_;
+        require(
+            amountForAuctionAndDev_ <= collectionSize_,
+            "larger collection size needed"
+        );
+        setNotRevealedURI(_initNotRevealedUri);
     }
 
-    modifier mintCompliance(uint256 _mintAmount) {
-        require(
-            _mintAmount > 0 && _mintAmount <= maxMintAmountPerTx,
-            "Invalid mint amount!"
-        );
-        require(
-            supply.current() + _mintAmount <= MAX_SUPPLY,
-            "Max supply exceeded!"
-        );
+    modifier callerIsUser() {
+        require(tx.origin == msg.sender, "The caller is another contract");
         _;
     }
 
-    function totalSupply() public view returns (uint256) {
-        return supply.current();
+    function allowlistMint(uint256 quantity) external payable callerIsUser {
+        uint256 price = 0.03 ether;
+        require(allowlist[msg.sender] > 0, "not eligible for whitelist mint");
+        require(
+            totalSupply() + quantity <= collectionSize,
+            "exceeded max supply"
+        ); //is this possible?
+        require(
+            numberMinted(msg.sender) + quantity <= maxPerAddressDuringPresale,
+            "mint amount exceeds whitelist"
+        );
+        allowlist[msg.sender] -= quantity;
+        _safeMint(msg.sender, quantity);
+        refundIfOver(price * quantity);
     }
 
-    function mint(uint256 _mintAmount)
-        public
-        payable
-        mintCompliance(_mintAmount)
-    {
-        // for some unknown reason, this fires when sending the correct amount on Rinkeby
-        require(msg.value >= cost * _mintAmount, "Insufficient funds!");
+    function publicSaleMint(uint256 quantity) external payable callerIsUser {
+        uint256 publicPrice = 0.03 ether;
 
-        _mintLoop(msg.sender, _mintAmount);
+        require(
+            totalSupply() + quantity <= collectionSize,
+            "exceeded max supply"
+        );
+        require(quantity <= maxPerTxn, "can not mint this many in one batch");
+        _safeMint(msg.sender, quantity);
+        refundIfOver(publicPrice * quantity);
     }
 
-    function mintForAddress(uint256 _mintAmount, address _receiver)
-        public
-        mintCompliance(_mintAmount)
-        onlyOwner
-    {
-        _mintLoop(_receiver, _mintAmount);
+    function refundIfOver(uint256 price) private {
+        require(msg.value >= price, "Need to send more ETH");
+        if (msg.value > price) {
+            payable(msg.sender).transfer(msg.value - price);
+        }
     }
 
-    function setUriPrefix(string memory _uriPrefix) public onlyOwner {
-        uriPrefix = _uriPrefix;
+    function isPublicSaleOn(
+        uint256 publicPriceWei,
+        uint256 publicSaleKey,
+        uint256 publicSaleStartTime
+    ) public view returns (bool) {
+        return
+            publicPriceWei != 0 &&
+            publicSaleKey != 0 &&
+            block.timestamp >= publicSaleStartTime;
     }
 
-    function setPaused(bool _state) public onlyOwner {
-        paused = _state;
+    function seedAllowlist(
+        address[] memory addresses,
+        uint256[] memory numSlots
+    ) external onlyOwner {
+        require(
+            addresses.length == numSlots.length,
+            "addresses does not match numSlots length"
+        );
+        for (uint256 i = 0; i < addresses.length; i++) {
+            allowlist[addresses[i]] = numSlots[i];
+        }
+    }
+
+    // For marketing etc.
+    function devMint(uint256 quantity) external onlyOwner {
+        require(
+            totalSupply() + quantity <= amountForDevs,
+            "too many already minted before dev mint"
+        );
+        require(quantity <= maxPerTxn, "can not mint this many in one batch");
+
+        _safeMint(msg.sender, quantity);
+    }
+
+    // metadata URI
+    string private _baseTokenURI;
+
+    function _baseURI() internal view virtual override returns (string memory) {
+        return _baseTokenURI;
+    }
+
+    function setNotRevealedURI(string memory _notRevealedURI) public onlyOwner {
+        notRevealedUri = _notRevealedURI;
+    }
+
+    function setBaseURI(string calldata baseURI) external onlyOwner {
+        _baseTokenURI = baseURI;
     }
 
     function withdrawBalance() public onlyOwner {
@@ -87,22 +139,23 @@ contract YetiPunks is ERC721, Ownable {
         require(tokiMoriSuccess);
     }
 
-    function _mintLoop(address _receiver, uint256 _mintAmount) internal {
-        for (uint256 i = 0; i < _mintAmount; i++) {
-            supply.increment();
-            _safeMint(_receiver, supply.current());
-        }
+    function setOwnersExplicit(uint256 quantity)
+        external
+        onlyOwner
+        nonReentrant
+    {
+        _setOwnersExplicit(quantity);
     }
 
-    function _baseURI() internal view virtual override returns (string memory) {
-        return uriPrefix;
+    function numberMinted(address owner) public view returns (uint256) {
+        return _numberMinted(owner);
     }
 
-    function _beforeTokenTransfer(
-        address from,
-        address to,
-        uint256 tokenId
-    ) internal override(ERC721) {
-        super._beforeTokenTransfer(from, to, tokenId);
+    function getOwnershipData(uint256 tokenId)
+        external
+        view
+        returns (TokenOwnership memory)
+    {
+        return ownershipOf(tokenId);
     }
 }
