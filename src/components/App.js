@@ -120,14 +120,16 @@ function App() {
 		}
 	}
 
-
+	// TODO: switch to mainnet before launch
 	const verifyUserOnEthereumNetwork = async () => {
-		// if (currentNetwork !== 4 || currentNetwork !== 1) {
-		// 	await window.ethereum.request({
-		// 		method: 'wallet_switchEthereumChain',
-		// 		params: [{ chainId: '0x1' }], // chainId must be in hexadecimal numbers
-		// 	  });
-		// }
+		const rinkeby = '0x4'
+		const ethereumMainnet = '0x1'
+		if (currentNetwork !== 4 || currentNetwork !== 1) {
+			await window.ethereum.request({
+				method: 'wallet_switchEthereumChain',
+				params: [{ chainId: rinkeby }], // chainId must be in hexadecimal numbers
+			  });
+		}
 	}
 
 	const mintNFTHandler = (numberOfTokens) => {
