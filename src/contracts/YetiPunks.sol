@@ -9,12 +9,12 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 
 contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
     uint256 public immutable maxPerAddressDuringPublicSale;
-    uint256 public immutable maxPerAddressDuringPresale = 5;
+    uint256 public immutable maxPerAddressDuringPresale = 3;
     uint256 public immutable amountForDevs;
     uint256 public immutable amountForGiveaway;
     string public notRevealedUri;
 
-    mapping(address => uint256) public allowlist; //seed this with the uint being 5
+    mapping(address => uint256) public allowlist; //seed this with the uint being 3
 
     constructor(
         uint256 maxBatchSize_,
