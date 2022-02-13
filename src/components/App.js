@@ -26,7 +26,7 @@ function App() {
 	const [openseaURL, setOpenseaURL] = useState('https://opensea.io/')
 
 	const MAX_YETI_COUNT = 6420;
-	const contractAddress = "0x716Cc763C6DC805Ff9d0f58bb63131383DF2471E"
+	const contractAddress = "0xFCa0e7c2655E15027F6ECAa03145096Dfffbfed8"
 
 	const loadBlockchainData = async () => {
 		// Fetch Contract, Data, etc.
