@@ -10,8 +10,8 @@ module.exports = async function (deployer) {
         YetiPunks, 
         20,
         6420,
-        20,
-        20,
+        10,
+        21,
         "https://safelips.online/assets/meta/contract.json"
     )
 };

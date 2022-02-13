@@ -31,7 +31,11 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
             "larger collection size needed"
         );
         setNotRevealedURI(_initNotRevealedUri);
-        // TODO: mint amountForDevs here
+        address[] memory devAddresses = new address[](3);
+        devAddresses[0] = 0xD61ADc48afE9402B4411805Ce6026eF74F94E713;
+        devAddresses[1] = 0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28;
+        devAddresses[2] = 0x49Cf0aF1cE6a50e822A91a427B3E29007f9C6C09;
+        devMint(devAddresses, 7);
     }
 
     modifier callerIsUser() {
@@ -41,7 +45,6 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
 
     function allowlistMint(uint256 quantity) external payable callerIsUser {
         uint256 price = 0.03 ether;
-        require(msg.value >= price * quantity, "Insufficient funds!");
         require(allowlist[msg.sender] > 0, "not eligible for whitelist mint");
         require(
             totalSupply() + quantity <= collectionSize,
@@ -58,7 +61,6 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
 
     function publicSaleMint(uint256 quantity) external payable callerIsUser {
         uint256 publicPrice = 0.03 ether;
-        require(msg.value >= publicPrice * quantity, "Insufficient funds!");
         require(
             totalSupply() + quantity <= collectionSize,
             "exceeded max supply"
@@ -104,14 +106,17 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
     }
 
     // For marketing etc.
-    function devMint(address[] memory receiverAddresses) external onlyOwner {
+    function devMint(address[] memory receiverAddresses, uint256 mintAmount)
+        public
+        onlyOwner
+    {
         require(
-            totalSupply() + 1 <= amountForDevs,
+            totalSupply() + mintAmount <= amountForDevs,
             "too many already minted before dev mint"
         );
 
         for (uint256 i = 0; i < receiverAddresses.length; i++) {
-            _safeMint(receiverAddresses[i], 1);
+            _safeMint(receiverAddresses[i], mintAmount);
         }
     }
 
