@@ -16,8 +16,8 @@ const Main = ({ button, supplyAvailable, maxPerTxn, maxYetis }) => {
                 {supplyAvailable === maxYetis ?
                     (<div className='minting-section'>
                         <h2>SOLD OUT</h2>
-                        <h6>THANK YOU YETI PUNKS </h6>
-                        <h6>YOU CAN STILL SNAG A YETI ON THE SECONDARY MARKET</h6>
+                        <h6>THANK YOU YETI PUNKS</h6>
+                        <h6>YOU CAN STILL FIND A YETI ON THE SECONDARY MARKET</h6>
                     </div>) :
                     <div className="minting-section">
                         <h6>0.03 ETH</h6>
