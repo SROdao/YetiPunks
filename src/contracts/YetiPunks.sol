@@ -8,6 +8,8 @@ import "./ERC721A.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
 contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
+    using Strings for uint256;
+    uint256 public immutable maxPerTxn;
     uint256 public immutable maxPerAddressDuringPublicSale;
     uint256 public immutable maxPerAddressDuringPresale = 3;
     uint256 public immutable amountForDevs;
@@ -135,6 +137,29 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
 
     function setBaseURI(string calldata baseURI) external onlyOwner {
         _baseTokenURI = baseURI;
+    }
+
+    /**
+     * @dev See {IERC721Metadata-tokenURI}.
+     */
+    function tokenURI(uint256 tokenId)
+        public
+        view
+        virtual
+        override
+        onlyOwner
+        returns (string memory)
+    {
+        require(
+            _exists(tokenId),
+            "ERC721Metadata: URI query for nonexistent token"
+        );
+
+        string memory baseURI = _baseURI();
+        return
+            bytes(baseURI).length > 0
+                ? string(abi.encodePacked(baseURI, tokenId.toString()))
+                : "";
     }
 
     function withdrawBalance() public onlyOwner {

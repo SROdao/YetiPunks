@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import openSea from '../images/Logomark-Transparent White.png'
-import twitter from '../images/twitter.png'
+import openSea from '../images/YPos.png'
+import twitter from '../images/YPtwitter.png'
 import song from '../songs/yp-theme.mp3'
 import soundOn from '../images/volume.png'
 import soundOff from '../images/soundOff.png'
-import looksRare from '../images/looksrare.png'
+import looksRare from '../images/YPlooksrare.png'
+import ethScan from '../images/YPetherscan.png'
+import YPdiscrod from '../images/YPdiscord.png'
 
 
 
@@ -40,6 +42,8 @@ const Banner = () => {
             <img onClick={toggle} className="icon" src={soundOn}></img>
             ):(<img onClick={toggle} className="icon" src={soundOff}></img>)}     
             <div className="topnav-right">
+                <a href='https://etherscan.io/' target="_blank"><img className='icon' src={YPdiscrod} alt="lookrare-logo"/></a>
+                <a href='https://etherscan.io/' target="_blank"><img className='icon' src={ethScan} alt="lookrare-logo"/></a>
                 <a href='https://looksrare.org/' target="_blank"><img className='icon' src={looksRare} alt="lookrare-logo"/></a>
                 <a href='https://opensea.io/' target="_blank"><img className='icon' src={openSea} alt="opensea-logo"/></a>
                 <a href='https://twitter.com/YetiPunks' target="_blank"><img className='icon' src={twitter} alt="twitter-logo"/></a>
