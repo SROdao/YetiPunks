@@ -94,9 +94,15 @@ contract('YetiPunks', ([deployerAddress, user]) => {
                 yetiPunks = await YetiPunks.new(7, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
             })
 
-            it(`reverts if not enough ETH is sent for a mint`, async () => {
+            it(`reverts if not enough ETH is sent for a mint, no NFT is minted`, async () => {
                 await yetiPunks.publicSaleMint(1, { from: user, value: web3.utils.toWei('0.02', 'ether') })
                     .should.be.rejectedWith('Reason given: Need to send more ETH')
+
+                const balance = await yetiPunks.balanceOf(user)
+                balance.toString().should.equal('0')
+
+                const numberMinted = await yetiPunks._numberMinted(user)
+                numberMinted.toString().should.equal('0')
             });
 
             it(`reverts if trying to mint more than 20`, async () => {
@@ -142,6 +148,12 @@ contract('YetiPunks', ([deployerAddress, user]) => {
                 const somkid = "0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28"
                 await yetiPunks.allowlistMint(3, { from: user, value: web3.utils.toWei('0.05', 'ether') })
                     .should.be.rejectedWith('Reason given: Need to send more ETH')
+
+                const balance = await yetiPunks.balanceOf(user)
+                balance.toString().should.equal('0')
+
+                const numberMinted = await yetiPunks._numberMinted(user)
+                numberMinted.toString().should.equal('0')
             });
 
             // it(`reverts if trying to mint from contract address`, async () => {
@@ -199,7 +211,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
 
             it('Allows onwer to set notRevealedUri', async () => {
                 const uri = 'ipfs://IPFS-NEW-IMAGE-METADATA-CID/' // Different from the default contract state
-                
+
                 await yetiPunks.setNotRevealedURI(uri, { from: deployerAddress })
 
                 const result = await yetiPunks.notRevealedUri()
@@ -208,10 +220,10 @@ contract('YetiPunks', ([deployerAddress, user]) => {
 
             it(`allows the owner/deployer to withdraw all funds`, async () => {
                 await yetiPunks.seedAllowlist([user], [user])
-                await yetiPunks.allowlistMint(3, { from: user, value: web3.utils.toWei('0.09', 'ether') })
+                await yetiPunks.allowlistMint(3, { from: user, value: web3.utils.toWei('0.072', 'ether') })
 
                 let balanceBefore = await web3.eth.getBalance(yetiPunks.address)
-                balanceBefore.should.equal(web3.utils.toWei('0.09', 'ether'))
+                balanceBefore.should.equal(web3.utils.toWei('0.072', 'ether'))
 
                 await yetiPunks.withdrawBalance({ from: deployerAddress })
 

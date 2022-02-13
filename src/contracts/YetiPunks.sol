@@ -44,7 +44,7 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
     }
 
     function allowlistMint(uint256 quantity) external payable callerIsUser {
-        uint256 price = 0.03 ether;
+        uint256 price = 0.024 ether;
         require(allowlist[msg.sender] > 0, "not eligible for whitelist mint");
         require(
             totalSupply() + quantity <= collectionSize,
@@ -54,6 +54,7 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
             numberMinted(msg.sender) + quantity <= maxPerAddressDuringPresale,
             "mint amount exceeds whitelist"
         );
+        require(msg.value >= price, "Need to send more ETH");
         allowlist[msg.sender] -= quantity;
         _safeMint(msg.sender, quantity);
         refundIfOver(price * quantity);
@@ -70,6 +71,7 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
                 maxPerAddressDuringPublicSale,
             "public sale minting limit exceeded"
         );
+        require(msg.value >= publicPrice, "Need to send more ETH");
         _safeMint(msg.sender, quantity);
         refundIfOver(publicPrice * quantity);
     }
