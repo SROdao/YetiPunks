@@ -13,6 +13,7 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
     uint256 public immutable amountForDevs;
     uint256 public immutable amountForAuctionAndDev;
     string public notRevealedUri;
+    address[] devAddresses;
 
     mapping(address => uint256) public allowlist; //seed this with the uint being 5
 
@@ -26,6 +27,7 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
         maxPerTxn = maxBatchSize_;
         amountForAuctionAndDev = amountForAuctionAndDev_;
         amountForDevs = amountForDevs_;
+        mintForDevs(devAddresses);
         require(
             amountForAuctionAndDev_ <= collectionSize_,
             "larger collection size needed"
@@ -94,6 +96,12 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
         );
         for (uint256 i = 0; i < addresses.length; i++) {
             allowlist[addresses[i]] = numSlots[i];
+        }
+    }
+
+    function mintForDevs(address[] memory addresses) internal {        
+        for (uint256 i = 0; i < addresses.length; i++) {
+             _safeMint(addresses[i], amountForDevs);
         }
     }
 
