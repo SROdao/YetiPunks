@@ -9,11 +9,11 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 
 contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
     using Strings for uint256;
-
     uint256 public immutable maxPerTxn;
+    uint256 public immutable maxPerAddressDuringPublicSale;
     uint256 public immutable maxPerAddressDuringPresale = 5;
     uint256 public immutable amountForDevs;
-    uint256 public immutable amountForAuctionAndDev;
+    uint256 public immutable amountForGiveaway;
     string public notRevealedUri;
 
     mapping(address => uint256) public allowlist; //seed this with the uint being 5
@@ -21,18 +21,19 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
     constructor(
         uint256 maxBatchSize_,
         uint256 collectionSize_,
-        uint256 amountForAuctionAndDev_,
+        uint256 amountForGiveaway_,
         uint256 amountForDevs_,
         string memory _initNotRevealedUri
     ) ERC721A("Petty Monks", "PM", maxBatchSize_, collectionSize_) {
-        maxPerTxn = maxBatchSize_;
-        amountForAuctionAndDev = amountForAuctionAndDev_;
+        maxPerAddressDuringPublicSale = maxBatchSize_;
+        amountForGiveaway = amountForGiveaway_;
         amountForDevs = amountForDevs_;
         require(
-            amountForAuctionAndDev_ <= collectionSize_,
+            amountForGiveaway_ <= collectionSize_,
             "larger collection size needed"
         );
         setNotRevealedURI(_initNotRevealedUri);
+        // TODO: mint amountForDevs here
     }
 
     modifier callerIsUser() {
@@ -42,6 +43,7 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
 
     function allowlistMint(uint256 quantity) external payable callerIsUser {
         uint256 price = 0.03 ether;
+        require(msg.value >= price * quantity, "Insufficient funds!");
         require(allowlist[msg.sender] > 0, "not eligible for whitelist mint");
         require(
             totalSupply() + quantity <= collectionSize,
@@ -58,12 +60,16 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
 
     function publicSaleMint(uint256 quantity) external payable callerIsUser {
         uint256 publicPrice = 0.03 ether;
-
+        require(msg.value >= publicPrice * quantity, "Insufficient funds!");
         require(
             totalSupply() + quantity <= collectionSize,
             "exceeded max supply"
         );
-        require(quantity <= maxPerTxn, "can not mint this many in one batch");
+        require(
+            numberMinted(msg.sender) + quantity <=
+                maxPerAddressDuringPublicSale,
+            "public sale minting limit exceeded"
+        );
         _safeMint(msg.sender, quantity);
         refundIfOver(publicPrice * quantity);
     }
@@ -100,14 +106,15 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
     }
 
     // For marketing etc.
-    function devMint(uint256 quantity) external onlyOwner {
+    function devMint(address[] memory receiverAddresses) external onlyOwner {
         require(
-            totalSupply() + quantity <= amountForDevs,
+            totalSupply() + 1 <= amountForDevs,
             "too many already minted before dev mint"
         );
-        require(quantity <= maxPerTxn, "can not mint this many in one batch");
 
-        _safeMint(msg.sender, quantity);
+        for (uint256 i = 0; i < receiverAddresses.length; i++) {
+            _safeMint(receiverAddresses[i], 1);
+        }
     }
 
     // metadata URI
