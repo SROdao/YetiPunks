@@ -115,14 +115,13 @@ function App() {
 	const mintNFTHandler = (numberOfTokens) => {
 		if (isNaN(numberOfTokens)) {
 			numberOfTokens = 1
-
 		}
 
 		verifyUserOnEthereumNetwork();
 
 		if (supplyAvailable !== 0 || numberOfTokens < supplyAvailable) {
 			const price = web3.utils.toWei("0.03", "ether") * numberOfTokens;
-			const encoded = yetiPunks.methods.mint(numberOfTokens).encodeABI()
+			const encoded = yetiPunks.methods.publicSaleMint(numberOfTokens).encodeABI()
 
 			// Saving the below variables in case our fallback defaults are not working down the road
 			const defaultGas = numberOfTokens * 90000;
@@ -136,7 +135,7 @@ function App() {
 				value: web3.utils.numberToHex(price)
 			}
 
-			yetiPunks.methods.mint(numberOfTokens).estimateGas({ from: usersAccount, value: web3.utils.numberToHex(price) })
+			yetiPunks.methods.publicSaleMint(numberOfTokens).estimateGas({ from: usersAccount, value: web3.utils.numberToHex(price) })
 				.then(limit => {
 					tx.gas = web3.utils.numberToHex(limit)
 					console.log("fetched gasLimit", limit)
@@ -280,7 +279,7 @@ function App() {
 		<div>
 			<Banner />
 
-			{usersAccount ? (
+			{usersAccount ? ( //do a better check if someone is connected
 				<>
 					<Main button={mintButton()} supplyAvailable={supplyAvailable} maxPerTxn={maxPerTxn} maxYetis={MAX_YETI_COUNT} />
 					{/* <button onClick={withdrawFunds}>Withdraw</button> */}
