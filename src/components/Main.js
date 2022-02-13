@@ -20,7 +20,7 @@ const Main = ({ button, supplyAvailable, maxPerTxn, maxYetis }) => {
                         <h6>YOU CAN STILL FIND A YETI ON THE SECONDARY MARKET</h6>
                     </div>) :
                     <div className="minting-section">
-                        <h6>0.03 ETH</h6>
+                        <h6>0.024 ETH</h6>
                         <h6>Max {maxPerTxn} per txn</h6>
                         <h6>Unlimited per wallet</h6>
                         <h6>Remaining: {supplyAvailable}/{maxYetis}</h6>

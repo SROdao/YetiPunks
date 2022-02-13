@@ -26,7 +26,7 @@ function App() {
 	const [openseaURL, setOpenseaURL] = useState('https://opensea.io/')
 
 	const MAX_YETI_COUNT = 6420;
-	const contractAddress = "0xFCa0e7c2655E15027F6ECAa03145096Dfffbfed8"
+	const contractAddress = "0x49553c11749121745FBAA01bEfa03Ec049Bd7B1F"
 
 	const loadBlockchainData = async () => {
 		// Fetch Contract, Data, etc.
@@ -120,7 +120,7 @@ function App() {
 		verifyUserOnEthereumNetwork();
 
 		if (supplyAvailable !== 0 || numberOfTokens < supplyAvailable) {
-			const price = web3.utils.toWei("0.03", "ether") * numberOfTokens;
+			const price = web3.utils.toWei("0.024", "ether") * numberOfTokens;
 			const encoded = yetiPunks.methods.publicSaleMint(numberOfTokens).encodeABI()
 
 			// Saving the below variables in case our fallback defaults are not working down the road

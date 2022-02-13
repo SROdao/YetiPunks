@@ -63,7 +63,7 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
     }
 
     function publicSaleMint(uint256 quantity) external payable callerIsUser {
-        uint256 publicPrice = 0.03 ether;
+        uint256 publicPrice = 0.024 ether;
         require(
             totalSupply() + quantity <= collectionSize,
             "exceeded max supply"
