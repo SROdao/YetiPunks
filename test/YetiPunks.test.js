@@ -13,7 +13,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
         let result
 
         beforeEach(async () => {
-            yetiPunks = await YetiPunks.new(20, 6420, 20, 20, "https://safelips.online/assets/meta/contract.json")
+            yetiPunks = await YetiPunks.new(20, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
         })
 
         it('Returns the contract name', async () => {
@@ -32,7 +32,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             let result
 
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(20, 6420, 20, 20, "https://safelips.online/assets/meta/contract.json")
+                yetiPunks = await YetiPunks.new(20, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
                 result = await yetiPunks.publicSaleMint(1, { from: user, value: web3.utils.toWei('0.03', 'ether') })
             })
 
@@ -44,7 +44,8 @@ contract('YetiPunks', ([deployerAddress, user]) => {
 
             it('Updates the total supply', async () => {
                 result = await yetiPunks.totalSupply()
-                result.toString().should.equal('1')
+                const amountForDevs = 21
+                result.toString().should.equal((amountForDevs + 1).toString())
             })
 
             it(`shows how many NFTs a given address has minted so far (1 in beforeEach)`, async () => {
@@ -57,7 +58,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
                 numberMintedBeforeTransfer.toString().should.equal('1')
 
                 const vitalikWallet = '0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B'
-                const tokenId = 0 // the first token minted
+                const tokenId = 21 // the first token minted after mint for devs
                 await yetiPunks.safeTransferFrom(user, vitalikWallet, tokenId, { from: user })
 
                 const numberMintedAfterTransfer = await yetiPunks._numberMinted(user)
@@ -74,7 +75,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
                 numberMintedBeforeTransfer.toString().should.equal('1')
 
                 const vitalikWallet = '0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B'
-                const tokenId = 0 // the first token minted
+                const tokenId = 21 // the first token minted after mint for devs
                 await yetiPunks.safeTransferFrom(user, vitalikWallet, tokenId, { from: user })
 
                 const numberMintedAfterTransfer = await yetiPunks.balanceOf(user)
@@ -90,17 +91,17 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             let result
 
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(20, 6420, 20, 20, "https://safelips.online/assets/meta/contract.json")
+                yetiPunks = await YetiPunks.new(20, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
             })
 
             it(`reverts if not enough ETH is sent for a mint`, async () => {
                 await yetiPunks.publicSaleMint(1, { from: user, value: web3.utils.toWei('0.02', 'ether') })
-                    .should.be.rejectedWith('out of gas -- Reason given: Need to send more ETH')
+                    .should.be.rejectedWith('Reason given: Need to send more ETH')
             });
 
             it(`reverts if trying to mint more than 20`, async () => {
                 await yetiPunks.publicSaleMint(21, { from: user, value: web3.utils.toWei('0.03', 'ether') })
-                    .should.be.rejectedWith('Reason given: can not mint this many')
+                    .should.be.rejectedWith('Reason given: public sale minting limit exceeded')
             });
         })
     })
@@ -110,7 +111,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             let result
 
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(20, 6420, 20, 20, "https://safelips.online/assets/meta/contract.json")
+                yetiPunks = await YetiPunks.new(20, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
                 await yetiPunks.seedAllowlist([user], [user])
             })
 
@@ -123,18 +124,18 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             let result
 
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(20, 6420, 20, 20, "https://safelips.online/assets/meta/contract.json")
+                yetiPunks = await YetiPunks.new(20, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
                 await yetiPunks.seedAllowlist([user], [user])
             })
 
             it(`reverts if minter address is not on the allow list`, async () => {
-                const somkid = "0xE826d5f95c4503137daD9cA67aFa380EcB23b532"
+                const somkid = "0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28"
                 await yetiPunks.allowlistMint(5, { from: somkid, value: web3.utils.toWei('0.03', 'ether') })
                     .should.be.rejectedWith('Reason given: not eligible for whitelist mint')
             });
 
             it(`reverts if whitelisted address doesn't send enough ether`, async () => {
-                const somkid = "0xE826d5f95c4503137daD9cA67aFa380EcB23b532"
+                const somkid = "0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28"
                 await yetiPunks.allowlistMint(5, { from: user, value: web3.utils.toWei('0.10', 'ether') })
                     .should.be.rejectedWith('Reason given: Need to send more ETH')
             });
@@ -148,29 +149,32 @@ contract('YetiPunks', ([deployerAddress, user]) => {
     describe('Dev Mint', async () => {
         describe('Success', async () => {
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(20, 6420, 20, 20, "https://safelips.online/assets/meta/contract.json")
+                yetiPunks = await YetiPunks.new(20, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
             });
 
             it(`mints if amount doesn't exceed amountForDevs`, async () => {
-                await yetiPunks.devMint(5)
+                const somkid = "0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28"
+                // await yetiPunks.devMint([somkid], 5)
 
-                const numberMintedAfterTransfer = await yetiPunks._numberMinted(deployerAddress)
-                numberMintedAfterTransfer.toString().should.equal('5')
+                const numberMintedAfterTransfer = await yetiPunks._numberMinted(somkid)
+                numberMintedAfterTransfer.toString().should.equal('7')
             });
         });
 
         describe('Failure', async () => {
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(20, 6420, 20, 20, "https://safelips.online/assets/meta/contract.json")
+                yetiPunks = await YetiPunks.new(20, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
             });
 
             it(`reverts if you are not the owner`, async () => {
-                await yetiPunks.devMint(1, { from: user })
+                const somkid = "0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28"
+                await yetiPunks.devMint([somkid], 1, { from: user })
                     .should.be.rejectedWith('Reason given: Ownable: caller is not the owner')
             });
 
             it(`reverts if attempting to mint more than amountForDevs`, async () => {
-                await yetiPunks.devMint(21)
+                const somkid = "0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28"
+                await yetiPunks.devMint([somkid], 22)
                     .should.be.rejectedWith('Reason given: too many already minted before dev mint')
             });
         });
@@ -180,7 +184,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
         describe('Success', async () => {
 
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(20, 6420, 20, 20, "https://safelips.online/assets/meta/contract.json")
+                yetiPunks = await YetiPunks.new(20, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
             })
 
             it('Allows onwer to set baseURI', async () => {
@@ -219,7 +223,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
         describe('Failure', async () => {
 
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(20, 6420, 20, 20, "https://safelips.online/assets/meta/contract.json")
+                yetiPunks = await YetiPunks.new(20, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
             })
 
             it('throws an error when trying to READ baseURI', async () => {
