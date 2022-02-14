@@ -7,6 +7,7 @@ import Banner from './Banner'
 import Main from './Main'
 import About from './About';
 import Footer from './Footer'
+import swal from 'sweetalert';
 
 function App() {
 	const [isVisible, setIsVisible] = useState(false);
@@ -141,7 +142,7 @@ function App() {
 					console.log("fetched gasLimit", limit)
 				})
 				.catch(error => {
-					console.error(error.message)
+					swal(error.message)
 					// alert(error.message) <---- alerts when there's not enough funds in the wallet
 				});
 
@@ -164,7 +165,7 @@ function App() {
 				setTotalSupply(newTotalSupply)
 				setSupplyAvailable(MAX_YETI_COUNT - newTotalSupply)
 			}).catch((err) => {
-				console.error(err)
+				swal(err)
 			});
 
 			return txHash
