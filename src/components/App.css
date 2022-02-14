@@ -205,7 +205,16 @@ input[type=number]::-webkit-outer-spin-button {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px
+  gap: 10px;
+  width: 20vw;
+}
+
+.bio-card h6 {
+  font-size: 24px;
+}
+
+.bio-card h4 {
+  font-size: 20px;
 }
 
 .bio {

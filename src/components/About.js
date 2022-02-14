@@ -6,17 +6,20 @@ const yetis = [
     {
         name: '4ndreas',
         profile: yetitar,
-        bio: 'The artist who made this all happen. His bond with yeti punks is cemented through a love for kush.'
+        role: 'Artist',
+        bio: 'Design, Music, UX'
     },
     {
         name: 'Somkid',
         profile: yetitar,
-        bio: 'A developer who brought together 4ndreas and Mandu to create a trio of yeti heads.'
+        role: 'Developer',
+        bio: 'Front End, Solidity'
     },
     {
-        name: 'Mandu',
+        name: 'Billy',
         profile: yetitar,
-        bio: 'A king-sized dumpling skilled in dev and nft art'
+        role: 'Developer',
+        bio: 'Front End, Solidity, Art Direction'
     }
 ]
 
@@ -39,11 +42,12 @@ const About = () => {
             <div className="bio-section">
                 {
                     yetis.map(yeti =>
-                        <div className='bio-square' key={yeti.name}>
-                            <div className='bio-card'>
-                                <img className='avatar' src={yeti.profile} alt="yeti-avatar" />
-                                <h6>{yeti.name}</h6>
-                            </div>
+                        // <div className='bio-square' key={yeti.name}>
+                        <div className='bio-card'>
+                            <img className='avatar' src={yeti.profile} alt="yeti-avatar" />
+                            <h6>{yeti.name}</h6>
+                            <h4>{yeti.role}</h4>
+                            {/* </div> */}
                             <div className='bio'>
                                 <p>{yeti.bio}</p>
                             </div>
@@ -53,9 +57,6 @@ const About = () => {
 
             </div>
         </div>
-
-
-
     )
 }
 
