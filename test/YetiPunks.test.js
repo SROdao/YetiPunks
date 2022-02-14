@@ -34,6 +34,8 @@ contract('YetiPunks', ([deployerAddress, user]) => {
 
             beforeEach(async () => {
                 yetiPunks = await YetiPunks.new(7, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
+                uri = 'ipfs://IPFS-NEW-IMAGE-METADATA-CID/'
+                await yetiPunks.setBaseURI(uri, { from: deployerAddress })
                 result = await yetiPunks.publicSaleMint(1, { from: user, value: web3.utils.toWei('0.03', 'ether') })
             })
 
@@ -83,22 +85,32 @@ contract('YetiPunks', ([deployerAddress, user]) => {
                 numberMintedAfterTransfer.toString().should.equal('0')
             });
 
-            it(`shows the tokenURI of the first NFT (baseURI + tokenId)`, async () => {
+            it(`shows the tokenURI of the first NFT (baseURI + tokenId) for the owner of the contract`, async () => {
                 const tokenId = 0
-                const result = await yetiPunks.tokenURI(tokenId)
+                const result = await yetiPunks.tokenURI(tokenId, { from: deployerAddress })
                 result.should.equal(uri + tokenId)
             });
 
-            // it(`refunds if value is over price`, async () => {
+            it(`refunds if value is over price`, async () => {
+                await yetiPunks.seedAllowlist([user], [1])
+                const balanceBeforeMint = await web3.eth.getBalance(yetiPunks.address)
+                balanceBeforeMint.should.equal(web3.utils.toWei('0.024', 'ether'))
+                
+                await yetiPunks.publicSaleMint(1, { from: user, value: web3.utils.toWei('0.1', 'ether') })
 
-            // });
+                const balanceAfterMint = await web3.eth.getBalance(yetiPunks.address)
+                balanceAfterMint.should.equal(web3.utils.toWei('0.048', 'ether'))
+                balanceAfterMint.should.not.equal(web3.utils.toWei('0.124', 'ether')) 
+            });
         })
 
         describe('Failure', async () => {
-            let result
+            let uri
 
             beforeEach(async () => {
                 yetiPunks = await YetiPunks.new(7, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
+                uri = 'ipfs://IPFS-NEW-IMAGE-METADATA-CID/'
+                await yetiPunks.setBaseURI(uri, { from: deployerAddress })
             })
 
             it(`reverts if not enough ETH is sent for a mint, no NFT is minted`, async () => {
@@ -125,7 +137,13 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             });
 
             it(`reverts when calling the tokenURI function from non-owner`, async () => {
-                
+                const tokenId = 0
+                await yetiPunks.tokenURI(tokenId, { from: user })
+                    .should.be.rejectedWith('Ownable: caller is not the owner')
+            });
+
+
+            it(`reverts if tokenURI() is called by anyone other than contract owner`, async () => {
                 const tokenId = 0
                 await yetiPunks.tokenURI(tokenId, { from: user })
                     .should.be.rejectedWith('Ownable: caller is not the owner')
@@ -226,16 +244,17 @@ contract('YetiPunks', ([deployerAddress, user]) => {
 
             it('Allows onwer to set baseURI', async () => {
                 const uri = 'ipfs://IPFS-NEW-IMAGE-METADATA-CID/' // Different from the default contract state
-                await yetiPunks.setBaseURI(uri, { from: deployerAddress }) // Doesn't fail
-                // An assert reading baseURI would fail due to not being public/external
+                await yetiPunks.setBaseURI(uri, { from: deployerAddress })
+                    .should.not.be.rejectedWith('error')
             })
 
-            // it('shows the tokenURI of already minted NFTs', async () => {
-            //     const uri = 'ipfs://IPFS-NEW-IMAGE-METADATA-CID/'
-            //     await yetiPunks.setBaseURI(uri, { from: deployerAddress })
-            //     const result = await yetiPunks.tokenURI(0)
-            //     result.should.equal('something')
-            // })
+            it('shows the tokenURI of already minted NFTs', async () => {
+                const uri = 'ipfs://IPFS-NEW-IMAGE-METADATA-CID/'
+                const tokenId = 0
+                await yetiPunks.setBaseURI(uri, { from: deployerAddress })
+                const result = await yetiPunks.tokenURI(tokenId, { from: deployerAddress })
+                result.should.equal(uri + tokenId)
+            })
 
             it('Allows onwer to set notRevealedUri', async () => {
                 const uri = 'ipfs://IPFS-NEW-IMAGE-METADATA-CID/' // Different from the default contract state
