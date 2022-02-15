@@ -85,17 +85,6 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
         }
     }
 
-    function isPublicSaleOn(
-        uint256 publicPriceWei,
-        uint256 publicSaleKey,
-        uint256 publicSaleStartTime
-    ) public view returns (bool) {
-        return
-            publicPriceWei != 0 &&
-            publicSaleKey != 0 &&
-            block.timestamp >= publicSaleStartTime;
-    }
-
     function seedAllowlist(
         address[] memory addresses,
         uint256[] memory numSlots

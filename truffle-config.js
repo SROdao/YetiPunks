@@ -31,6 +31,7 @@ module.exports = {
 			network_id: 137
 		}
 	},
+	plugins: ["solidity-coverage"],
 
 	contracts_directory: './src/contracts/',
 	contracts_build_directory: './src/abis/',
