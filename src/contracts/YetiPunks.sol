@@ -16,7 +16,7 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
     uint256 public immutable amountForGiveaway;
     string public notRevealedUri;
 
-    mapping(address => uint256) public allowlist; //seed this with the uint being 3
+    // mapping(address => uint256) public allowlist; //seed this with the uint being 3
 
     constructor(
         uint256 maxBatchSize_,
@@ -45,22 +45,22 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
         _;
     }
 
-    function allowlistMint(uint256 quantity) external payable callerIsUser {
-        uint256 price = 0.024 ether;
-        require(allowlist[msg.sender] > 0, "not eligible for whitelist mint");
-        require(
-            totalSupply() + quantity <= collectionSize,
-            "exceeded max supply"
-        ); //is this possible?
-        require(
-            numberMinted(msg.sender) + quantity <= maxPerAddressDuringPresale,
-            "mint amount exceeds whitelist"
-        );
-        require(msg.value >= price, "Need to send more ETH");
-        allowlist[msg.sender] -= quantity;
-        _safeMint(msg.sender, quantity);
-        refundIfOver(price * quantity);
-    }
+    // function allowlistMint(uint256 quantity) external payable callerIsUser {
+    //     uint256 price = 0.024 ether;
+    //     require(allowlist[msg.sender] > 0, "not eligible for whitelist mint");
+    //     require(
+    //         totalSupply() + quantity <= collectionSize,
+    //         "exceeded max supply"
+    //     ); //is this possible?
+    //     require(
+    //         numberMinted(msg.sender) + quantity <= maxPerAddressDuringPresale,
+    //         "mint amount exceeds whitelist"
+    //     );
+    //     require(msg.value >= price, "Need to send more ETH");
+    //     allowlist[msg.sender] -= quantity;
+    //     _safeMint(msg.sender, quantity);
+    //     refundIfOver(price * quantity);
+    // }
 
     function publicSaleMint(uint256 quantity) external payable callerIsUser {
         uint256 publicPrice = 0.024 ether;
@@ -85,18 +85,18 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
         }
     }
 
-    function seedAllowlist(
-        address[] memory addresses,
-        uint256[] memory numSlots
-    ) external onlyOwner {
-        require(
-            addresses.length == numSlots.length,
-            "addresses does not match numSlots length"
-        );
-        for (uint256 i = 0; i < addresses.length; i++) {
-            allowlist[addresses[i]] = numSlots[i];
-        }
-    }
+    // function seedAllowlist(
+    //     address[] memory addresses,
+    //     uint256[] memory numSlots
+    // ) external onlyOwner {
+    //     require(
+    //         addresses.length == numSlots.length,
+    //         "addresses does not match numSlots length"
+    //     );
+    //     for (uint256 i = 0; i < addresses.length; i++) {
+    //         allowlist[addresses[i]] = numSlots[i];
+    //     }
+    // }
 
     // For marketing etc.
     function devMint(address[] memory receiverAddresses, uint256 mintAmount)
