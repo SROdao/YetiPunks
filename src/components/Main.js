@@ -22,7 +22,6 @@ const Main = ({ button, supplyAvailable, maxPerTxn, maxYetis }) => {
                     <div className="minting-section">
                         <h6>0.024 ETH</h6>
                         <h6>Max {maxPerTxn} per txn</h6>
-                        <h6>Unlimited per wallet</h6>
                         <h6>Remaining: {supplyAvailable}/{maxYetis}</h6>
                         {button}
                     </div>

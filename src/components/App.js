@@ -277,7 +277,7 @@ function App() {
 	}, [usersAccount]);
 
 	return (
-		<div>
+		<>
 			<Banner />
 
 			{usersAccount ? ( //do a better check if someone is connected
@@ -293,7 +293,7 @@ function App() {
 
 			<About />
 			<Footer />
-		</div>
+		</>
 	)
 }
 
