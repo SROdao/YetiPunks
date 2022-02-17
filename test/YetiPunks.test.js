@@ -1,5 +1,3 @@
-const { assert } = require('chai')
-
 const YetiPunks = artifacts.require("./YetiPunks")
 
 require('chai')
@@ -92,7 +90,6 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             });
 
             it(`refunds if value is over price`, async () => {
-                await yetiPunks.seedAllowlist([user], [1])
                 const balanceBeforeMint = await web3.eth.getBalance(yetiPunks.address)
                 balanceBeforeMint.should.equal(web3.utils.toWei('0.024', 'ether'))
                 
@@ -151,55 +148,55 @@ contract('YetiPunks', ([deployerAddress, user]) => {
         })
     })
 
-    describe('Allow list Mint', async () => {
-        describe('Success', async () => {
-            let result
+    // describe('Allow list Mint', async () => {
+    //     describe('Success', async () => {
+    //         let result
 
-            beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(7, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
-                await yetiPunks.seedAllowlist([user], [user])
-            })
+    //         beforeEach(async () => {
+    //             yetiPunks = await YetiPunks.new(7, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
+    //             await yetiPunks.seedAllowlist([user], [user])
+    //         })
 
-            it(`allows you to mint if you're on the list`, async () => {
-                result = await yetiPunks.allowlistMint(3, { from: user, value: web3.utils.toWei('0.15', 'ether') })
-            });
-        })
+    //         it(`allows you to mint if you're on the list`, async () => {
+    //             result = await yetiPunks.allowlistMint(3, { from: user, value: web3.utils.toWei('0.15', 'ether') })
+    //         });
+    //     })
 
-        describe('Failure', async () => {
-            beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(7, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
-                await yetiPunks.seedAllowlist([user], [user])
-            })
+    //     describe('Failure', async () => {
+    //         beforeEach(async () => {
+    //             yetiPunks = await YetiPunks.new(7, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
+    //             await yetiPunks.seedAllowlist([user], [user])
+    //         })
 
-            it(`reverts if minter address is not on the allow list`, async () => {
-                const somkid = "0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28"
-                await yetiPunks.allowlistMint(3, { from: somkid, value: web3.utils.toWei('0.09', 'ether') })
-                    .should.be.rejectedWith('Reason given: not eligible for whitelist mint')
-            });
+    //         it(`reverts if minter address is not on the allow list`, async () => {
+    //             const somkid = "0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28"
+    //             await yetiPunks.allowlistMint(3, { from: somkid, value: web3.utils.toWei('0.09', 'ether') })
+    //                 .should.be.rejectedWith('Reason given: not eligible for whitelist mint')
+    //         });
 
-            it(`reverts if minter tries to mint more than whitelist limit`, async () => {
-                const somkid = "0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28"
-                await yetiPunks.allowlistMint(4, { from: user, value: web3.utils.toWei('0.09', 'ether') })
-                    .should.be.rejectedWith('Reason given: mint amount exceeds whitelist')
-            });
+    //         it(`reverts if minter tries to mint more than whitelist limit`, async () => {
+    //             const somkid = "0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28"
+    //             await yetiPunks.allowlistMint(4, { from: user, value: web3.utils.toWei('0.09', 'ether') })
+    //                 .should.be.rejectedWith('Reason given: mint amount exceeds whitelist')
+    //         });
 
-            it(`reverts if whitelisted address doesn't send enough ether`, async () => {
-                const somkid = "0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28"
-                await yetiPunks.allowlistMint(3, { from: user, value: web3.utils.toWei('0.05', 'ether') })
-                    .should.be.rejectedWith('Reason given: Need to send more ETH')
+    //         it(`reverts if whitelisted address doesn't send enough ether`, async () => {
+    //             const somkid = "0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28"
+    //             await yetiPunks.allowlistMint(3, { from: user, value: web3.utils.toWei('0.05', 'ether') })
+    //                 .should.be.rejectedWith('Reason given: Need to send more ETH')
 
-                const balance = await yetiPunks.balanceOf(user)
-                balance.toString().should.equal('0')
+    //             const balance = await yetiPunks.balanceOf(user)
+    //             balance.toString().should.equal('0')
 
-                const numberMinted = await yetiPunks._numberMinted(user)
-                numberMinted.toString().should.equal('0')
-            });
+    //             const numberMinted = await yetiPunks._numberMinted(user)
+    //             numberMinted.toString().should.equal('0')
+    //         });
 
-            // it(`reverts if trying to mint from contract address`, async () => {
+    //         // it(`reverts if trying to mint from contract address`, async () => {
 
-            // });
-        })
-    })
+    //         // });
+    //     })
+    // })
 
     describe('Dev Mint', async () => {
         describe('Success', async () => {
@@ -266,8 +263,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             })
 
             it(`allows the owner/deployer to withdraw all funds`, async () => {
-                await yetiPunks.seedAllowlist([user], [user])
-                await yetiPunks.allowlistMint(3, { from: user, value: web3.utils.toWei('0.072', 'ether') })
+                await yetiPunks.publicSaleMint(3, { from: user, value: web3.utils.toWei('0.072', 'ether') })
 
                 let balanceBefore = await web3.eth.getBalance(yetiPunks.address)
                 balanceBefore.should.equal(web3.utils.toWei('0.072', 'ether'))
