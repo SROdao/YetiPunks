@@ -74,7 +74,7 @@ function App() {
 			if (accounts.length > 0) {
 				setUsersAccount(accounts[0])
 			} else {
-				alert('Please connect with MetaMask')
+				swal('Please log in & connect with MetaMask')
 			}
 
 			window.ethereum.on('accountsChanged', function (accounts) {
@@ -282,12 +282,12 @@ function App() {
 
 			{usersAccount ? ( //do a better check if someone is connected
 				<>
-					<Main button={mintButton()} supplyAvailable={supplyAvailable} maxPerTxn={maxPerTxn} maxYetis={MAX_YETI_COUNT} />
+					<Main button={mintButton()} supplyAvailable={supplyAvailable} maxPerTxn={maxPerTxn} maxYetis={MAX_YETI_COUNT} isConnected={!!usersAccount} />
 					{/* <button onClick={withdrawFunds}>Withdraw</button> */}
 				</>
 			) : (
 				<>
-					<Main button={connectButton()} />
+					<Main button={connectButton()} isConnected={!!usersAccount} />
 				</>
 			)}
 
