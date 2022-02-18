@@ -11,7 +11,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
         let result
 
         beforeEach(async () => {
-            yetiPunks = await YetiPunks.new(10, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
+            yetiPunks = await YetiPunks.new(20, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
         })
 
         it('Returns the contract name', async () => {
@@ -31,7 +31,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             let uri
 
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(10, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
+                yetiPunks = await YetiPunks.new(20, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
                 uri = 'ipfs://IPFS-NEW-IMAGE-METADATA-CID/'
                 await yetiPunks.setBaseURI(uri, { from: deployerAddress })
                 result = await yetiPunks.publicSaleMint(1, { from: user, value: web3.utils.toWei('0.03', 'ether') })
@@ -105,7 +105,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             let uri
 
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(10, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
+                yetiPunks = await YetiPunks.new(20, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
                 uri = 'ipfs://IPFS-NEW-IMAGE-METADATA-CID/'
                 await yetiPunks.setBaseURI(uri, { from: deployerAddress })
             })
@@ -153,7 +153,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
     //         let result
 
     //         beforeEach(async () => {
-    //             yetiPunks = await YetiPunks.new(10, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
+    //             yetiPunks = await YetiPunks.new(20, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
     //             await yetiPunks.seedAllowlist([user], [user])
     //         })
 
@@ -164,7 +164,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
 
     //     describe('Failure', async () => {
     //         beforeEach(async () => {
-    //             yetiPunks = await YetiPunks.new(10, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
+    //             yetiPunks = await YetiPunks.new(20, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
     //             await yetiPunks.seedAllowlist([user], [user])
     //         })
 
@@ -201,7 +201,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
     describe('Dev Mint', async () => {
         describe('Success', async () => {
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(10, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
+                yetiPunks = await YetiPunks.new(20, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
             });
 
             it(`allows devMint to mint to co-creators past amountForDevs`, async () => {
@@ -234,7 +234,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
 
         describe('Failure', async () => {
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(10, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
+                yetiPunks = await YetiPunks.new(20, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
             });
 
             it(`reverts if you are not the owner`, async () => {
@@ -245,7 +245,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
 
             it(`reverts if attempting to mint more than maxBatchSize`, async () => {
                 const somkid = "0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28"
-                await yetiPunks.devMint([somkid], 11)
+                await yetiPunks.devMint([somkid], 21)
                     .should.be.rejectedWith('Reason given: ERC721A: quantity to mint too high')
             });
         });
@@ -255,7 +255,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
         describe('Success', async () => {
 
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(10, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
+                yetiPunks = await YetiPunks.new(20, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
             })
 
             it('Allows onwer to set baseURI', async () => {
@@ -314,7 +314,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
         describe('Failure', async () => {
 
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(10, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
+                yetiPunks = await YetiPunks.new(20, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
             })
 
             it('throws an error when trying to READ baseURI', async () => {
