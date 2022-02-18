@@ -11,7 +11,7 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
     using Strings for uint256;
 
     uint256 public immutable maxPerAddressDuringPublicSale;
-    uint256 public immutable maxPerAddressDuringPresale = 3;
+    // uint256 public immutable maxPerAddressDuringPresale = 3;
     uint256 public immutable amountForDevs;
     uint256 public immutable amountForGiveaway;
     string public notRevealedUri;
@@ -25,7 +25,7 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
         uint256 amountForDevs_,
         string memory _initNotRevealedUri
     ) ERC721A("Petty Monks", "PM", maxBatchSize_, collectionSize_) {
-        maxPerAddressDuringPublicSale = maxBatchSize_;
+        maxPerAddressDuringPublicSale = 7;
         amountForGiveaway = amountForGiveaway_;
         amountForDevs = amountForDevs_;
         require(
@@ -104,8 +104,8 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
         onlyOwner
     {
         require(
-            totalSupply() + mintAmount <= amountForDevs,
-            "too many already minted before dev mint"
+            totalSupply() + mintAmount <= collectionSize,
+            "exceeded max supply"
         );
 
         for (uint256 i = 0; i < receiverAddresses.length; i++) {
