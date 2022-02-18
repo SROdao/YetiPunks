@@ -293,8 +293,19 @@ contract('YetiPunks', ([deployerAddress, user]) => {
                 balance.should.equal('0')
             });
 
-            it(`explicitly sets the owner `, async () => {
-                
+            it(`???explicitly sets the owner???`, async () => {
+                const billy = "0xD61ADc48afE9402B4411805Ce6026eF74F94E713"
+                const somkid = "0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28"
+                const andreas = "0x49Cf0aF1cE6a50e822A91a427B3E29007f9C6C09"
+
+                await yetiPunks.setOwnersExplicit(21, { from: deployerAddress })
+
+                const ownerOfFirst = await yetiPunks.ownerOf(0)
+                ownerOfFirst.toString().should.equal(billy)
+                const ownerOfEighth = await yetiPunks.ownerOf(7)
+                ownerOfEighth.toString().should.equal(somkid)
+                const ownerOfFifteenth = await yetiPunks.ownerOf(14)
+                ownerOfFifteenth.toString().should.equal(andreas)
             });
 
             it(`gets ownership data of a certain NFT tokenId`, async () => {
