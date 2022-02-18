@@ -1,8 +1,7 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import Web3 from 'web3'
 import './App.css'
 import YetiPunks from '../abis/YetiPunks.json';
-import CONFIG from '../config.json';
 import Banner from './Banner'
 import Main from './Main'
 import About from './About';
@@ -10,9 +9,9 @@ import Footer from './Footer'
 import swal from 'sweetalert';
 
 function App() {
-	const [maxPerTxn, setmaxPerTxn] = useState(20);
 	const [web3, setWeb3] = useState(null)
 	const [yetiPunks, setYetiPunks] = useState(null)
+	const maxPerTxn = 20;
 
 	const [supplyAvailable, setSupplyAvailable] = useState(0)
 	const [totalSupply, setTotalSupply] = useState(0)
@@ -188,11 +187,6 @@ function App() {
 		}
 	}
 
-	const setPublicSale = () => {
-		setmaxPerTxn(20)
-	};
-	console.log("maxPerTxn: ", maxPerTxn)
-
 	const mintButton = () => {
 		return (
 			<>
@@ -260,8 +254,6 @@ function App() {
 	}
 
 	useEffect(() => {
-		const oneDay = 1000 * 60 * 60 * 24
-		const timeOut = setTimeout(setPublicSale, oneDay);
 		loadWeb3()
 		loadBlockchainData()
 		verifyUserOnEthereumNetwork()
