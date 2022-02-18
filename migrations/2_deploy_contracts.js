@@ -8,7 +8,7 @@ module.exports = async function (deployer) {
 
     await deployer.deploy(
         YetiPunks, 
-        7,
+        20,
         6420,
         10,
         21,
