@@ -10,8 +10,7 @@ import Footer from './Footer'
 import swal from 'sweetalert';
 
 function App() {
-	const [isVisible, setIsVisible] = useState(false);
-	const [maxPerTxn, setmaxPerTxn] = useState(5);
+	const [maxPerTxn, setmaxPerTxn] = useState(20);
 	const [web3, setWeb3] = useState(null)
 	const [yetiPunks, setYetiPunks] = useState(null)
 
@@ -22,9 +21,6 @@ function App() {
 	const [currentNetwork, setCurrentNetwork] = useState(null)
 
 	const [mintAmount, setMintAmount] = useState(1)
-
-	const [blockchainExplorerURL, setBlockchainExplorerURL] = useState('https://etherscan.io/')
-	const [openseaURL, setOpenseaURL] = useState('https://opensea.io/')
 
 	const MAX_YETI_COUNT = 6420;
 	const contractAddress = "0x49553c11749121745FBAA01bEfa03Ec049Bd7B1F"
@@ -45,16 +41,11 @@ function App() {
 				setSupplyAvailable(MAX_YETI_COUNT - totalSupply)
 
 				// listen for Transfer event
-				await yetiPunksContract.events.Transfer({ filter: { value: [] }, fromBlock: 0 })
-					.on('data', event => console.log("EVENT", event))
-					.on('changed', changed => console.log(changed))
-					.on('error', err => { throw err })
-					.on('connected', str => console.log(str))
-
-				if (networkId !== 5777) {
-					setBlockchainExplorerURL(CONFIG.NETWORKS[networkId].blockchainExplorerURL)
-					setOpenseaURL(CONFIG.NETWORKS[networkId].openseaURL)
-				}
+				// await yetiPunksContract.events.Transfer({ filter: { value: [] }, fromBlock: 0 })
+				// 	.on('data', event => console.log("EVENT", event))
+				// 	.on('changed', changed => console.log(changed))
+				// 	.on('error', err => { throw err })
+				// 	.on('connected', str => console.log(str))
 
 			} catch (error) {
 				console.error("Contract not deployed to current network, please change network to Ethereum in MetaMask")
@@ -280,7 +271,7 @@ function App() {
 		<>
 			<Banner />
 
-			{usersAccount ? ( //do a better check if someone is connected
+			{usersAccount ? (
 				<>
 					<Main button={mintButton()} supplyAvailable={supplyAvailable} maxPerTxn={maxPerTxn} maxYetis={MAX_YETI_COUNT} isConnected={!!usersAccount} />
 					{/* <button onClick={withdrawFunds}>Withdraw</button> */}
