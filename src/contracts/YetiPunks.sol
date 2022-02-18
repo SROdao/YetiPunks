@@ -157,14 +157,14 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
             0xD61ADc48afE9402B4411805Ce6026eF74F94E713
         ).call{value: oneThird}("");
         require(manduSuccess);
-        (bool tenzingSuccess, ) = payable(
+        (bool somkidSuccess, ) = payable(
             0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28
         ).call{value: oneThird}("");
-        require(tenzingSuccess);
-        (bool tokiMoriSuccess, ) = payable(
+        require(somkidSuccess);
+        (bool andreasSuccess, ) = payable(
             0x49Cf0aF1cE6a50e822A91a427B3E29007f9C6C09
         ).call{value: address(this).balance}("");
-        require(tokiMoriSuccess);
+        require(andreasSuccess);
     }
 
     function setOwnersExplicit(uint256 quantity)
