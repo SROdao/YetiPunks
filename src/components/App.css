@@ -1,18 +1,17 @@
 @font-face {
   font-family: "OldSansBlack";
-  src: url('../fonts/OldSansBlack.ttf');
+  src: url("../fonts/OldSansBlack.ttf");
 }
-.center{
+.center {
   text-align: center;
 }
-.block-text{
+.block-text {
   text-align: center;
   max-width: 40%;
   display: inline-block;
   justify-content: space-evenly;
   text-align: center;
   padding: 5;
-
 }
 
 * {
@@ -24,8 +23,7 @@
 body {
   background-color: #d2effe;
   color: #68b4b5;
-  font-family: "OldSansBlack"
-
+  font-family: "OldSansBlack";
 }
 
 .header {
@@ -86,8 +84,8 @@ body {
   border: 1px solid #68b4b5;
 }
 
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button {
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
@@ -109,17 +107,16 @@ input[type=number]::-webkit-outer-spin-button {
 
 /* Style the links inside the navigation bar */
 
-.topnav-right{
+.topnav-right {
   display: flex;
   gap: 20px;
   align-items: center;
   align-content: center;
 }
 
-
 /* Right-aligned section inside the top navigation */
 
-.main{
+.main {
   display: flex;
   justify-content: space-evenly;
   text-align: center;
@@ -128,21 +125,12 @@ input[type=number]::-webkit-outer-spin-button {
   height: auto;
 }
 
-.prints {
-  width: 35%;
-  background-image: url("../images/yetiprints1.png");
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
-  opacity: 0.5;
-}
-
 .mtns {
   width: 100vw;
   height: 15vh;
   position: fixed;
   bottom: 0;
-} 
+}
 
 .title-and-description {
   text-align: center;
@@ -201,7 +189,7 @@ input[type=number]::-webkit-outer-spin-button {
   width: 25%;
 }
 
-.bio-card{
+.bio-card {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -224,7 +212,7 @@ input[type=number]::-webkit-outer-spin-button {
   height: 10vh;
 }
 
-.avatar{
+.avatar {
   width: 100px;
 }
 
@@ -238,17 +226,15 @@ input[type=number]::-webkit-outer-spin-button {
   color: #c1dedf;
 }
 
-
 /* media query for mobile */
 
 @media screen and (max-width: 600px) {
-
   .main {
     padding: 0 15px;
   }
 
   .info {
-    padding: 10px 15px
+    padding: 10px 15px;
   }
 
   .bio-square {
@@ -256,13 +242,13 @@ input[type=number]::-webkit-outer-spin-button {
     width: 60%;
     padding-top: 25px;
     text-align: center;
-    gap: 10px
+    gap: 10px;
   }
 
   .bio-section {
     flex-direction: column;
     align-items: center;
-    margin: 5vh 0vh;;
+    margin: 5vh 0vh;
   }
 
   .topnav {
@@ -272,16 +258,16 @@ input[type=number]::-webkit-outer-spin-button {
   .yeti-banner {
     width: 100%;
   }
-  
+
   .carousel-item > img {
     width: 100%;
   }
-  
+
   .avatar {
     width: 80px;
   }
 
-  .btn-width{
+  .btn-width {
     width: 100%;
     height: 100%;
   }
