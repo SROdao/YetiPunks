@@ -11,7 +11,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
         let result
 
         beforeEach(async () => {
-            yetiPunks = await YetiPunks.new(7, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
+            yetiPunks = await YetiPunks.new(10, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
         })
 
         it('Returns the contract name', async () => {
@@ -31,7 +31,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             let uri
 
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(7, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
+                yetiPunks = await YetiPunks.new(10, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
                 uri = 'ipfs://IPFS-NEW-IMAGE-METADATA-CID/'
                 await yetiPunks.setBaseURI(uri, { from: deployerAddress })
                 result = await yetiPunks.publicSaleMint(1, { from: user, value: web3.utils.toWei('0.03', 'ether') })
@@ -105,7 +105,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             let uri
 
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(7, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
+                yetiPunks = await YetiPunks.new(10, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
                 uri = 'ipfs://IPFS-NEW-IMAGE-METADATA-CID/'
                 await yetiPunks.setBaseURI(uri, { from: deployerAddress })
             })
@@ -153,7 +153,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
     //         let result
 
     //         beforeEach(async () => {
-    //             yetiPunks = await YetiPunks.new(7, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
+    //             yetiPunks = await YetiPunks.new(10, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
     //             await yetiPunks.seedAllowlist([user], [user])
     //         })
 
@@ -164,7 +164,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
 
     //     describe('Failure', async () => {
     //         beforeEach(async () => {
-    //             yetiPunks = await YetiPunks.new(7, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
+    //             yetiPunks = await YetiPunks.new(10, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
     //             await yetiPunks.seedAllowlist([user], [user])
     //         })
 
@@ -201,21 +201,40 @@ contract('YetiPunks', ([deployerAddress, user]) => {
     describe('Dev Mint', async () => {
         describe('Success', async () => {
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(7, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
+                yetiPunks = await YetiPunks.new(10, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
             });
 
-            it(`mints if amount doesn't exceed amountForDevs`, async () => {
+            it(`allows devMint to mint to co-creators past amountForDevs`, async () => {
                 const somkid = "0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28"
-                // await yetiPunks.devMint([somkid], 5)
+                await yetiPunks.devMint([somkid], 1)
 
-                const numberMintedAfterTransfer = await yetiPunks._numberMinted(somkid)
-                numberMintedAfterTransfer.toString().should.equal('7')
+                const somkidMinted = await yetiPunks.numberMinted(somkid)
+                somkidMinted.toString().should.equal('8')
             });
+
+            it(`allows a devMint up to a batch size of 10`, async () => {
+                const vitalikWallet = '0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B'
+                await yetiPunks.devMint([vitalikWallet], 10)
+
+                const somkidMinted = await yetiPunks.numberMinted(vitalikWallet)
+                somkidMinted.toString().should.equal('10')
+            });
+
+            it(`allows a devMint for over 10 wallet addresses (one NFT each)`, async () => {
+                const vitalikWallet = '0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B'
+                const arr = new Array(11)
+                const arrayOfWallets = arr.fill(vitalikWallet)
+
+                await yetiPunks.devMint(arrayOfWallets, 1)
+
+                const somkidMinted = await yetiPunks.numberMinted(vitalikWallet)
+                somkidMinted.toString().should.equal('11')
+            })
         });
 
         describe('Failure', async () => {
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(7, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
+                yetiPunks = await YetiPunks.new(10, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
             });
 
             it(`reverts if you are not the owner`, async () => {
@@ -224,10 +243,10 @@ contract('YetiPunks', ([deployerAddress, user]) => {
                     .should.be.rejectedWith('Reason given: Ownable: caller is not the owner')
             });
 
-            it(`reverts if attempting to mint more than amountForDevs`, async () => {
+            it(`reverts if attempting to mint more than maxBatchSize`, async () => {
                 const somkid = "0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28"
-                await yetiPunks.devMint([somkid], 22)
-                    .should.be.rejectedWith('Reason given: too many already minted before dev mint')
+                await yetiPunks.devMint([somkid], 11)
+                    .should.be.rejectedWith('Reason given: ERC721A: quantity to mint too high')
             });
         });
     });
@@ -236,7 +255,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
         describe('Success', async () => {
 
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(7, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
+                yetiPunks = await YetiPunks.new(10, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
             })
 
             it('Allows onwer to set baseURI', async () => {
@@ -265,13 +284,26 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             it(`allows the owner/deployer to withdraw all funds`, async () => {
                 await yetiPunks.publicSaleMint(3, { from: user, value: web3.utils.toWei('0.072', 'ether') })
 
-                let balanceBefore = await web3.eth.getBalance(yetiPunks.address)
+                const balanceBefore = await web3.eth.getBalance(yetiPunks.address)
                 balanceBefore.should.equal(web3.utils.toWei('0.072', 'ether'))
 
                 await yetiPunks.withdrawBalance({ from: deployerAddress })
 
-                let balance = await web3.eth.getBalance(yetiPunks.address)
+                const balance = await web3.eth.getBalance(yetiPunks.address)
                 balance.should.equal('0')
+            });
+
+            it(`explicitly sets the owner `, async () => {
+                
+            });
+
+            it(`gets ownership data of a certain NFT tokenId`, async () => {
+                await yetiPunks.publicSaleMint(1, { from: user, value: web3.utils.toWei('0.024', 'ether') })
+                const tokenId = 21 // the first token minted after mint for devs
+
+                const ownershipData = await yetiPunks.getOwnershipData(tokenId)
+                
+                ownershipData.addr.should.equal(user)
             });
 
             // Update pre-reveal URI
@@ -282,7 +314,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
         describe('Failure', async () => {
 
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(7, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
+                yetiPunks = await YetiPunks.new(10, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
             })
 
             it('throws an error when trying to READ baseURI', async () => {
