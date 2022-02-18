@@ -11,16 +11,16 @@ import swal from 'sweetalert';
 function App() {
 	const [web3, setWeb3] = useState(null)
 	const [yetiPunks, setYetiPunks] = useState(null)
-	const maxPerTxn = 20;
-
+	
 	const [supplyAvailable, setSupplyAvailable] = useState(0)
 	const [totalSupply, setTotalSupply] = useState(0)
-
+	
 	const [usersAccount, setUsersAccount] = useState(null)
 	const [currentNetwork, setCurrentNetwork] = useState(null)
-
+	
 	const [mintAmount, setMintAmount] = useState(1)
-
+	
+	const maxPerTxn = 20;
 	const MAX_YETI_COUNT = 6420;
 	const contractAddress = "0x49553c11749121745FBAA01bEfa03Ec049Bd7B1F"
 
