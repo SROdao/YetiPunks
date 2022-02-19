@@ -155,7 +155,7 @@ function App() {
 				setTotalSupply(newTotalSupply)
 				setSupplyAvailable(MAX_YETI_COUNT - newTotalSupply)
 			}).catch((err) => {
-				swal(err)
+				swal(err.message)
 			});
 
 			return txHash
