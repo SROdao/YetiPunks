@@ -64,7 +64,7 @@ function App() {
 			if (accounts.length > 0) {
 				setUsersAccount(accounts[0])
 			} else {
-				swal('Please log in & connect with MetaMask')
+				swal('Connect with MetaMask')
 			}
 
 			window.ethereum.on('accountsChanged', function (accounts) {
