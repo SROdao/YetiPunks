@@ -133,8 +133,6 @@ function App() {
 				})
 				.catch(error => {
 					swal("Insufficent funds for this transaction =(")
-					//swal(error.message)
-					// alert(error.message) <---- alerts when there's not enough funds in the wallet
 				});
 
 			web3.eth.getGasPrice()
