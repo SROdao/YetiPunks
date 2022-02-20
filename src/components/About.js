@@ -36,8 +36,6 @@ const About = () => {
                 They're always down to lend a helping hand, so never fear…
                 you will always have a fren in the YETIPUNKS.
                 </p>
-
-
             </div>
             <div className="bio-section">
                 {
