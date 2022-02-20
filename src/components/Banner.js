@@ -41,12 +41,12 @@ const Banner = () => {
             {playing ?(
             <img onClick={toggle} className="icon" src={soundOn}></img>
             ):(<img onClick={toggle} className="icon" src={soundOff}></img>)}     
-            <div className="topnav-right">
-                <a href='https://etherscan.io/' target="_blank"><img className='icon' src={YPdiscrod} alt="lookrare-logo"/></a>
-                <a href='https://etherscan.io/' target="_blank"><img className='icon' src={ethScan} alt="lookrare-logo"/></a>
+            <div className="topnav-right">               
+                <a href='https://etherscan.io/' target="_blank"><img className='icon' src={ethScan} alt="ethscan-logo"/></a>
                 <a href='https://looksrare.org/' target="_blank"><img className='icon' src={looksRare} alt="lookrare-logo"/></a>
                 <a href='https://opensea.io/' target="_blank"><img className='icon' src={openSea} alt="opensea-logo"/></a>
                 <a href='https://twitter.com/YetiPunks' target="_blank"><img className='icon' src={twitter} alt="twitter-logo"/></a>
+                <a href='https://etherscan.io/' target="_blank"><img className='icon' src={YPdiscrod} alt="discord-logo"/></a>
             </div>
         </div>
     )

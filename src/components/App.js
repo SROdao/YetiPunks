@@ -132,7 +132,8 @@ function App() {
 					console.log("fetched gasLimit", limit)
 				})
 				.catch(error => {
-					swal(error.message)
+					swal("Insufficent funds for this transaction =(")
+					//swal(error.message)
 					// alert(error.message) <---- alerts when there's not enough funds in the wallet
 				});
 
@@ -155,7 +156,7 @@ function App() {
 				setTotalSupply(newTotalSupply)
 				setSupplyAvailable(MAX_YETI_COUNT - newTotalSupply)
 			}).catch((err) => {
-				swal(err.message)
+				swal(err.message.slice(0, -1) + ' =(')
 			});
 
 			return txHash
@@ -205,7 +206,7 @@ function App() {
 	const connectButton = () => {
 		return (
 			<div className="plus-minus">
-				<button onClick={web3Handler} className="btn mint-btn">Connect</button>
+				<button onClick={web3Handler} className="btn mint-btn">CONNECT</button>
 			</div>
 
 		)
