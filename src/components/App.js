@@ -135,7 +135,13 @@ function App() {
 					console.log("fetched gasLimit", limit)
 				})
 				.catch(error => {
-					swal("Insufficent funds for this transaction =(")
+					if (error.message.match(/insufficient funds/)) {
+						swal("Insufficent funds for this transaction =(")
+					} else if (error.message.match(/minting limit exceeded/)) {
+						swal("Public minting limit exceeded")
+					} else {
+						swal(error.message)
+					}
 				});
 
 			web3.eth.getGasPrice()
