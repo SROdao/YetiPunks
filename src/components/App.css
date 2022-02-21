@@ -189,7 +189,7 @@ input[type="number"]::-webkit-outer-spin-button {
 .bio-section {
   display: flex;
   justify-content: space-around;
-  margin: 20vh 0vh;
+  margin: 15vh 0vh;
 }
 
 .bio-square {
