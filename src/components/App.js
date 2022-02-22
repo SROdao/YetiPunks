@@ -138,7 +138,7 @@ function App() {
 					if (error.message.match(/insufficient funds/gi)) {
 						swal("Insufficent funds for this transaction =(")
 					} else if (error.message.match(/minting limit exceeded/gi)) {
-						swal("Public minting limit exceeded")
+						swal("Wallet limit exceeded")
 					} else {
 						swal(error.message)
 					}
@@ -195,12 +195,18 @@ function App() {
 		}
 	}
 
+	const handleKeypress = (e) => {
+		if (e.key === 'Enter') {
+			mintNFTHandler(mintAmount)
+		}
+	}
+
 	const mintButton = () => {
 		return (
 			<>
 				<div className="input-and-button">
 					<button className="btn green-btn" onClick={decrementMintAmount}>-</button>
-					<input className="mint-input" type='number' min='1' max={maxPerTxn} placeholder="1" value={mintAmount} onChange={e => handleMintAmountChange(e)}></input>
+					<input className="mint-input" type='number' min='1' max={maxPerTxn} placeholder="1" value={mintAmount} onChange={e => handleMintAmountChange(e)} onKeyPress={e => handleKeypress(e)}></input>
 					<button className="btn green-btn" onClick={incrementMintAmount}>+</button>
 				</div>
 				<div className="plus-minus">
