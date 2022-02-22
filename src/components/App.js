@@ -277,7 +277,7 @@ function App() {
 
 	return (
 		<>
-			<Banner />
+			<Banner usersAccount={usersAccount} />
 
 			{usersAccount ? (
 				<>
