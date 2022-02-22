@@ -59,13 +59,14 @@ function App() {
 			const web3 = new Web3(window.ethereum)
 			setWeb3(web3)
 
+			await web3Handler() //call this to pop up MM
+
 			const accounts = await web3.eth.getAccounts()
 
 			if (accounts.length > 0) {
 				setUsersAccount(accounts[0])
 			} else {
-				swal('Log in/connect to MetaMask')
-				// console.error("please log in to metamask")
+				console.error("not logged in/connected to metamask")
 			}
 
 			window.ethereum.on('accountsChanged', function (accounts) {
@@ -76,6 +77,7 @@ function App() {
 				// Handle the new chain.
 				// Correctly handling chain changes can be complicated.
 				// We recommend reloading the page unless you have good reason not to.
+				verifyUserOnEthereumNetwork();
 				window.location.reload();
 			});
 		}
