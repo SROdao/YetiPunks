@@ -5,9 +5,6 @@ import CarouselComponent from './CarouselComponent'
 const Main = ({ button, supplyAvailable, maxPerTxn, maxYetis, isConnected }) => {
     return (
         <div className="main">
-            {/* <div className="prints"> */}
-
-            {/* </div> */}
             <div>
                 <CarouselComponent />
                 <div className='title-and-description'>
@@ -30,9 +27,6 @@ const Main = ({ button, supplyAvailable, maxPerTxn, maxYetis, isConnected }) => 
                     </div>
                 }
             </div>
-            {/* <div className="prints"> */}
-
-            {/* </div> */}
         </div>
     )
 }

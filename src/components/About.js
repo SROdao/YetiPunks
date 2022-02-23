@@ -40,12 +40,10 @@ const About = () => {
             <div className="bio-section">
                 {
                     yetis.map(yeti =>
-                        // <div className='bio-square' key={yeti.name}>
                         <div className='bio-card'>
                             <img className='avatar' src={yeti.profile} alt="yeti-avatar" />
                             <h6>{yeti.name}</h6>
-                            <h4>{yeti.role}</h4>
-                            {/* </div> */}
+                            {/* <h4>{yeti.role}</h4> */}
                             <div className='bio'>
                                 <p>{yeti.bio}</p>
                             </div>
