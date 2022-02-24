@@ -11,28 +11,24 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
     using Strings for uint256;
 
     uint256 public immutable maxPerAddressDuringPublicSale;
-    uint256 public immutable amountForDevs;
     uint256 public immutable amountForGiveaway;
     bool private revealed = false;
+    bool private publicSaleOn = false;
     string public notRevealedUri;
 
     constructor(
         uint256 maxBatchSize_,
         uint256 collectionSize_,
         uint256 amountForGiveaway_,
-        uint256 amountForDevs_,
         string memory _initBaseUri,
         string memory _initNotRevealedUri
     ) ERC721A("Petty Monks", "PM", maxBatchSize_, collectionSize_) {
         maxPerAddressDuringPublicSale = maxBatchSize_;
         amountForGiveaway = amountForGiveaway_;
-        amountForDevs = amountForDevs_;
-        require(
-            amountForGiveaway_ <= collectionSize_,
-            "larger collection size needed"
-        );
+
         setBaseURI(_initBaseUri);
         setNotRevealedURI(_initNotRevealedUri);
+
         address[] memory devAddresses = new address[](3);
         devAddresses[0] = 0xD61ADc48afE9402B4411805Ce6026eF74F94E713;
         devAddresses[1] = 0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28;
@@ -48,13 +44,13 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
     function publicSaleMint(uint256 quantity) external payable callerIsUser {
         uint256 publicPrice = 0.024 ether;
         require(
-            totalSupply() + quantity <= collectionSize,
-            "exceeded max supply"
+            totalSupply() + quantity <= collectionSize - amountForGiveaway,
+            "public sale finished"
         );
         require(
             numberMinted(msg.sender) + quantity <=
                 maxPerAddressDuringPublicSale,
-            "public sale minting limit exceeded"
+            "wallet limit exceeded"
         );
         require(msg.value >= publicPrice, "Need to send more ETH");
         _safeMint(msg.sender, quantity);
@@ -127,6 +123,10 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
 
     function revealCollection() public {
         revealed = true;
+    }
+
+    function setPublicSale(bool state) public {
+        publicSaleOn = state;
     }
 
     function withdrawBalance() public onlyOwner {
