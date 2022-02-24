@@ -40,11 +40,13 @@ const Banner = ({usersAccount}) => {
   const connectedWallet = usersAccount ? addressToDisplay : ""
   return (
     <div className="topnav">
-      {playing ? (
-        <img onClick={toggle} className="icon" src={soundOn}></img>
-      ) : (<img onClick={toggle} className="icon" src={soundOff}></img>)}
-      <div className="topnav-right">
+      <div className="topnav-left">
+        {playing ? (
+          <img onClick={toggle} className="icon" src={soundOn}></img>
+        ) : (<img onClick={toggle} className="icon" src={soundOff}></img>)}
         <p className="user-wallet">{connectedWallet}</p>
+      </div>
+      <div className="topnav-right">
         <a href='https://etherscan.io/' target="_blank"><img className='icon' src={ethScan} alt="ethscan-logo" /></a>
         <a href='https://looksrare.org/' target="_blank"><img className='icon' src={looksRare} alt="lookrare-logo" /></a>
         <a href='https://opensea.io/' target="_blank"><img className='icon' src={openSea} alt="opensea-logo" /></a>
