@@ -118,7 +118,7 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
         if (revealed == true) {
             return
                 bytes(baseURI).length > 0
-                    ? string(abi.encodePacked(baseURI, tokenId.toString()))
+                    ? string(abi.encodePacked(baseURI, tokenId.toString(), ".json"))
                     : "";
         } else {
             return notRevealedUri;
