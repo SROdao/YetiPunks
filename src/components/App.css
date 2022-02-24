@@ -154,18 +154,11 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .main-left {
-  width: 33vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 39%;
 }
 
 .main-right {
-  width: 50%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  width: 49%;
   border: 3px solid #68b4b5;
   height: fit-content;
 }
