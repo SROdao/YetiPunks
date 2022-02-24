@@ -34,8 +34,8 @@ body {
 }
 
 .yeti-carousel-image {
-  width: 50%;
-  height: 50%;
+  width: 90%;
+  height: 90%;
 }
 
 .swal-button {
@@ -158,6 +158,7 @@ input[type="number"]::-webkit-outer-spin-button {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 5%;
 }
 
 .main-right {
@@ -211,6 +212,7 @@ input[type="number"]::-webkit-outer-spin-button {
   /* width: 50vw; */
   /* display: flex;
   justify-content: center; */
+  height: 100%;
 }
 
 .carousel-control-prev {
