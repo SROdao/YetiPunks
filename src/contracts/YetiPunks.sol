@@ -131,10 +131,10 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
 
     function withdrawBalance() public onlyOwner {
         uint256 oneThird = (address(this).balance * 33) / 100;
-        (bool manduSuccess, ) = payable(
+        (bool unorthadoxantSuccess, ) = payable(
             0xD61ADc48afE9402B4411805Ce6026eF74F94E713
         ).call{value: oneThird}("");
-        require(manduSuccess);
+        require(unorthadoxantSuccess);
         (bool somkidSuccess, ) = payable(
             0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28
         ).call{value: oneThird}("");
