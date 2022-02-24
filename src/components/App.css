@@ -134,6 +134,13 @@ input[type="number"]::-webkit-outer-spin-button {
   align-content: center;
 }
 
+.topnav-left {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  align-content: center;
+}
+
 /* Right-aligned section inside the top navigation */
 
 .main {
@@ -141,8 +148,24 @@ input[type="number"]::-webkit-outer-spin-button {
   justify-content: space-evenly;
   text-align: center;
   padding: 5;
+  margin: 2vh 0vh;
   max-width: 100%;
-  height: auto;
+  height: 70vh;
+}
+
+.main-left {
+  width: 33vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main-right {
+  width: 66vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .mtns {
@@ -184,7 +207,9 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .yeti-banner {
-  width: 50vw;
+  /* width: 50vw; */
+  /* display: flex;
+  justify-content: center; */
 }
 
 .carousel-control-prev {
