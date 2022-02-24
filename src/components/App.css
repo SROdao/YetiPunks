@@ -7,11 +7,11 @@
 }
 .block-text {
   text-align: center;
-  max-width: 40%;
+  max-width: 80%;
   display: inline-block;
   justify-content: space-evenly;
   text-align: center;
-  padding: 5;
+  margin-top: 4%;
 }
 
 * {
@@ -161,6 +161,7 @@ input[type="number"]::-webkit-outer-spin-button {
   width: 49%;
   border: 3px solid #68b4b5;
   height: fit-content;
+  padding: 3%;
 }
 
 .mtns {
