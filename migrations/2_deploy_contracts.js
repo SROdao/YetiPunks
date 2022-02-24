@@ -7,11 +7,11 @@ module.exports = async function (deployer) {
     // const NFT_MINT_DATE = new Date(process.env.NFT_MINT_DATE).getTime().toString().slice(0, 10)
 
     await deployer.deploy(
-        YetiPunks, 
+        YetiPunks,
         20,
         6420,
-        10,
-        21,
-        "https://safelips.online/assets/meta/contract.json"
+        24,
+        "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/",
+        "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/notRevealed.json"
     )
 };

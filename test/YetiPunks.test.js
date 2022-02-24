@@ -11,7 +11,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
         let result
 
         beforeEach(async () => {
-            yetiPunks = await YetiPunks.new(20, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
+            yetiPunks = await YetiPunks.new(20, 6420, 24, "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/", "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/notRevealed.json")
         })
 
         it('Returns the contract name', async () => {
@@ -31,7 +31,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             let uri
 
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(20, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
+                yetiPunks = await YetiPunks.new(20, 6420, 24, "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/", "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/notRevealed.json")
                 uri = 'ipfs://IPFS-NEW-IMAGE-METADATA-CID/'
                 await yetiPunks.setBaseURI(uri, { from: deployerAddress })
                 result = await yetiPunks.publicSaleMint(1, { from: user, value: web3.utils.toWei('0.03', 'ether') })
@@ -83,10 +83,10 @@ contract('YetiPunks', ([deployerAddress, user]) => {
                 numberMintedAfterTransfer.toString().should.equal('0')
             });
 
-            it(`shows the tokenURI of the first NFT (baseURI + tokenId) for the owner of the contract`, async () => {
+            it(`shows the prereveal JSON URI before reveal`, async () => {
                 const tokenId = 0
                 const result = await yetiPunks.tokenURI(tokenId, { from: deployerAddress })
-                result.should.equal(uri + tokenId)
+                result.should.equal("ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/notRevealed.json")
             });
 
             it(`refunds if value is over price`, async () => {
@@ -105,7 +105,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             let uri
 
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(20, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
+                yetiPunks = await YetiPunks.new(20, 6420, 24, "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/", "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/notRevealed.json")
                 uri = 'ipfs://IPFS-NEW-IMAGE-METADATA-CID/'
                 await yetiPunks.setBaseURI(uri, { from: deployerAddress })
             })
@@ -123,27 +123,13 @@ contract('YetiPunks', ([deployerAddress, user]) => {
 
             it(`reverts if trying to mint more than 20`, async () => {
                 await yetiPunks.publicSaleMint(21, { from: user, value: web3.utils.toWei('0.03', 'ether') })
-                    .should.be.rejectedWith('Reason given: public sale minting limit exceeded')
+                    .should.be.rejectedWith('Reason given: wallet limit exceeded')
             });
 
             it(`reverts when calling the tokenURI function for a tokenId that hasn't been minted`, async () => {
                 const tokenId = 100
                 await yetiPunks.tokenURI(tokenId)
                     .should.be.rejectedWith('URI query for nonexistent token')
-
-            });
-
-            it(`reverts when calling the tokenURI function from non-owner`, async () => {
-                const tokenId = 0
-                await yetiPunks.tokenURI(tokenId, { from: user })
-                    .should.be.rejectedWith('Ownable: caller is not the owner')
-            });
-
-
-            it(`reverts if tokenURI() is called by anyone other than contract owner`, async () => {
-                const tokenId = 0
-                await yetiPunks.tokenURI(tokenId, { from: user })
-                    .should.be.rejectedWith('Ownable: caller is not the owner')
             });
         })
     })
@@ -153,7 +139,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
     //         let result
 
     //         beforeEach(async () => {
-    //             yetiPunks = await YetiPunks.new(20, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
+    //             yetiPunks = await YetiPunks.new(20, 6420, 24, "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/", "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/notRevealed.json")
     //             await yetiPunks.seedAllowlist([user], [user])
     //         })
 
@@ -164,7 +150,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
 
     //     describe('Failure', async () => {
     //         beforeEach(async () => {
-    //             yetiPunks = await YetiPunks.new(20, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
+    //             yetiPunks = await YetiPunks.new(20, 6420, 24, "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/", "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/notRevealed.json")
     //             await yetiPunks.seedAllowlist([user], [user])
     //         })
 
@@ -201,7 +187,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
     describe('Dev Mint', async () => {
         describe('Success', async () => {
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(20, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
+                yetiPunks = await YetiPunks.new(20, 6420, 24, "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/", "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/notRevealed.json")
             });
 
             it(`allows devMint to mint to co-creators past amountForDevs`, async () => {
@@ -234,7 +220,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
 
         describe('Failure', async () => {
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(20, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
+                yetiPunks = await YetiPunks.new(20, 6420, 24, "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/", "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/notRevealed.json")
             });
 
             it(`reverts if you are not the owner`, async () => {
@@ -255,7 +241,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
         describe('Success', async () => {
 
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(20, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
+                yetiPunks = await YetiPunks.new(20, 6420, 24, "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/", "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/notRevealed.json")
             })
 
             it('Allows onwer to set baseURI', async () => {
@@ -267,9 +253,10 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             it('shows the tokenURI of already minted NFTs', async () => {
                 const uri = 'ipfs://IPFS-NEW-IMAGE-METADATA-CID/'
                 const tokenId = 0
+                await yetiPunks.revealCollection()
                 await yetiPunks.setBaseURI(uri, { from: deployerAddress })
                 const result = await yetiPunks.tokenURI(tokenId, { from: deployerAddress })
-                result.should.equal(uri + tokenId)
+                result.should.equal(uri + tokenId + ".json")
             })
 
             it('Allows onwer to set notRevealedUri', async () => {
@@ -325,7 +312,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
         describe('Failure', async () => {
 
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(20, 6420, 10, 21, "https://safelips.online/assets/meta/contract.json")
+                yetiPunks = await YetiPunks.new(20, 6420, 24, "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/", "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/notRevealed.json")
             })
 
             it('throws an error when trying to READ baseURI', async () => {
