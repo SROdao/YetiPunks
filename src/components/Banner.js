@@ -34,7 +34,7 @@ const useAudio = () => {
 
 
 
-const Banner = ({usersAccount}) => {
+const Banner = ({ usersAccount }) => {
   const [playing, toggle] = useAudio();
   const addressToDisplay = usersAccount?.length > 12 ? `${usersAccount.slice(0, 4)}...${usersAccount.slice(-4)}` : usersAccount
   const connectedWallet = usersAccount ? addressToDisplay : ""
