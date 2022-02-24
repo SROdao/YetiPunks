@@ -11,18 +11,17 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
     using Strings for uint256;
 
     uint256 public immutable maxPerAddressDuringPublicSale;
-    // uint256 public immutable maxPerAddressDuringPresale = 3;
     uint256 public immutable amountForDevs;
     uint256 public immutable amountForGiveaway;
+    bool private revealed = false;
     string public notRevealedUri;
-
-    // mapping(address => uint256) public allowlist; //seed this with the uint being 3
 
     constructor(
         uint256 maxBatchSize_,
         uint256 collectionSize_,
         uint256 amountForGiveaway_,
         uint256 amountForDevs_,
+        string memory _initBaseUri,
         string memory _initNotRevealedUri
     ) ERC721A("Petty Monks", "PM", maxBatchSize_, collectionSize_) {
         maxPerAddressDuringPublicSale = maxBatchSize_;
@@ -32,6 +31,7 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
             amountForGiveaway_ <= collectionSize_,
             "larger collection size needed"
         );
+        setBaseURI(_initBaseUri);
         setNotRevealedURI(_initNotRevealedUri);
         address[] memory devAddresses = new address[](3);
         devAddresses[0] = 0xD61ADc48afE9402B4411805Ce6026eF74F94E713;
@@ -44,23 +44,6 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
         require(tx.origin == msg.sender, "The caller is another contract");
         _;
     }
-
-    // function allowlistMint(uint256 quantity) external payable callerIsUser {
-    //     uint256 price = 0.024 ether;
-    //     require(allowlist[msg.sender] > 0, "not eligible for whitelist mint");
-    //     require(
-    //         totalSupply() + quantity <= collectionSize,
-    //         "exceeded max supply"
-    //     ); //is this possible?
-    //     require(
-    //         numberMinted(msg.sender) + quantity <= maxPerAddressDuringPresale,
-    //         "mint amount exceeds whitelist"
-    //     );
-    //     require(msg.value >= price, "Need to send more ETH");
-    //     allowlist[msg.sender] -= quantity;
-    //     _safeMint(msg.sender, quantity);
-    //     refundIfOver(price * quantity);
-    // }
 
     function publicSaleMint(uint256 quantity) external payable callerIsUser {
         uint256 publicPrice = 0.024 ether;
@@ -84,19 +67,6 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
             payable(msg.sender).transfer(msg.value - price);
         }
     }
-
-    // function seedAllowlist(
-    //     address[] memory addresses,
-    //     uint256[] memory numSlots
-    // ) external onlyOwner {
-    //     require(
-    //         addresses.length == numSlots.length,
-    //         "addresses does not match numSlots length"
-    //     );
-    //     for (uint256 i = 0; i < addresses.length; i++) {
-    //         allowlist[addresses[i]] = numSlots[i];
-    //     }
-    // }
 
     // For marketing etc.
     function devMint(address[] memory receiverAddresses, uint256 mintAmount)
@@ -124,7 +94,7 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
         notRevealedUri = _notRevealedURI;
     }
 
-    function setBaseURI(string calldata baseURI) external onlyOwner {
+    function setBaseURI(string memory baseURI) public onlyOwner {
         _baseTokenURI = baseURI;
     }
 
@@ -136,7 +106,6 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
         view
         virtual
         override
-        onlyOwner
         returns (string memory)
     {
         require(
@@ -145,10 +114,19 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
         );
 
         string memory baseURI = _baseURI();
-        return
-            bytes(baseURI).length > 0
-                ? string(abi.encodePacked(baseURI, tokenId.toString()))
-                : "";
+
+        if (revealed == true) {
+            return
+                bytes(baseURI).length > 0
+                    ? string(abi.encodePacked(baseURI, tokenId.toString()))
+                    : "";
+        } else {
+            return notRevealedUri;
+        }
+    }
+
+    function revealCollection() public {
+        revealed = true;
     }
 
     function withdrawBalance() public onlyOwner {
