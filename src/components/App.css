@@ -307,6 +307,7 @@ input[type="number"]::-webkit-outer-spin-button {
   .bio-section {
     flex-direction: column;
     align-items: center;
+    margin-bottom: 40px;
   }
 
   .topnav-left {
