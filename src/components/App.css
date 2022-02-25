@@ -272,16 +272,22 @@ input[type="number"]::-webkit-outer-spin-button {
   .main {
     display: flex;
     flex-direction: column;
-    height: fit-content
+    height: fit-content;
+    margin: 0;
   }
 
   .main-left {
     width: 80%;
+    margin: 4% 0;
   }
 
   .main-right {
     width: 80%;
     border: 3px solid #68b4b5;
+  }
+
+  .title {
+    font-size: 40px;
   }
 
   .bio-section {
