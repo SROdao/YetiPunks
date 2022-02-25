@@ -22,8 +22,8 @@ const Main = ({
                     <p>
                         Deep in the valhalla mountains live the YETIPUNKS. far away from
                         civilization and far away from the chaos. They live a simple life,
-                        filled with good vibes and only the best herb. the water from the
-                        ice cap mountains is filled with magical nutrients that grows nugs
+                        filled with good vibes and only the best herb. The water from the
+                        ice capped mountains is filled with magical nutrients that grows nugs
                         the size of a tree in the redwood forest. All YETIPUNKS have
                         different traits and features but they pride themselves on
                         inclusivity and community. They're always down to lend a helping
