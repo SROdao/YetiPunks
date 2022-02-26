@@ -108,7 +108,7 @@ function App() {
 	// TODO: switch to mainnet before launch
 	const verifyUserOnEthereumNetwork = async () => {
 		const rinkeby = "0x4";
-		const ethereumMainnet = "0x1";
+		//?const ethereumMainnet = "0x1";
 		if (currentNetwork !== 4 || currentNetwork !== 1) {
 			await window.ethereum.request({
 				method: "wallet_switchEthereumChain",
@@ -131,8 +131,8 @@ function App() {
 				.encodeABI();
 
 			// Saving the below variables in case our fallback defaults are not working down the road
-			const defaultGas = numberOfTokens * 90000;
-			const defaultGasPrice = 10000000000000;
+			//?const defaultGas = numberOfTokens * 90000;
+			//?const defaultGasPrice = 10000000000000;
 
 			const tx = {
 				from: usersAccount,

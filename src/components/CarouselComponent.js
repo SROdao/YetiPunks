@@ -1,8 +1,5 @@
 import React from "react";
-
 import Carousel from "react-bootstrap/Carousel";
-
-import banner from "../images/yetibanner.png";
 import yeti1 from "../images/yeti1.png";
 import yeti2 from "../images/yeti2.png";
 import yeti3 from "../images/yeti3.png";
@@ -18,7 +15,7 @@ const CarouselComponent = () => {
   return (
     <Carousel className="yeti-banner" fade>
       {yetis.map((yeti) => (
-        <Carousel.Item interval={2000}>
+        < Carousel.Item interval={2000} key={yeti.alt}>
           <img
             className="yeti-carousel-image"
             src={yeti.image}
