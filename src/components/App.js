@@ -1,15 +1,18 @@
 import { useState, useEffect } from "react";
 import Web3 from "web3";
+import swal from "sweetalert";
+import detectEthereumProvider from '@metamask/detect-provider'
+
 import "./App.css";
 import YetiPunks from "../abis/YetiPunks.json";
 import Banner from "./Banner";
 import Main from "./Main";
 import About from "./About";
 import Footer from "./Footer";
-import swal from "sweetalert";
 
 function App() {
 	const [web3, setWeb3] = useState(null);
+	// const [initialRender, setInitialRender] = useState(true);
 	const [yetiPunks, setYetiPunks] = useState(null);
 
 	const [supplyAvailable, setSupplyAvailable] = useState(0);
@@ -63,8 +66,9 @@ function App() {
 	};
 
 	const loadWeb3 = async () => {
-		if (typeof window.ethereum !== "undefined" && !usersAccount) {
-			const web3 = new Web3(window.ethereum);
+		const ethereumProvider = await detectEthereumProvider()
+		if (ethereumProvider) {
+			const web3 = new Web3(ethereumProvider);
 			setWeb3(web3);
 
 			await web3Handler(); //call this to pop up MM
@@ -88,6 +92,11 @@ function App() {
 				verifyUserOnEthereumNetwork();
 				window.location.reload();
 			});
+		} else {
+			swal('Please install and use MetaMask').then(() => {
+				// TODO: Change deeplink to point to real domain
+				window.open("https://metamask.app.link/dapp/9cca-2601-348-1-2980-9c9c-d000-24b3-c540.ngrok.io")
+			})
 		}
 	};
 
@@ -326,7 +335,7 @@ function App() {
 	useEffect(() => {
 		loadWeb3();
 		loadBlockchainData();
-		verifyUserOnEthereumNetwork();
+		// verifyUserOnEthereumNetwork();
 	}, [usersAccount]);
 
 	return (
