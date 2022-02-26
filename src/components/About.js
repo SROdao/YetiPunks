@@ -1,6 +1,6 @@
 import React from "react";
 import yetitar from "../images/yetipunk_bios.png";
-import publicDomain from "../images/publicdomain.png";
+//?import publicDomain from "../images/publicdomain.png";
 
 const yetis = [
     {
@@ -28,7 +28,7 @@ const About = () => {
         <div className="center">
             <div className="bio-section">
                 {yetis.map((yeti) => (
-                    <div className="bio-card">
+                    <div key={yeti.name} className="bio-card">
                         <img className="avatar" src={yeti.profile} alt="yeti-avatar" />
                         <h6>{yeti.name}</h6>
                         {/* <h4>{yeti.role}</h4> */}
