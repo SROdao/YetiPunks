@@ -15,8 +15,8 @@ const CarouselComponent = () => {
   return (
     <Carousel className="yeti-banner" fade>
       {yetis.map((yeti) => (
-        < Carousel.Item interval={2000}>
-          <img key={yeti.alt}
+        < Carousel.Item interval={2000} key={yeti.alt}>
+          <img
             className="yeti-carousel-image"
             src={yeti.image}
             alt={yeti.alt}
