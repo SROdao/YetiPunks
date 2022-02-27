@@ -123,11 +123,11 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
         }
     }
 
-    function revealCollection() public {
+    function revealCollection() public onlyOwner {
         revealed = true;
     }
 
-    function setPublicSale(bool state) public {
+    function setPublicSale(bool state) public onlyOwner {
         publicSaleOn = state;
     }
 
