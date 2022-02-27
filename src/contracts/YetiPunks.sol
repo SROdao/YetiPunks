@@ -25,6 +25,7 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
     ) ERC721A("Petty Monks", "PM", maxBatchSize_, collectionSize_) {
         maxPerAddressDuringPublicSale = maxBatchSize_;
         amountForGiveaway = amountForGiveaway_;
+        publicSaleOn = false;
 
         setBaseURI(_initBaseUri);
         setNotRevealedURI(_initNotRevealedUri);
@@ -43,14 +44,15 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
 
     function publicSaleMint(uint256 quantity) external payable callerIsUser {
         uint256 publicPrice = 0.024 ether;
+        require(publicSaleOn, "Mint is not live");
         require(
             totalSupply() + quantity <= collectionSize - amountForGiveaway,
-            "public sale finished"
+            "Public sale finished"
         );
         require(
             numberMinted(msg.sender) + quantity <=
                 maxPerAddressDuringPublicSale,
-            "wallet limit exceeded"
+            "Wallet limit exceeded"
         );
         require(msg.value >= publicPrice, "Need to send more ETH");
         _safeMint(msg.sender, quantity);
@@ -71,7 +73,7 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
     {
         require(
             totalSupply() + mintAmount <= collectionSize,
-            "exceeded max supply"
+            "Exceeded max supply"
         );
 
         for (uint256 i = 0; i < receiverAddresses.length; i++) {
