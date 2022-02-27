@@ -21,8 +21,8 @@ function App() {
 	const [mintAmount, setMintAmount] = useState(1);
 
 	const maxPerTxn = 20;
-	const MAX_YETI_COUNT = 6420;
-	const contractAddress = "0x45a2391E71811806E4858ab53808c67A23e26AC2";
+	const MAX_YETI_COUNT = 50;
+	const contractAddress = "0xCbd2C4c0beA864917A204bAB1BE8B25769BCF713";
 
 	const loadBlockchainData = async () => {
 		// Fetch Contract, Data, etc.
