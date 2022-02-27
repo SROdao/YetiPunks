@@ -278,63 +278,9 @@ function App() {
 		);
 	};
 
-	const withdrawFunds = async () => {
-		const encoded = yetiPunks.methods.withdrawBalance().encodeABI();
-		const tx = {
-			from: usersAccount,
-			to: contractAddress,
-			data: encoded,
-			nonce: "0x00",
-		};
-
-		yetiPunks.methods
-			.withdrawBalance()
-			.estimateGas({ from: usersAccount })
-			.then((limit) => {
-				tx.gas = web3.utils.numberToHex(limit);
-				console.log("fetched gasLimit", limit);
-			})
-			.catch((error) => {
-				//tx.gas will get set to whatever the default is automatically
-				console.error(
-					"Unable to fetch gas estimation, falling back to default",
-					error
-				);
-			});
-
-		web3.eth
-			.getGasPrice()
-			.then((price) => {
-				tx.gasPrice = web3.utils.numberToHex(price);
-				console.log("fetched gasPrice", price);
-			})
-			.catch((error) => {
-				//tx.gasPrice will get set to whatever the default is automatically
-				console.error(
-					"Unable to fetch latest gas price, falling back to default ",
-					error
-				);
-			});
-
-		const txHash = window.ethereum
-			.request({
-				method: "eth_sendTransaction",
-				params: [tx],
-			})
-			.then(async (hash) => {
-				console.log("You can now view your transaction with hash: " + hash);
-			})
-			.catch((err) => {
-				console.error(err);
-			});
-
-		return txHash;
-	};
-
 	useEffect(() => {
 		loadWeb3();
 		loadBlockchainData();
-		// verifyUserOnEthereumNetwork();
 	}, [usersAccount]);
 
 	return (
@@ -350,7 +296,6 @@ function App() {
 						maxYetis={MAX_YETI_COUNT}
 						isConnected={!!usersAccount}
 					/>
-					{/* <button onClick={withdrawFunds}>Withdraw</button> */}
 				</>
 			) : (
 				<>
