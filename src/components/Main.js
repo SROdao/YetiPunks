@@ -47,7 +47,7 @@ const Main = ({
                                 <h6>0.024 ETH</h6>
                                 <h6>Max {maxPerTxn} per txn/wallet</h6>
                                 <h6>
-                                    Remaining: {supplyAvailable}/{maxYetis}
+                                    Remaining: {supplyAvailable}/{maxYetis - 25}
                                 </h6>
                             </>
                         )}
