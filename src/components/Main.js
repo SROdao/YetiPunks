@@ -30,11 +30,15 @@ const Main = ({
                         hand, so never fear… you will always have a fren in the YETIPUNKS.
                     </p>
                 </div>
-                {supplyAvailable === maxYetis && isConnected ? (
+                {(maxYetis - supplyAvailable) === maxYetis && isConnected ? (
                     <div className="minting-section">
                         <h2>SOLD OUT</h2>
-                        <h6>THANK YOU YETI PUNKS</h6>
-                        <h6>YOU CAN STILL FIND A YETI ON THE SECONDARY MARKET</h6>
+                        <h6>THANK YOU</h6>
+                        <h6>YOU CAN STILL FIND YETIPUNKS ON THE SECONDARY MARKET</h6>
+                        <div >
+                            <a href='https://opensea.io/' rel="noreferrer" target="_blank" className="links">OPENSEA</a>
+                            <a href='https://looksrare.org/'rel="noreferrer" target="_blank" className="links">LOOKSRARE</a>
+                        </div>
                     </div>
                 ) : (
                     <div className="minting-section">

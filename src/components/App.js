@@ -155,7 +155,7 @@ function App() {
 				.catch((error) => {
 					if (error.message.match(/insufficient funds/gi)) {
 						swal("Insufficent funds for this transaction =(");
-					} else if (error.message.match(/minting limit exceeded/gi)) {
+					} else if (error.message.match(/wallet limit exceeded/gi)) {
 						swal("Wallet limit exceeded");
 					} else {
 						swal(error.message);
