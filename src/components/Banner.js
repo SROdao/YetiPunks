@@ -37,7 +37,7 @@ const useAudio = () => {
 const Banner = ({ usersAccount }) => {
   const [playing, toggle] = useAudio();
   const addressToDisplay = usersAccount?.length > 12 ? `${usersAccount.slice(0, 4)}...${usersAccount.slice(-4)}` : usersAccount
-  const connectedWallet = usersAccount ? addressToDisplay : ""
+  const connectedWallet = usersAccount ? addressToDisplay.toLowerCase() : ""
   return (
     <div className="topnav">
       <div className="topnav-left">
