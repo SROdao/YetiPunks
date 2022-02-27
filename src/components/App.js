@@ -95,7 +95,7 @@ function App() {
 		} else {
 			swal('Please install and use MetaMask').then(() => {
 				// TODO: Change deeplink to point to real domain
-				window.open("https://metamask.app.link/dapp/9cca-2601-348-1-2980-9c9c-d000-24b3-c540.ngrok.io")
+				window.open("https://metamask.app.link/dapp/98cb-2601-348-1-2980-314f-78b2-979e-8e51.ngrok.io")
 			})
 		}
 	};
@@ -147,7 +147,6 @@ function App() {
 				from: usersAccount,
 				to: contractAddress,
 				data: encoded,
-				nonce: "0x00",
 				value: web3.utils.numberToHex(price),
 			};
 
