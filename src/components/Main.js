@@ -30,7 +30,7 @@ const Main = ({
                         hand, so never fear… you will always have a fren in the YETIPUNKS.
                     </p>
                 </div>
-                {(maxYetis - supplyAvailable) === maxYetis && isConnected ? (
+                {(maxYetis - (supplyAvailable + 25)) === maxYetis && isConnected ? (
                     <div className="minting-section">
                         <h2>SOLD OUT</h2>
                         <h6>THANK YOU</h6>
@@ -47,7 +47,7 @@ const Main = ({
                                 <h6>0.024 ETH</h6>
                                 <h6>Max {maxPerTxn} per txn/wallet</h6>
                                 <h6>
-                                    Remaining: {supplyAvailable - 25}/{maxYetis - 25}
+                                    Remaining: {supplyAvailable - 25}/{maxYetis}
                                 </h6>
                             </>
                         )}
