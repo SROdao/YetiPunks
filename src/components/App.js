@@ -12,7 +12,6 @@ import Footer from "./Footer";
 
 function App() {
 	const [web3, setWeb3] = useState(null);
-	// const [initialRender, setInitialRender] = useState(true);
 	const [yetiPunks, setYetiPunks] = useState(null);
 
 	const [supplyAvailable, setSupplyAvailable] = useState(0);
