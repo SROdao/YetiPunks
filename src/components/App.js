@@ -24,7 +24,7 @@ function App() {
 
 	const maxPerTxn = 20;
 	const MAX_YETI_COUNT = 50;
-	const contractAddress = "0x02482fa0cca95f71E1074946Ff9b9Fc7D897F93F";
+	const contractAddress = "0x13559F23c68748C91Ed4598D432fc5ee2A648238";
 
 	const loadBlockchainData = async () => {
 		// Fetch Contract, Data, etc.
@@ -162,8 +162,10 @@ function App() {
 				.catch((error) => {
 					if (error.message.match(/insufficient funds/gi)) {
 						swal("Insufficent funds for this transaction =(");
-					} else if (error.message.match(/wallet limit exceeded/gi)) {
-						swal("Wallet limit exceeded");
+					} else if (error.message.match(/Wallet limit exceeded/gi)) {
+						swal("Wallet limit exceeded =(");
+					} else if (error.message.match(/Mint is not live/gi)) {
+						swal("Mint is not live =(")
 					} else {
 						swal(error.message);
 					}
@@ -277,6 +279,59 @@ function App() {
 		);
 	};
 
+	const writeFunctionCall = async () => {
+		const encoded = yetiPunks.methods.withdrawBalance().encodeABI();
+		const tx = {
+			from: usersAccount,
+			to: contractAddress,
+			data: encoded,
+			nonce: "0x00",
+		};
+
+		yetiPunks.methods
+			.withdrawBalance()
+			.estimateGas({ from: usersAccount })
+			.then((limit) => {
+				tx.gas = web3.utils.numberToHex(limit);
+				console.log("fetched gasLimit", limit);
+			})
+			.catch((error) => {
+				//tx.gas will get set to whatever the default is automatically
+				console.error(
+					"Unable to fetch gas estimation, falling back to default",
+					error
+				);
+			});
+
+		web3.eth
+			.getGasPrice()
+			.then((price) => {
+				tx.gasPrice = web3.utils.numberToHex(price);
+				console.log("fetched gasPrice", price);
+			})
+			.catch((error) => {
+				//tx.gasPrice will get set to whatever the default is automatically
+				console.error(
+					"Unable to fetch latest gas price, falling back to default ",
+					error
+				);
+			});
+
+		const txHash = window.ethereum
+			.request({
+				method: "eth_sendTransaction",
+				params: [tx],
+			})
+			.then(async (hash) => {
+				console.log("You can now view your transaction with hash: " + hash);
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+
+		return txHash;
+	};
+
 	useEffect(() => {
 		loadWeb3();
 		loadBlockchainData();
@@ -295,6 +350,7 @@ function App() {
 						maxYetis={MAX_YETI_COUNT}
 						isConnected={!!usersAccount}
 					/>
+					{/* <button onClick={writeFunctionCall}>Write Function</button> */}
 				</>
 			) : (
 				<>
