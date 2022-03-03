@@ -94,7 +94,7 @@ function App() {
 		} else {
 			swal('Please install and use MetaMask').then(() => {
 				// TODO: Change deeplink to point to real domain
-				window.open("https://metamask.app.link/dapp/9f89-2601-348-1-2980-314f-78b2-979e-8e51.ngrok.io")
+				window.open("https://metamask.app.link/dapp/www.yetipunks.com")
 			})
 		}
 	};
