@@ -1,23 +1,26 @@
 import React from "react";
 import yetitar from "../images/yetipunk_bios.png";
+import andreas from '../images/4dreas.png';
+import somekid from '../images/somekid.png';
+import billy from '../images/billy.png';
 //?import publicDomain from "../images/publicdomain.png";
 
 const yetis = [
     {
         name: "4ndreas",
-        profile: yetitar,
+        profile: andreas,
         role: "Artist",
         bio: "Design, Music, UX",
     },
     {
         name: "Somkid",
-        profile: yetitar,
+        profile: somekid,
         role: "Developer",
         bio: "Front End, Solidity",
     },
     {
         name: "Billy",
-        profile: yetitar,
+        profile: billy,
         role: "Developer",
         bio: "Front End, Solidity, Art Direction",
     },
