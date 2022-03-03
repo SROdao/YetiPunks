@@ -31,7 +31,7 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
 
         address[] memory devAddresses = new address[](3);
         devAddresses[0] = 0xD61ADc48afE9402B4411805Ce6026eF74F94E713;
-        devAddresses[1] = 0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28;
+        devAddresses[1] = 0xAE534782fE40DA31a4D890d3bADAeF0352FEead7;
         devAddresses[2] = 0x7638aC632C177BB6eB88826065eb62b878F93754;
         devMint(devAddresses, 7);
     }
@@ -137,7 +137,7 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
         ).call{value: oneThird}("");
         require(unorthadoxantSuccess);
         (bool somkidSuccess, ) = payable(
-            0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28
+            0xAE534782fE40DA31a4D890d3bADAeF0352FEead7
         ).call{value: oneThird}("");
         require(somkidSuccess);
         (bool andreasSuccess, ) = payable(
