@@ -70,7 +70,7 @@ function App() {
 			const web3 = new Web3(ethereumProvider);
 			setWeb3(web3);
 
-			await web3Handler(); //call this to pop up MM
+			// await web3Handler(); //call this to pop up MM
 
 			const accounts = await web3.eth.getAccounts();
 
