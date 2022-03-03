@@ -25,7 +25,6 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
     ) ERC721A("Petty Monks", "PM", maxBatchSize_, collectionSize_) {
         maxPerAddressDuringPublicSale = maxBatchSize_;
         amountForGiveaway = amountForGiveaway_;
-        publicSaleOn = false;
 
         setBaseURI(_initBaseUri);
         setNotRevealedURI(_initNotRevealedUri);
