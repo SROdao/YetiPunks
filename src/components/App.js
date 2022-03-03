@@ -22,6 +22,7 @@ function App() {
 
 	const [mintAmount, setMintAmount] = useState(1);
 
+	const isLive = false;
 	const maxPerTxn = 20;
 	const MAX_YETI_COUNT = 50;
 	const contractAddress = "0x13559F23c68748C91Ed4598D432fc5ee2A648238";
@@ -237,7 +238,7 @@ function App() {
 
 	const mintButton = () => {
 		return (
-			<>
+			<>			
 				<div className="input-and-button">
 					<button className="btn green-btn" onClick={decrementMintAmount}>
 						-
@@ -269,14 +270,27 @@ function App() {
 		);
 	};
 
-	const connectButton = () => {
-		return (
-			<div className="plus-minus">
-				<button onClick={web3Handler} className="btn mint-btn">
-					CONNECT
-				</button>
-			</div>
-		);
+	const connectButton = (maxPerTxn) => {
+		if(isLive){
+			return (
+			
+				<div className="plus-minus">
+					<button onClick={web3Handler} className="btn mint-btn">
+						CONNECT
+					</button>
+				</div>
+			);
+		}
+		else{
+			return(
+				<div>
+					
+					<h3>Coming Soon...</h3>
+					
+				</div>
+			)
+		}
+
 	};
 
 	const writeFunctionCall = async () => {
