@@ -143,7 +143,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             });
 
             it(`allows devMint to mint to co-creators past amountForDevs`, async () => {
-                const somkid = "0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28"
+                const somkid = "0xAE534782fE40DA31a4D890d3bADAeF0352FEead7"
                 await yetiPunks.devMint([somkid], 1)
 
                 const somkidMinted = await yetiPunks.numberMinted(somkid)
@@ -176,13 +176,13 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             });
 
             it(`reverts if you are not the owner`, async () => {
-                const somkid = "0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28"
+                const somkid = "0xAE534782fE40DA31a4D890d3bADAeF0352FEead7"
                 await yetiPunks.devMint([somkid], 1, { from: user })
                     .should.be.rejectedWith('Reason given: Ownable: caller is not the owner')
             });
 
             it(`reverts if attempting to mint more than maxBatchSize`, async () => {
-                const somkid = "0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28"
+                const somkid = "0xAE534782fE40DA31a4D890d3bADAeF0352FEead7"
                 await yetiPunks.devMint([somkid], 21)
                     .should.be.rejectedWith('Reason given: ERC721A: quantity to mint too high')
             });
@@ -234,14 +234,14 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             });
 
             it(`???explicitly sets the owner???`, async () => {
-                const billy = "0xD61ADc48afE9402B4411805Ce6026eF74F94E713"
-                const somkid = "0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28"
+                const unorthadoxant = "0xbe16A803431fB1694656187334c50792031CD6Ac"
+                const somkid = "0xAE534782fE40DA31a4D890d3bADAeF0352FEead7"
                 const andreas = "0x7638aC632C177BB6eB88826065eb62b878F93754"
 
                 await yetiPunks.setOwnersExplicit(21, { from: deployerAddress })
 
                 const ownerOfFirst = await yetiPunks.ownerOf(0)
-                ownerOfFirst.toString().should.equal(billy)
+                ownerOfFirst.toString().should.equal(unorthadoxant)
                 const ownerOfEighth = await yetiPunks.ownerOf(7)
                 ownerOfEighth.toString().should.equal(somkid)
                 const ownerOfFifteenth = await yetiPunks.ownerOf(14)
