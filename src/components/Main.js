@@ -8,8 +8,8 @@ const Main = ({
     maxPerTxn,
     maxYetis,
     isConnected,
+    amountForGiveaway
 }) => {
-    const amountForGiveaway = 25;
     return (
         <div className="main">
             <div className="main-left">
