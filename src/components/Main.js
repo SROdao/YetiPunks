@@ -1,6 +1,5 @@
 import React from "react";
-
-import CarouselComponent from "./CarouselComponent";
+import yetigif from '../images/yetishow.gif'
 
 const Main = ({
     button,
@@ -13,7 +12,11 @@ const Main = ({
     return (
         <div className="main">
             <div className="main-left">
-                <CarouselComponent />
+                    <img
+                    className="yeti-carousel-image"
+                    src={yetigif}
+                    alt='yetis'
+                />
             </div>
             <div className="main-right">
                 <div className="title-and-description">
