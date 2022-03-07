@@ -26,7 +26,7 @@ function App() {
 	const maxPerTxn = 20;
 	const MAX_YETI_COUNT = 6420;
 	const amountForGiveaway = 25;
-	const contractAddress = "0xA9787Afc8427925B6BdA89eF6Fc3796Fff7c2ecE";
+	const contractAddress = "0xf78E2Be98B549DE9f1729fAD573Aaa866Ce8Be89";
 
 	const loadBlockchainData = async () => {
 		// Fetch Contract, Data, etc.
