@@ -24,8 +24,9 @@ function App() {
 
 	const isLive = false;
 	const maxPerTxn = 20;
-	const MAX_YETI_COUNT = 50;
-	const contractAddress = "0x13559F23c68748C91Ed4598D432fc5ee2A648238";
+	const MAX_YETI_COUNT = 6420;
+	const amountForGiveaway = 25;
+	const contractAddress = "0xA9787Afc8427925B6BdA89eF6Fc3796Fff7c2ecE";
 
 	const loadBlockchainData = async () => {
 		// Fetch Contract, Data, etc.
@@ -219,7 +220,9 @@ function App() {
 	const incrementMintAmount = () => {
 		if (mintAmount < maxPerTxn) {
 			const newMintAmount = mintAmount + 1;
-			setMintAmount(newMintAmount);
+			if (newMintAmount <= (supplyAvailable - amountForGiveaway)) {
+				setMintAmount(newMintAmount);
+			}
 		}
 	};
 
@@ -270,7 +273,7 @@ function App() {
 		);
 	};
 
-	const connectButton = (maxPerTxn) => {
+	const connectButton = () => {
 		if(isLive){
 			return (
 			
@@ -364,6 +367,7 @@ function App() {
 						maxPerTxn={maxPerTxn}
 						maxYetis={MAX_YETI_COUNT}
 						isConnected={!!usersAccount}
+						amountForGiveaway={amountForGiveaway}
 					/>
 					{/* <button onClick={writeFunctionCall}>Write Function</button> */}
 				</>
