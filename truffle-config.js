@@ -21,6 +21,20 @@ module.exports = {
 			network_id: 4
 		},
 
+		mainnet: {
+			provider: function () {
+				return new HDWalletProvider(
+					[process.env.DEPLOYER_PRIVATE_KEY],
+					`https://mainnet.infura.io/v3/2fc5f1e553e44d68b292a16f73044e37` // URL to Ethereum Node
+				)
+			},
+			network_id: 1,
+			gas: 2000000, //can try to lower this
+			gasPrice: 100000000000000, // play around with this
+			confirmations: 2,
+			skipDryRun: true,
+		},
+
 		matic: {
 			provider: function () {
 				return new HDWalletProvider(
