@@ -1,5 +1,4 @@
 import React from "react";
-import yetitar from "../images/yetipunk_bios.png";
 import andreas from '../images/4dreas.png';
 import somekid from '../images/somekid.png';
 import billy from '../images/billy.png';
