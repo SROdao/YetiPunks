@@ -110,6 +110,10 @@ Create a .env file in the root directory of your project, and fill in the follow
 - For Ethereum Mainnet: `truffle migrate --reset --network mainnet`
   - Dry run to test first: `truffle migrate --reset --network mainnet --dry-run`
 
+## Useful truffle plugins:
+- Check test coverage: `truffle run coverage`
+- Verify contract on Etherscan: `truffle run verify YetiPunks --network rinkeby --debug`
+
 ## Preparing for Frontend Deployment
 ### 1. Create or Login to your GitHub account
 
