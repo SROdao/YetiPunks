@@ -47,6 +47,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "solidity-coverage": "^0.7.19"
+    "solidity-coverage": "^0.7.19",
+    "truffle-plugin-verify": "^0.5.21"
   }
 }

@@ -16,12 +16,12 @@ contract('YetiPunks', ([deployerAddress, user]) => {
 
         it('Returns the contract name', async () => {
             result = await yetiPunks.name()
-            result.should.equal("Petty Monks")
+            result.should.equal("YETIPUNKS")
         })
 
         it('Returns the symbol', async () => {
             result = await yetiPunks.symbol()
-            result.should.equal("PM")
+            result.should.equal("YP")
         })
     })
 
