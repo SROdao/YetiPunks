@@ -46,7 +46,7 @@ module.exports = {
 			network_id: 137
 		}
 	},
-	plugins: ["solidity-coverage"],
+	plugins: ["solidity-coverage", "truffle-plugin-verify"],
 
 	contracts_directory: './src/contracts/',
 	contracts_build_directory: './src/abis/',
@@ -59,5 +59,9 @@ module.exports = {
 				runs: 200
 			}
 		}
+	},
+
+	api_keys: {
+		etherscan: process.env.ETHERSCAN_API_KEY
 	}
 }
