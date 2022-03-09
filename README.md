@@ -103,11 +103,6 @@ In a separate CMD prompt/terminal run:
 Create a .env file in the root directory of your project, and fill in the following:
 - DEPLOYER_PRIVATE_KEY="YOUR_PRIVATE_KEY"
 - INFURA_API_KEY="PROJECT_ID"
-- PROJECT_NAME="YOUR_PROJECT_NAME"
-- PROJECT_SYMBOL="YOUR_PROJECT_SYMBOL"
-- IPFS_IMAGE_METADATA_CID="IPFS_CID"
-- IPFS_HIDDEN_IMAGE_METADATA_CID="IPFS_CID"
-- NFT_MINT_DATE="Oct 27, 2021 20:00:00"
 
 ### 2. Run your migrations
 - For Rinkeby testnet: `truffle migrate --reset --network rinkeby`
