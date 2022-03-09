@@ -113,6 +113,7 @@ Create a .env file in the root directory of your project, and fill in the follow
 - For Rinkeby testnet: `truffle migrate --reset --network rinkeby`
 - For Polygon Mainnet: `truffle migrate --reset --network matic`
 - For Ethereum Mainnet: `truffle migrate --reset --network mainnet`
+  - Dry run to test first: `truffle migrate --reset --network mainnet --dry-run`
 
 ## Preparing for Frontend Deployment
 ### 1. Create or Login to your GitHub account
