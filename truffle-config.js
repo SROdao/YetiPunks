@@ -29,8 +29,9 @@ module.exports = {
 				)
 			},
 			network_id: 1,
-			gas: 2000000, //can try to lower this
-			gasPrice: 100000000000000, // play around with this
+			gas: 6721975, //can try to lower this
+			// gas: 3300000, //can try to lower this
+			gasPrice: 25000000000, // play around with this
 			confirmations: 2,
 			skipDryRun: true,
 		},
