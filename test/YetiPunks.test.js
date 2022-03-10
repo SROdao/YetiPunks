@@ -11,7 +11,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
         let result
 
         beforeEach(async () => {
-            yetiPunks = await YetiPunks.new(20, 6420, 25, "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/", "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/notRevealed.json")
+            yetiPunks = await YetiPunks.new(10, 1420, 25, "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/", "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/notRevealed.json")
         })
 
         it('Returns the contract name', async () => {
@@ -31,11 +31,11 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             let uri
 
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(20, 6420, 25, "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/", "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/notRevealed.json")
+                yetiPunks = await YetiPunks.new(10, 1420, 25, "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/", "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/notRevealed.json")
                 uri = 'ipfs://IPFS-NEW-IMAGE-METADATA-CID/'
                 await yetiPunks.setPublicSale(true);
                 await yetiPunks.setBaseURI(uri, { from: deployerAddress })
-                result = await yetiPunks.publicSaleMint(1, { from: user, value: web3.utils.toWei('0.024', 'ether') })
+                result = await yetiPunks.publicSaleMint(1, { from: user, value: web3.utils.toWei('0.02', 'ether') })
             })
 
             it('Returns the address of the minter', async () => {
@@ -51,20 +51,28 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             })
 
             it(`shows how many NFTs a given address has minted so far (1 in beforeEach)`, async () => {
-                result = await yetiPunks._numberMinted(user)
+                result = await yetiPunks.numberMinted(user)
                 result.toString().should.equal('1')
             });
 
             it(`shows that 1 has been minted after mint and transfer out of wallet`, async () => {
-                const numberMintedBeforeTransfer = await yetiPunks._numberMinted(user)
+                const numberMintedBeforeTransfer = await yetiPunks.numberMinted(user)
                 numberMintedBeforeTransfer.toString().should.equal('1')
 
                 const vitalikWallet = '0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B'
                 const tokenId = 21 // the first token minted after mint for devs
                 await yetiPunks.safeTransferFrom(user, vitalikWallet, tokenId, { from: user })
 
-                const numberMintedAfterTransfer = await yetiPunks._numberMinted(user)
+                const numberMintedAfterTransfer = await yetiPunks.numberMinted(user)
                 numberMintedAfterTransfer.toString().should.equal('1')
+            });
+
+
+            it(`succeeds if trying to mint a batch of 6`, async () => {
+                // Mint 5, since 'user' minted one in beforeEach
+                await yetiPunks.publicSaleMint(5, { from: user, value: web3.utils.toWei('0.22', 'ether') })
+                const numberUserMinted = await yetiPunks.numberMinted(user)
+                numberUserMinted.toString().should.equal('6')
             });
 
             it(`shows the balance of NFTs a given address currently has`, async () => {
@@ -92,13 +100,13 @@ contract('YetiPunks', ([deployerAddress, user]) => {
 
             it(`refunds if value is over price`, async () => {
                 const balanceBeforeMint = await web3.eth.getBalance(yetiPunks.address)
-                balanceBeforeMint.should.equal(web3.utils.toWei('0.024', 'ether'))
+                balanceBeforeMint.should.equal(web3.utils.toWei('0.02', 'ether'))
                 
                 await yetiPunks.publicSaleMint(1, { from: user, value: web3.utils.toWei('0.1', 'ether') })
 
                 const balanceAfterMint = await web3.eth.getBalance(yetiPunks.address)
-                balanceAfterMint.should.equal(web3.utils.toWei('0.048', 'ether'))
-                balanceAfterMint.should.not.equal(web3.utils.toWei('0.124', 'ether')) 
+                balanceAfterMint.should.equal(web3.utils.toWei('0.04', 'ether'))
+                balanceAfterMint.should.not.equal(web3.utils.toWei('0.12', 'ether')) 
             });
         })
 
@@ -106,25 +114,30 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             let uri
 
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(20, 6420, 25, "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/", "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/notRevealed.json")
+                yetiPunks = await YetiPunks.new(10, 1420, 25, "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/", "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/notRevealed.json")
                 uri = 'ipfs://IPFS-NEW-IMAGE-METADATA-CID/'
                 await yetiPunks.setPublicSale(true);
                 await yetiPunks.setBaseURI(uri, { from: deployerAddress })
             })
 
             it(`reverts if not enough ETH is sent for a mint, no NFT is minted`, async () => {
-                await yetiPunks.publicSaleMint(1, { from: user, value: web3.utils.toWei('0.02', 'ether') })
+                await yetiPunks.publicSaleMint(1, { from: user, value: web3.utils.toWei('0.015', 'ether') })
                     .should.be.rejectedWith('Reason given: Need to send more ETH')
 
                 const balance = await yetiPunks.balanceOf(user)
                 balance.toString().should.equal('0')
 
-                const numberMinted = await yetiPunks._numberMinted(user)
+                const numberMinted = await yetiPunks.numberMinted(user)
                 numberMinted.toString().should.equal('0')
             });
 
-            it(`reverts if trying to mint more than 20`, async () => {
-                await yetiPunks.publicSaleMint(21, { from: user, value: web3.utils.toWei('0.024', 'ether') })
+            it(`reverts if trying to mint more than 10 at once due to max batch limit`, async () => {
+                await yetiPunks.publicSaleMint(11, { from: user, value: web3.utils.toWei('0.02', 'ether') })
+                    .should.be.rejectedWith('Reason given: Max batch minting quantity exceeded')
+            });
+
+            it(`reverts if trying to mint more than 6 due to wallet limit exceeded`, async () => {
+                await yetiPunks.publicSaleMint(7, { from: user, value: web3.utils.toWei('0.22', 'ether') })
                     .should.be.rejectedWith('Reason given: Wallet limit exceeded')
             });
 
@@ -139,7 +152,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
     describe('Dev Mint', async () => {
         describe('Success', async () => {
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(20, 6420, 25, "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/", "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/notRevealed.json")
+                yetiPunks = await YetiPunks.new(10, 1420, 25, "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/", "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/notRevealed.json")
             });
 
             it(`allows devMint to mint to co-creators past amountForDevs`, async () => {
@@ -172,7 +185,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
 
         describe('Failure', async () => {
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(20, 6420, 25, "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/", "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/notRevealed.json")
+                yetiPunks = await YetiPunks.new(10, 1420, 25, "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/", "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/notRevealed.json")
             });
 
             it(`reverts if you are not the owner`, async () => {
@@ -193,7 +206,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
         describe('Success', async () => {
 
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(20, 6420, 25, "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/", "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/notRevealed.json")
+                yetiPunks = await YetiPunks.new(10, 1420, 25, "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/", "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/notRevealed.json")
             })
 
             it('Allows onwer to set baseURI', async () => {
@@ -222,10 +235,10 @@ contract('YetiPunks', ([deployerAddress, user]) => {
 
             it(`allows the owner/deployer to withdraw all funds`, async () => {
                 await yetiPunks.setPublicSale(true);
-                await yetiPunks.publicSaleMint(3, { from: user, value: web3.utils.toWei('0.072', 'ether') })
+                await yetiPunks.publicSaleMint(3, { from: user, value: web3.utils.toWei('0.06', 'ether') })
 
                 const balanceBefore = await web3.eth.getBalance(yetiPunks.address)
-                balanceBefore.should.equal(web3.utils.toWei('0.072', 'ether'))
+                balanceBefore.should.equal(web3.utils.toWei('0.06', 'ether'))
 
                 await yetiPunks.withdrawBalance({ from: deployerAddress })
 
@@ -250,7 +263,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
 
             it(`gets ownership data of a certain NFT tokenId`, async () => {
                 await yetiPunks.setPublicSale(true);
-                await yetiPunks.publicSaleMint(1, { from: user, value: web3.utils.toWei('0.024', 'ether') })
+                await yetiPunks.publicSaleMint(1, { from: user, value: web3.utils.toWei('0.02', 'ether') })
                 const tokenId = 21 // the first token minted after mint for devs
 
                 const ownershipData = await yetiPunks.getOwnershipData(tokenId)
@@ -266,7 +279,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
         describe('Failure', async () => {
 
             beforeEach(async () => {
-                yetiPunks = await YetiPunks.new(20, 6420, 25, "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/", "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/notRevealed.json")
+                yetiPunks = await YetiPunks.new(10, 1420, 25, "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/", "ipfs://QmQi1VVrPMBwUSrY6Eq37v7p9aPfjLuQV63vJX7UkPDkV6/notRevealed.json")
             })
 
             it('throws an error when trying to READ baseURI', async () => {
