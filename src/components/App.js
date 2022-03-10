@@ -131,7 +131,7 @@ function App() {
 		verifyUserOnEthereumNetwork();
 
 		if (supplyAvailable !== 0 || numberOfTokens < supplyAvailable) {
-			const price = web3.utils.toWei("0.024", "ether") * numberOfTokens;
+			const price = web3.utils.toWei("0.02", "ether") * numberOfTokens;
 			const encoded = yetiPunks.methods
 				.publicSaleMint(numberOfTokens)
 				.encodeABI();
