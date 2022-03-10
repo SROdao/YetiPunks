@@ -48,8 +48,8 @@ const Banner = ({ usersAccount }) => {
       </div>
       <div className="topnav-right">
         <a href='https://etherscan.io/' rel="noreferrer" target="_blank"><img className='icon' src={ethScan} alt="ethscan-logo" /></a>
-        <a href='https://opensea.io/' rel="noreferrer" target="_blank"><img className='icon' src={openSea} alt="opensea-logo" /></a>
-        <a href='https://looksrare.org/'rel="noreferrer" target="_blank"><img className='icon' src={looksRare} alt="lookrare-logo" /></a>
+        <a href='https://opensea.io/collection/' rel="noreferrer" target="_blank"><img className='icon' src={openSea} alt="opensea-logo" /></a>
+        <a href='https://looksrare.org/collections/'rel="noreferrer" target="_blank"><img className='icon' src={looksRare} alt="lookrare-logo" /></a>
         <a href='https://twitter.com/YetiPunks' rel="noreferrer" target="_blank"><img className='icon' src={twitter} alt="twitter-logo" /></a>
         <a href='https://discord.gg/zZ7jnN4bnT' rel="noreferrer" target="_blank"><img className='icon' src={YPdiscrod} alt="discord-logo" /></a>
       </div>

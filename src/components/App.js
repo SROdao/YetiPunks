@@ -23,10 +23,10 @@ function App() {
 	const [mintAmount, setMintAmount] = useState(1);
 
 	const isLive = false;
-	const maxPerTxn = 20;
-	const MAX_YETI_COUNT = 6420;
+	const maxPerTxn = 6;
+	const MAX_YETI_COUNT = 1420;
 	const amountForGiveaway = 25;
-	const contractAddress = "0x06C5e3c66169411b56dF662f692CD114ec600FeF";
+	const contractAddress = "0x8e21FdeB0E51Cf8EA8674b8389Bc653c0126CFb2";
 
 	const loadBlockchainData = async () => {
 		// Fetch Contract, Data, etc.
