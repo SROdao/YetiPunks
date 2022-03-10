@@ -10,7 +10,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
     using Strings for uint256;
 
-    uint256 public immutable maxPerAddressDuringPublicSale;
+    uint256 public immutable maxPerAddressDuringPublicSale = 6;
     uint256 public immutable amountForGiveaway;
     bool private revealed = false;
     bool private publicSaleOn = false;
@@ -23,7 +23,6 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
         string memory _initBaseUri,
         string memory _initNotRevealedUri
     ) ERC721A("YETIPUNKS", "YP", maxBatchSize_, collectionSize_) {
-        maxPerAddressDuringPublicSale = maxBatchSize_;
         amountForGiveaway = amountForGiveaway_;
 
         setBaseURI(_initBaseUri);
@@ -42,8 +41,9 @@ contract YetiPunks is Ownable, ERC721A, ReentrancyGuard {
     }
 
     function publicSaleMint(uint256 quantity) external payable callerIsUser {
-        uint256 publicPrice = 0.024 ether;
+        uint256 publicPrice = 0.02 ether;
         require(publicSaleOn, "Mint is not live");
+        require(quantity <= maxBatchSize, "Max batch minting quantity exceeded");
         require(
             totalSupply() + quantity <= collectionSize - amountForGiveaway,
             "Public sale finished"
