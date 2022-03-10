@@ -47,9 +47,9 @@ const Banner = ({ usersAccount }) => {
         <p className="user-wallet">{connectedWallet}</p>
       </div>
       <div className="topnav-right">
-        <a href='https://etherscan.io/address/0x8e21fdeb0e51cf8ea8674b8389bc653c0126cfb2' rel="noreferrer" target="_blank"><img className='icon' src={ethScan} alt="ethscan-logo" /></a>
-        <a href='https://opensea.io/collection/yetipunks' rel="noreferrer" target="_blank"><img className='icon' src={openSea} alt="opensea-logo" /></a>
-        <a href='https://looksrare.org/collections/0x8e21FdeB0E51Cf8EA8674b8389Bc653c0126CFb2'rel="noreferrer" target="_blank"><img className='icon' src={looksRare} alt="lookrare-logo" /></a>
+        <a href='https://etherscan.io/' rel="noreferrer" target="_blank"><img className='icon' src={ethScan} alt="ethscan-logo" /></a>
+        <a href='https://opensea.io/collection/' rel="noreferrer" target="_blank"><img className='icon' src={openSea} alt="opensea-logo" /></a>
+        <a href='https://looksrare.org/collections/'rel="noreferrer" target="_blank"><img className='icon' src={looksRare} alt="lookrare-logo" /></a>
         <a href='https://twitter.com/YetiPunks' rel="noreferrer" target="_blank"><img className='icon' src={twitter} alt="twitter-logo" /></a>
         <a href='https://discord.gg/zZ7jnN4bnT' rel="noreferrer" target="_blank"><img className='icon' src={YPdiscrod} alt="discord-logo" /></a>
       </div>
