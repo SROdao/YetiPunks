@@ -42,7 +42,7 @@ const Main = ({
                         {isConnected && (
                             <>
                                 <h6>0.024 ETH</h6>
-                                <h6>Max {maxPerTxn} per txn/wallet</h6>
+                                <h6>Max 6 per txn/wallet</h6>
                                 <h6>
                                     Remaining: {supplyAvailable - amountForGiveaway}/{maxYetis}
                                 </h6>
