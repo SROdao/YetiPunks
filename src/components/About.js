@@ -1,7 +1,7 @@
 import React from "react";
 import andreas from '../images/4dreas.png';
 import somekid from '../images/somekid.png';
-import billy from '../images/billy.png';
+import unorthadoxant from '../images/billy.png';
 //?import publicDomain from "../images/publicdomain.png";
 
 const yetis = [
@@ -20,8 +20,8 @@ const yetis = [
         tweeter: "https://twitter.com/chrissomkid"
     },
     {
-        name: "Billy",
-        profile: billy,
+        name: "Unorthadoxant",
+        profile: unorthadoxant,
         role: "Developer",
         bio: "Front End, Solidity, Art Direction",
         tweeter: "https://twitter.com/unorthadoxant"

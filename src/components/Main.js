@@ -24,7 +24,9 @@ const Main = ({
                 </div>
                 <div className="block-text">
                     <p>
-                    Deep in the Valhalla Mountains of Hourglass live the YETIPUNKS. Far away from civilization and far away from the chaos. They live a simple life, filled with good vibes and only the best herb. The streams from the snow capped mountains are filled with magical nutrients that help grow nugs the size of a Redwood tree. All YETIPUNKS have different traits and features but they pride themselves on inclusivity and community. They're always down to lend a helping hand, so never fear… you will always have a fren in the YETIPUNKS.
+                    Deep in the Valhalla Mountains live the YETIPUNKS. Far away from civilization and far away from the chaos. They live a simple life, filled with good vibes and only the best herb. The streams from the snow capped mountains are filled with magical nutrients that help grow nugs the size of a redwood tree. 
+                    </p><p>
+                    All YETIPUNKS have different traits and features but they pride themselves on inclusivity and community. They're always down to lend a helping hand, so never fear… you will always have a fren in the YETIPUNKS.
                     </p>
                 </div>
                 {supplyAvailable === amountForGiveaway && isConnected ? (
@@ -42,7 +44,7 @@ const Main = ({
                         {isConnected && (
                             <>
                                 <h6>0.024 ETH</h6>
-                                <h6>Max {maxPerTxn} per txn/wallet</h6>
+                                <h6>Max 6 per txn/wallet</h6>
                                 <h6>
                                     Remaining: {supplyAvailable - amountForGiveaway}/{maxYetis}
                                 </h6>
