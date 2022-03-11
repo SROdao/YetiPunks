@@ -43,7 +43,7 @@ const Main = ({
                     <div className="minting-section">
                         {isConnected && (
                             <>
-                                <h6>0.024 ETH</h6>
+                                <h6>0.02 ETH</h6>
                                 <h6>Max 6 per txn/wallet</h6>
                                 <h6>
                                     Remaining: {supplyAvailable - amountForGiveaway}/{maxYetis}

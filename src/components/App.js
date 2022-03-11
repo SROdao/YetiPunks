@@ -23,10 +23,10 @@ function App() {
 	const [mintAmount, setMintAmount] = useState(1);
 
 	const isLive = false;
-	const maxPerTxn = 20;
-	const MAX_YETI_COUNT = 6420;
+	const maxPerTxn = 6;
+	const MAX_YETI_COUNT = 1420;
 	const amountForGiveaway = 25;
-	const contractAddress = "0x06C5e3c66169411b56dF662f692CD114ec600FeF";
+	const contractAddress = "0x8e21FdeB0E51Cf8EA8674b8389Bc653c0126CFb2";
 
 	const loadBlockchainData = async () => {
 		// Fetch Contract, Data, etc.
@@ -35,13 +35,9 @@ function App() {
 			setCurrentNetwork(networkId);
 
 			try {
-				console.log(
-					"YetiPunks.networks[networkId].address",
-					YetiPunks.networks
-				);
 				const yetiPunksContract = new web3.eth.Contract(
 					YetiPunks.abi,
-					YetiPunks.networks[networkId].address
+					contractAddress
 				);
 				setYetiPunks(yetiPunksContract);
 
@@ -117,12 +113,12 @@ function App() {
 
 	// TODO: switch to mainnet before launch
 	const verifyUserOnEthereumNetwork = async () => {
-		const rinkeby = "0x4";
-		//?const ethereumMainnet = "0x1";
-		if (currentNetwork !== 4 || currentNetwork !== 1) {
+		// const rinkeby = "0x4";
+		const ethereumMainnet = "0x1";
+		if (currentNetwork !== 1) {
 			await window.ethereum.request({
 				method: "wallet_switchEthereumChain",
-				params: [{ chainId: rinkeby }], // chainId must be in hexadecimal numbers
+				params: [{ chainId: ethereumMainnet }], // chainId must be in hexadecimal numbers
 			});
 		}
 	};
@@ -135,7 +131,7 @@ function App() {
 		verifyUserOnEthereumNetwork();
 
 		if (supplyAvailable !== 0 || numberOfTokens < supplyAvailable) {
-			const price = web3.utils.toWei("0.024", "ether") * numberOfTokens;
+			const price = web3.utils.toWei("0.02", "ether") * numberOfTokens;
 			const encoded = yetiPunks.methods
 				.publicSaleMint(numberOfTokens)
 				.encodeABI();
