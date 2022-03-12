@@ -25,7 +25,7 @@ function App() {
 	const isLive = false;
 	const maxPerTxn = 6;
 	const MAX_YETI_COUNT = 1420;
-	const amountForGiveaway = 25;
+	const amountForGiveaway = 15; // 10 were minted to YetiPunks.eth already
 	const contractAddress = "0x8e21FdeB0E51Cf8EA8674b8389Bc653c0126CFb2";
 
 	const loadBlockchainData = async () => {
