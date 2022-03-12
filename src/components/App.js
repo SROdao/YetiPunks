@@ -25,7 +25,7 @@ function App() {
 	const isLive = false;
 	const maxPerTxn = 6;
 	const MAX_YETI_COUNT = 1420;
-	const amountForGiveaway = 25;
+	const amountForGiveaway = 15; // 10 were minted to YetiPunks.eth already
 	const contractAddress = "0x8e21FdeB0E51Cf8EA8674b8389Bc653c0126CFb2";
 
 	const loadBlockchainData = async () => {
@@ -68,7 +68,7 @@ function App() {
 			const web3 = new Web3(ethereumProvider);
 			setWeb3(web3);
 
-			// await web3Handler(); //call this to pop up MM
+			// await web3Handler(); //TODO: uncomment this when publicMint is live
 
 			const accounts = await web3.eth.getAccounts();
 
@@ -91,7 +91,6 @@ function App() {
 			});
 		} else {
 			swal('Please install and use MetaMask').then(() => {
-				// TODO: Change deeplink to point to real domain
 				window.open("https://metamask.app.link/dapp/www.yetipunks.com")
 			})
 		}
