@@ -68,7 +68,7 @@ function App() {
 			const web3 = new Web3(ethereumProvider);
 			setWeb3(web3);
 
-			// await web3Handler(); //call this to pop up MM
+			// await web3Handler(); //TODO: uncomment this when publicMint is live
 
 			const accounts = await web3.eth.getAccounts();
 
@@ -91,7 +91,6 @@ function App() {
 			});
 		} else {
 			swal('Please install and use MetaMask').then(() => {
-				// TODO: Change deeplink to point to real domain
 				window.open("https://metamask.app.link/dapp/www.yetipunks.com")
 			})
 		}
