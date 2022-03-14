@@ -291,60 +291,6 @@ function App() {
 
 	};
 
-	const writeFunctionCall = async () => {
-		// const encoded = yetiPunks.methods.withdrawBalance().encodeABI();
-		// const tx = {
-		// 	from: usersAccount,
-		// 	to: contractAddress,
-		// 	data: encoded,
-		// 	nonce: "0x00",
-		// };
-
-		// yetiPunks.methods
-		// 	.withdrawBalance()
-		// 	.estimateGas({ from: usersAccount })
-		// 	.then((limit) => {
-		// 		tx.gas = web3.utils.numberToHex(limit);
-		// 		console.log("fetched gasLimit", limit);
-		// 	})
-		// 	.catch((error) => {
-		// 		//tx.gas will get set to whatever the default is automatically
-		// 		console.error(
-		// 			"Unable to fetch gas estimation, falling back to default",
-		// 			error
-		// 		);
-		// 	});
-
-		// web3.eth
-		// 	.getGasPrice()
-		// 	.then((price) => {
-		// 		tx.gasPrice = web3.utils.numberToHex(price);
-		// 		console.log("fetched gasPrice", price);
-		// 	})
-		// 	.catch((error) => {
-		// 		//tx.gasPrice will get set to whatever the default is automatically
-		// 		console.error(
-		// 			"Unable to fetch latest gas price, falling back to default ",
-		// 			error
-		// 		);
-		// 	});
-
-		// const txHash = window.ethereum
-		// 	.request({
-		// 		method: "eth_sendTransaction",
-		// 		params: [tx],
-		// 	})
-		// 	.then(async (hash) => {
-		// 		console.log("You can now view your transaction with hash: " + hash);
-		// 	})
-		// 	.catch((err) => {
-		// 		console.error(err);
-		// 	});
-
-		// return txHash;
-		await yetiPunks.methods.setPublicSale(true).send({ from: '0xE3Ce04B3BcbdFa219407870Ca617e18fBF503F28' })
-	};
-
 	useEffect(() => {
 		loadWeb3();
 		loadBlockchainData();
@@ -364,7 +310,6 @@ function App() {
 						isConnected={!!usersAccount}
 						amountForGiveaway={amountForGiveaway}
 					/>
-					{/* <button onClick={writeFunctionCall}>Write Function</button> */}
 				</>
 			) : (
 				<>
