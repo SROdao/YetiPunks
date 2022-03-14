@@ -34,7 +34,7 @@ const About = () => {
             <div className="bio-section">
                 {yetis.map((yeti) => (
                     <div key={yeti.name} className="bio-card">
-                        <a href={yeti.tweeter}>
+                        <a href={yeti.tweeter} rel="noreferrer" target="_blank">
                             <img className="avatar" src={yeti.profile} alt="yeti-avatar" />
                         </a>
 
