@@ -236,7 +236,7 @@ function App() {
 
 	const mintButton = () => {
 		return (
-			<>			
+			<>
 				<div className="input-and-button">
 					<button className="btn green-btn" onClick={decrementMintAmount}>
 						-
@@ -269,9 +269,9 @@ function App() {
 	};
 
 	const connectButton = () => {
-		if(isLive){
+		if (isLive) {
 			return (
-			
+
 				<div className="plus-minus">
 					<button onClick={web3Handler} className="btn mint-btn">
 						CONNECT
@@ -279,12 +279,12 @@ function App() {
 				</div>
 			);
 		}
-		else{
-			return(
+		else {
+			return (
 				<div>
-					
+
 					<h3>Coming Soon...</h3>
-					
+
 				</div>
 			)
 		}

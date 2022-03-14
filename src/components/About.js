@@ -37,7 +37,7 @@ const About = () => {
                         <a href={yeti.tweeter}>
                             <img className="avatar" src={yeti.profile} alt="yeti-avatar" />
                         </a>
-                        
+
                         <h6>{yeti.name}</h6>
                         {/* <h4>{yeti.role}</h4> */}
                         <div className="bio">
