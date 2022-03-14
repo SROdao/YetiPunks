@@ -22,7 +22,7 @@ function App() {
 
 	const [mintAmount, setMintAmount] = useState(1);
 
-	const isLive = true;
+	const isLive = false;
 	const maxPerTxn = 6;
 	const MAX_YETI_COUNT = 1420;
 	const amountForGiveaway = 15; // 10 were minted to YetiPunks.eth already
