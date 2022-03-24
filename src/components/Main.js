@@ -1,5 +1,6 @@
 import React from "react";
 import yetigif from '../images/yetishow.gif'
+import yetiGang from '../images/theGang.png'
 
 const Main = ({
     button,
@@ -10,7 +11,13 @@ const Main = ({
     amountForGiveaway
 }) => {
     return (
+        <div>
+            <div className="main-top">
+                <img className="the-gang" src={yetiGang} alt="Yeti Gang"/>
+            </div>
         <div className="main">
+            
+
             <div className="main-left">
                 <img
                     className="yeti-carousel-image"
@@ -54,6 +61,7 @@ const Main = ({
                     </div>
                 )}
             </div>
+        </div>
         </div>
     );
 };
