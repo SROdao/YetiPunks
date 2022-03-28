@@ -128,7 +128,7 @@ input[type="number"]::-webkit-outer-spin-button {
 .links {
   padding: 2%;
   text-decoration: none;
-} 
+}
 
 /* Style the links inside the navigation bar */
 
@@ -227,12 +227,11 @@ input[type="number"]::-webkit-outer-spin-button {
   margin-left: 10vw;
 }
 
-.the-gang{
-
+.the-gang {
   width: 80%;
 }
 
-.main-top{
+.main-top {
   align-items: center;
   justify-content: space-around;
   display: flex;
@@ -290,7 +289,7 @@ input[type="number"]::-webkit-outer-spin-button {
     width: 25px;
     display: inline-block;
   }
-  
+
   .icon:hover {
     color: #c1dedf;
   }
@@ -347,9 +346,7 @@ input[type="number"]::-webkit-outer-spin-button {
     height: 7vh;
   }
 
-  /* .avatar {
-    width: 80px;
-  } */
-
-
+  .the-gang {
+    display: none;
+  }
 }
