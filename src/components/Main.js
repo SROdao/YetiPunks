@@ -1,5 +1,5 @@
 import React from "react";
-import yetigif from '../images/yetishow.gif'
+import yetigif from '../images/site-gifv3.gif'
 import yetiGang from '../images/theGang.png'
 
 const Main = ({
