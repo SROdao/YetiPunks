@@ -1,5 +1,5 @@
 import React from "react";
-import yetigif from '../images/site-gifv3.gif'
+import yetigif from '../images/finalsitemintgifv2.gif'
 import yetiGang from '../images/theGang.png'
 
 const Main = ({
@@ -31,7 +31,7 @@ const Main = ({
                 </div>
                 <div className="block-text">
                     <p>
-                        YETIPUNKS is a collection of 1,420 PFP Music NFTs vibed out on the Ethereum blockchain. Each YETIPUNK PFP is generated from over 225 traits and comes with a hip-hop beat attached. Holders will receive a free future mint, access to token gated discord server and more.
+                        YETIPUNKS is a collection of 1,420 PFP Music NFTs vibed out on the Ethereum blockchain. Each YETIPUNK is generated from over 225 traits and comes with 1 of 16 original hip-hop beats attached. Holders will receive priority access to future projects, token gated discord server and more.
                     </p>
                 </div>
                 {supplyAvailable === amountForGiveaway && isConnected ? (

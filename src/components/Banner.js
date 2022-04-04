@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import openSea from '../images/YPos.png'
 import twitter from '../images/YPtwitter.png'
-import song from '../songs/yp-theme.mp3'
+import song from '../songs/YPsitemusicfinalboost.mp3'
 import soundOn from '../images/volume.png'
 import soundOff from '../images/soundOff.png'
 import looksRare from '../images/YPlooksrare.png'
