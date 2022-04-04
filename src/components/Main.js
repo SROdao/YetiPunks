@@ -31,7 +31,9 @@ const Main = ({
                 </div>
                 <div className="block-text">
                     <p>
-                        YETIPUNKS is a collection of 1,420 PFP Music NFTs vibed out on the Ethereum blockchain. Each YETIPUNK is generated from over 225 traits and comes with 1 of 16 original hip-hop beats attached. Holders will receive priority access to future projects, token gated discord server and more.
+                        YETIPUNKS is a collection of 1,420 PFP Music NFTs vibed out on the Ethereum blockchain. </p>
+                        <p> Each YETIPUNK is generated from over 225 traits and comes with 1 of 16 original hip-hop beats attached.    </p>
+                        <p> Holders will receive priority access to future projects, token gated discord server and more.
                     </p>
                 </div>
                 {supplyAvailable === amountForGiveaway && isConnected ? (
