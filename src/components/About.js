@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import andreas from '../images/4dreas.png';
 import somekid from '../images/somekid.png';
 import unorthadoxant from '../images/billy.png';
@@ -29,6 +29,10 @@ const yetis = [
 ];
 
 const About = () => {
+    const [showTerms, setShowTerms] = useState(false);
+    const toggleTerms = () => {
+        setShowTerms(!showTerms)
+    }
     return (
         <div className="center">
             <div className="bio-section">
@@ -46,6 +50,20 @@ const About = () => {
                     </div>
                 ))}
             </div>
+            <button onClick={toggleTerms} className="story-btn">Learn More</button>
+            {showTerms &&
+                <div className="story-wrapper">
+                    <div className="story-box">
+                        <p className="story-text">YETIPUNKS was created by 3 frens with backgrounds in design, programming, music and tech. We’re passionate about building in the web3 space longterm and wanted to cut our teeth on a fun project to get experience with launching smart contracts and creating generative art.
+                            Instead of selling you on a roadmap, we’d rather let the work speak for itself. We believe in undepromising and overdelivering. Any funds raised will be split between the team to continue building and reward holders. We hope you enjoy the project.</p>
+
+                            <p>
+                            Thank you,
+                            </p>
+
+                            <p>4ndreas, Somkid & Unorthadoxant</p>
+                    </div>
+                </div>}
         </div>
     );
 };
