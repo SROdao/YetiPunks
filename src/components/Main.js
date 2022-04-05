@@ -21,7 +21,6 @@ const Main = ({
     maxPerTxn,
     maxYetis,
     isConnected,
-    amountForGiveaway
 }) => {
     return (
         <div>
@@ -49,7 +48,7 @@ const Main = ({
                         <p> Holders will receive exclusive access to future projects, private discord server and more.
                     </p>
                 </div>
-                {supplyAvailable === amountForGiveaway && isConnected ? (
+                {supplyAvailable === 0 && isConnected ? (
                     <div className="minting-section">
                         <h2>SOLD OUT</h2>
                         <h6>THANK YOU</h6>
@@ -66,7 +65,7 @@ const Main = ({
                                 <h6>0.02 ETH</h6>
                                 <h6>Max 6 per txn/wallet</h6>
                                 <h6>
-                                    Remaining: {supplyAvailable - amountForGiveaway}/{maxYetis}
+                                    Remaining: {supplyAvailable}/{maxYetis}
                                 </h6>
                             </>
                         )}

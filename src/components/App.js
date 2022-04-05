@@ -22,10 +22,12 @@ function App() {
 
 	const [mintAmount, setMintAmount] = useState(1);
 
-	const isLive = false;
+	const isLive = true;
 	const maxPerTxn = 6;
 	const MAX_YETI_COUNT = 1420;
-	const amountForGiveaway = 15; // 10 were minted to YetiPunks.eth already
+	// const amountForGiveaway = 0; 
+	// 10 were minted to YetiPunks.eth already
+	// 15 were minted out to Genesis holders already
 	const contractAddress = "0x8e21FdeB0E51Cf8EA8674b8389Bc653c0126CFb2";
 
 	const loadBlockchainData = async () => {
@@ -215,7 +217,7 @@ function App() {
 	const incrementMintAmount = () => {
 		if (mintAmount < maxPerTxn) {
 			const newMintAmount = mintAmount + 1;
-			if (newMintAmount <= (supplyAvailable - amountForGiveaway)) {
+			if (newMintAmount <= supplyAvailable) {
 				setMintAmount(newMintAmount);
 			}
 		}
@@ -308,7 +310,6 @@ function App() {
 						maxPerTxn={maxPerTxn}
 						maxYetis={MAX_YETI_COUNT}
 						isConnected={!!usersAccount}
-						amountForGiveaway={amountForGiveaway}
 					/>
 				</>
 			) : (
