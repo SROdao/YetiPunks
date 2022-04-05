@@ -1,7 +1,20 @@
 import React from "react";
 import yetigif from '../images/finalsitemintgifv2.gif'
 import yetiGang from '../images/theGang.png'
+import Countdown from 'react-countdown';
 
+const Completionist = () => <span>Minting is finished!</span>;
+const renderer = ({ days, hours, minutes, seconds, completed }) => {
+    if (completed) {
+      // Render a completed state
+      return <Completionist />;
+    } else {
+      // Render a countdown
+      return <span>Time left: {days} days {hours} hours {minutes} minutes {seconds} seconds</span>;
+    }
+  };
+
+  
 const Main = ({
     button,
     supplyAvailable,
@@ -58,6 +71,10 @@ const Main = ({
                             </>
                         )}
                         {button}
+                        <div className="count-down">
+                        <Countdown date={new Date('2022-04-13T01:20:00')} renderer={renderer}/>
+                        </div>
+                        
                     </div>
                 )}
             </div>
