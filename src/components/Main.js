@@ -71,9 +71,9 @@ const Main = ({
                             </>
                         )}
                         {button}
-                        <div className="count-down">
+                        {/* <div className="count-down">
                         <Countdown date={new Date(Date.UTC('2022','03','12','20','20','0','0')) } renderer={renderer}/>
-                        </div>
+                        </div> */}
                         
                     </div>
                 )}
