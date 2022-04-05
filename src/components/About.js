@@ -2,7 +2,6 @@ import { useState } from "react";
 import andreas from '../images/4dreas.png';
 import somekid from '../images/somekid.png';
 import unorthadoxant from '../images/billy.png';
-//?import publicDomain from "../images/publicdomain.png";
 
 const yetis = [
     {
@@ -63,6 +62,7 @@ const About = () => {
 
                             <p>4ndreas, Somkid & Unorthadoxant</p>
                     </div>
+                    <button onClick={handleTerms} className="terms-btn">Terms & Conditions</button>
                 </div>}
         </div>
     );
