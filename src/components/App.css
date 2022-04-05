@@ -33,6 +33,11 @@ body {
   margin-bottom: 20px;
 }
 
+.count-down{
+  margin-top: 20px;
+  margin-bottom: 0px;
+}
+
 .yeti-carousel-image {
   width: 100%;
   height: 100%;
