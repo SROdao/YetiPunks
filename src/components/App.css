@@ -376,6 +376,15 @@ input[type="number"]::-webkit-outer-spin-button {
     font-size: 25px;
   }
 
+  .story-btn {
+    text-decoration: none;
+    color: #68b4b5;
+    border: none;
+    background-color: #d2effe;
+    margin-bottom: 5vh;
+    margin-top: 3vh;
+  }
+
   .mint-btn {
     width: 100%;
     height: 100%;
