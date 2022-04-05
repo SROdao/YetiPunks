@@ -96,12 +96,13 @@ body {
 .story-wrapper {
   width: 100;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
 .story-box {
-  width: 80%;
+  width: 60%;
   padding: 10px;
 }
 
@@ -115,6 +116,15 @@ body {
   border: none;
   background-color: #d2effe;
   margin-bottom: 5vh;
+}
+
+.terms-btn {
+  text-decoration: none;
+  color: #68b4b5;
+  border: none;
+  background-color: #d2effe;
+  margin: 5vh 0vh;
+  font-size: 9px;
 }
 
 .mint-input {
