@@ -59,7 +59,7 @@ const About = () => {
                 <div className="story-wrapper">
                     <div className="story-box">
                         <p className="story-text">YETIPUNKS was created by 3 frens with backgrounds in design, programming, music and tech. We’re passionate about building in the web3 space longterm and wanted to cut our teeth on a fun project to get experience with launching smart contracts and creating generative art.
-                            Instead of selling you on a roadmap, we’d rather let the work speak for itself. We believe in undepromising and overdelivering. Any funds raised will be split between the team to continue building and reward holders. We hope you enjoy the project.</p>
+                            Instead of selling you on a roadmap, we’d rather let the work speak for itself. We believe in underpromising and overdelivering. Any funds raised will be split between the team to continue building and reward holders. We hope you enjoy the project.</p>
 
                             <p>
                             Thank you,
