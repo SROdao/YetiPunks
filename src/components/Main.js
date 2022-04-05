@@ -1,5 +1,5 @@
 import React from "react";
-import yetigif from '../images/finalsitemintgifv2.gif'
+import yetigif from '../images/YPfinalsitemintv3.gif'
 import yetiGang from '../images/theGang.png'
 import Countdown from 'react-countdown';
 
