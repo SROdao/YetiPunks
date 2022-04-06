@@ -101,13 +101,24 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             it(`refunds if value is over price`, async () => {
                 const balanceBeforeMint = await web3.eth.getBalance(yetiPunks.address)
                 balanceBeforeMint.should.equal(web3.utils.toWei('0.02', 'ether'))
-                
+
                 await yetiPunks.publicSaleMint(1, { from: user, value: web3.utils.toWei('0.1', 'ether') })
 
                 const balanceAfterMint = await web3.eth.getBalance(yetiPunks.address)
                 balanceAfterMint.should.equal(web3.utils.toWei('0.04', 'ether'))
-                balanceAfterMint.should.not.equal(web3.utils.toWei('0.12', 'ether')) 
+                balanceAfterMint.should.not.equal(web3.utils.toWei('0.12', 'ether'))
             });
+
+            it(`allows a devMint to mint more than the 6 NFT public sale limit to the same wallet address`, async () => {
+                const testWallet = '0xA6E23d1775Ed0f77DDb173bd3484f7ead1fAD001'
+                await yetiPunks.publicSaleMint(5, { from: user, value: web3.utils.toWei('0.12', 'ether') })
+                const nftsOwnedByTestWalletBefore = await await yetiPunks.balanceOf(user)
+                nftsOwnedByTestWalletBefore.toString().should.equal('6') // user has the max for public mint
+
+                await yetiPunks.devMint([user], 6)
+                const nftsOwnedByTestWalletAfter = await await yetiPunks.balanceOf(user)
+                nftsOwnedByTestWalletAfter.toString().should.equal('12')
+            })
         })
 
         describe('Failure', async () => {
@@ -137,8 +148,14 @@ contract('YetiPunks', ([deployerAddress, user]) => {
             });
 
             it(`reverts if trying to mint more than 6 due to wallet limit exceeded`, async () => {
-                await yetiPunks.publicSaleMint(7, { from: user, value: web3.utils.toWei('0.22', 'ether') })
-                    .should.be.rejectedWith('Reason given: Wallet limit exceeded')
+                await yetiPunks.publicSaleMint(7, {
+                    from: user, value: web3.utils.toWei('0.2', 'ether')
+                }).should.be.rejectedWith('Reason given: Wallet limit exceeded')
+            });
+
+            it(`reverts if trying to mint more than 20 due to BATCH LIMIT`, async () => {
+                await yetiPunks.publicSaleMint(21, { from: user, value: web3.utils.toWei('0.02', 'ether') })
+                    .should.be.rejectedWith('Reason given: Max batch minting quantity exceeded')
             });
 
             it(`reverts when calling the tokenURI function for a tokenId that hasn't been minted`, async () => {
@@ -267,7 +284,7 @@ contract('YetiPunks', ([deployerAddress, user]) => {
                 const tokenId = 21 // the first token minted after mint for devs
 
                 const ownershipData = await yetiPunks.getOwnershipData(tokenId)
-                
+
                 ownershipData.addr.should.equal(user)
             });
 
