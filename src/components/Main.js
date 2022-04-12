@@ -48,9 +48,9 @@ const Main = ({
                         <p> Holders will receive exclusive access to future projects, private discord server and more.
                     </p>
                 </div>
-                {supplyAvailable === 0 && isConnected ? (
+                { true ? (
                     <div className="minting-section">
-                        <h2>SOLD OUT</h2>
+                        <h2>MINT CLOSED</h2>
                         <h6>THANK YOU</h6>
                         <h6>YOU CAN STILL FIND YETIPUNKS ON THE SECONDARY MARKET</h6>
                         <div >
