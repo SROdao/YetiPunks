@@ -54,8 +54,8 @@ const Main = ({
                         <h6>THANK YOU</h6>
                         <h6>YOU CAN STILL FIND YETIPUNKS ON THE SECONDARY MARKET</h6>
                         <div >
-                            <a href='https://opensea.io/' rel="noreferrer" target="_blank" className="links">OPENSEA</a>
-                            <a href='https://looksrare.org/' rel="noreferrer" target="_blank" className="links">LOOKSRARE</a>
+                            <a href='https://opensea.io/collection/yetipunks' rel="noreferrer" target="_blank" className="links">OPENSEA</a>
+                            <a href='https://looksrare.org/collections/0x8e21FdeB0E51Cf8EA8674b8389Bc653c0126CFb2' rel="noreferrer" target="_blank" className="links">LOOKSRARE</a>
                         </div>
                     </div>
                 ) : (
