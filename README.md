@@ -1,5 +1,5 @@
 # NO READ ME
-# JUST YETI GOOD VIBES
+# JUST YETI GOOD VIBEZ
                                                                       
                                                                                 
                                                                                 
